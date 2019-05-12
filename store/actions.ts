@@ -50,6 +50,10 @@ export const actions: ActionTree<WPRState, any> = {
 
   async loadMenu({commit}, {menuSlugs, lang}) {
 
+    if(menuSlugs === false || !menuSlugs) {
+      return
+    }
+
     const config = Vue.prototype.$wp.config
 
     const part = lang == 'pl' ? '' : '/' + lang
