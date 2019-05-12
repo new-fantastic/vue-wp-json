@@ -1,3 +1,5 @@
+import { ContentTypes } from '../types'
+
 export default (contentType, notFoundUrl = 'page-not-found') => ({
   components: {
     Sections: () => import("../components/TheRoot.js")
@@ -5,7 +7,9 @@ export default (contentType, notFoundUrl = 'page-not-found') => ({
 
   computed: {
     wpData () {
-      return this.$store.state.wp_rest_content.posts[this.$route.params.slug]
+      return contentType === ContentTypes.Post 
+        ? this.$store.state.wp_rest_content.posts[this.$route.params.slug]
+        : this.$store.state.wp_rest_content.pages[this.$route.params.slug]
     }
   },
 
@@ -34,7 +38,7 @@ export default (contentType, notFoundUrl = 'page-not-found') => ({
     await this.$store.dispatch("wp_rest_content/loadContent", {
       slug: this.$route.params.slug,
       lang: 'pl',
-      type: ContentTypes.Post
+      type: contentType
     });
   }
 })

@@ -1,6 +1,6 @@
 export default type => ({
   metaInfo() {
-    if(this.wpData !== false) {
+    if(this.wpData !== false && this.wpData) {
       const iId = Number(this.wpData.featured_media)
 
       let dt = []
@@ -35,8 +35,6 @@ export default type => ({
         : {}
 
       let ogDesc = {}
-
-      console.log(description, 'DESC')
 
       if('content' in description) {
         ogDesc = { property: 'og:description', content: description.content }
