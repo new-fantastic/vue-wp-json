@@ -61,7 +61,6 @@
 
 <script>
   import blocks from '../blocks'
-  import { getLangByRoute } from '../../util/Lang'
   import { getColumnAmount, layoutNameToCmpName, prepareColumnToRow } from '../../util/Layout'
   import NumberToWord from '../../util/NumberToWord'
 

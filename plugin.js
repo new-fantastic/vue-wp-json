@@ -7,7 +7,7 @@ const MAIN_MODULE_KEY = 'wp_rest_content'
 const MEDIA_MODULE_KEY = 'wpr_media'
 
 export default {
-  install (Vue, options) {
+  async install (Vue, options) {
     try {
       // Config
       // Is it proper
@@ -28,7 +28,7 @@ export default {
       const store = options.store
 
       // Global access to TheRoot component
-      Vue.component('sections', TheRoot)
+      Vue.component('Sections', TheRoot)
 
       // Register VueX modules
       store.registerModule(MAIN_MODULE_KEY, module)
@@ -42,7 +42,18 @@ export default {
       const router = options.router
       router.addRoutes(routes)
 
-      
+      await Promise.all([
+        store.dispatch('wp_rest_content/loadMenu', {
+          menuSlugs: options.config.menus,
+          lang: 'pl'
+        }),
+        store.dispatch('wp_rest_content/loadMeta', {
+          lang: 'pl'
+        }),
+        store.dispatch('wpr_media/loadMedia', {
+          lang: 'pl'
+        })
+      ])
     } catch(e) {
       console.error(e.message)
     }

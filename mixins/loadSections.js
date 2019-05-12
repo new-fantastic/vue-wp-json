@@ -1,27 +1,22 @@
-import config from 'config'
 import { ContentTypes } from '../types'
-import { getLangAndCmpName } from '../util/Lang'
 
 export default {
   computed: {
     wpData () {
-      const { lang, langComponentName } = getLangAndCmpName(this.$route)
+      const config = this.$wp.config
     
-      return this.$store.state.wp_rest_content.pages[config.wordpressCms.pages[langComponentName]]
-        ? this.$store.state.wp_rest_content.pages[config.wordpressCms.pages[langComponentName]]
+      return this.$store.state.wp_rest_content.pages[config.pages[this.$route.name]]
+        ? this.$store.state.wp_rest_content.pages[config.pages[this.$route.name]]
         : null
     }
   },
   async created () {
-    const { lang, langComponentName } = getLangAndCmpName(route)
+    const config = this.$wp.config
 
-    if (
-      config.wordpressCms.pages[route.name] ||
-      config.wordpressCms.pages[langComponentName]
-    ) {
+    if (config.pages[this.$route.name]) {
       await this.$store.dispatch('wp_rest_content/loadContent', {
-        slug: config.wordpressCms.pages[langComponentName],
-        lang,
+        slug: config.pages[this.$route.name],
+        lang: 'pl',
         type: ContentTypes.Page
       })
     }

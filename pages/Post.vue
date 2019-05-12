@@ -44,60 +44,13 @@
 
 <script>
 import { ContentTypes } from '../types'
-import { getLangByRoute, getLangAndCmpName } from '../util/Lang'
-import BaseMedia from '../components/Base/BaseMedia.vue'
 import meta from '../mixins/meta'
+import Abstract from './Abstract'
 
 export default {
-  mixins: [meta('article')],
-  components: {
-    BaseMedia,
-    Sections: () => import("../components/TheRoot.js")
-  },
-
-  data () {
-    return {
-      breadcrumbs: {
-        routes: [
-          { name: 'Home', route_link: '/' }
-        ]
-      }
-    }
-  },
-
-  computed: {
-    categories() {
-      return this.getCategories;
-    },
-    wpData () {
-      return this.$store.state.wp_rest_content.posts[this.$route.params.slug]
-    }
-  },
-  watch: {
-    async $route(to) {
-      await this.$store.dispatch("wp_rest_content/loadContent", {
-        slug: to.params.slug,
-        lang: 'pl',
-        type: ContentTypes.Post
-      });
-    },
-    wpData: {
-      immediate: true,
-      handler (n) {
-        if(n === false) {
-          this.$router.push('/page-not-found')
-        }
-      }
-    }
-  },
-  async created() {
-    const config = this.$wp.config
-
-    await this.$store.dispatch("wp_rest_content/loadContent", {
-      slug: this.$route.params.slug,
-      lang: 'pl',
-      type: ContentTypes.Post
-    });
-  }
+  mixins: [ 
+    Abstract(ContentTypes.Post),
+    meta('website') 
+  ]
 };
 </script>

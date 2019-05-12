@@ -1,17 +1,13 @@
-// import { router } from '@vue-storefront/core/app'
 import Vue from 'vue'
 import axios from 'axios'
 import { WPRMediaState } from '../../types'
 import { ActionTree } from 'vuex';
-// import config from 'config'
 
 import * as types from './mutation-types'
-import { ContentTypes } from '../../types'
-// import { type } from 'os';
 
 const typeBaseUrl = '/wp-json/wp/v2/media/'
 
-export const actions = {
+export const actions: ActionTree<WPRMediaState, any> = {
   async loadMedia ({commit}, {lang}) {
 
     const config = Vue.prototype.$wp.config

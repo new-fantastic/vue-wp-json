@@ -2,7 +2,8 @@ import axios from 'axios'
 import Vue from 'vue'
 
 import * as types from './mutation-types'
-import { ContentTypes } from '../types'
+import { ContentTypes, WPRState } from '../types'
+import { ActionTree } from 'vuex';
 
 const typeBaseUrl = {
   [ContentTypes.Page]: '/wp-json/wp/v2/pages?slug=',
@@ -18,7 +19,7 @@ const typeBaseMutation = {
   [ContentTypes.Meta]: types.SET_META_CONTENT,
 }
 
-export const actions = {
+export const actions: ActionTree<WPRState, any> = {
   async loadContent ({commit}, {slug, type, lang}) {
 
     const config = Vue.prototype.$wp.config
@@ -110,7 +111,7 @@ export const actions = {
 
   async loadMeta ({commit}) {
     const config = Vue.prototype.$wp.config
-    
+
     const baseUrl = config.url + typeBaseUrl[ContentTypes.Meta]
 
     try {
