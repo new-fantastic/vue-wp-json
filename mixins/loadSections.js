@@ -12,14 +12,14 @@ export default {
         : null
     }
   },
-  async asyncData ({ store, route }) {
+  async created () {
     const { lang, langComponentName } = getLangAndCmpName(route)
 
     if (
       config.wordpressCms.pages[route.name] ||
       config.wordpressCms.pages[langComponentName]
     ) {
-      await store.dispatch('wp_rest_content/loadContent', {
+      await this.$store.dispatch('wp_rest_content/loadContent', {
         slug: config.wordpressCms.pages[langComponentName],
         lang,
         type: ContentTypes.Page

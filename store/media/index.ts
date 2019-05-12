@@ -8,5 +8,6 @@ export const mediaModule: Module<WPRMediaState, any> = {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters: {}
 }

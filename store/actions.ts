@@ -1,12 +1,8 @@
-import { router } from '@vue-storefront/core/app'
 import axios from 'axios'
-import { WPRState } from '../types'
-import { ActionTree } from 'vuex';
-import config from 'config'
+import Vue from 'vue'
 
 import * as types from './mutation-types'
 import { ContentTypes } from '../types'
-import { type } from 'os';
 
 const typeBaseUrl = {
   [ContentTypes.Page]: '/wp-json/wp/v2/pages?slug=',
@@ -25,8 +21,10 @@ const typeBaseMutation = {
 export const actions = {
   async loadContent ({commit}, {slug, type, lang}) {
 
+    const config = Vue.prototype.$wp.config
+
     const part = lang == 'pl' ? '' : '/' + lang
-    const baseUrl = config.wordpressCms.url + part + typeBaseUrl[type]
+    const baseUrl = config.url + part + typeBaseUrl[type]
 
     try {
       const response = await axios.get(baseUrl + slug)
@@ -50,8 +48,11 @@ export const actions = {
   },
 
   async loadMenu({commit}, {menuSlugs, lang}) {
+
+    const config = Vue.prototype.$wp.config
+
     const part = lang == 'pl' ? '' : '/' + lang
-    const baseUrl = config.wordpressCms.url + part + typeBaseUrl[ContentTypes.Menu]
+    const baseUrl = config.url + part + typeBaseUrl[ContentTypes.Menu]
 
     const fixUrls = items => {
       const fixedItems = []
@@ -63,8 +64,8 @@ export const actions = {
         
         fixedItems.push({
           ...item,
-          url: item.url.replace(config.wordpressCms.url, k => {
-            return config.wordpressCms.url.substr(-1) === '/'
+          url: item.url.replace(config.url, k => {
+            return config.url.substr(-1) === '/'
               ? `/${prefix}/`
               : `${prefix}/`
           })
@@ -108,7 +109,9 @@ export const actions = {
   },
 
   async loadMeta ({commit}) {
-    const baseUrl = config.wordpressCms.url + typeBaseUrl[ContentTypes.Meta]
+    const config = Vue.prototype.$wp.config
+    
+    const baseUrl = config.url + typeBaseUrl[ContentTypes.Meta]
 
     try {
       const { data } = await axios.get(baseUrl)

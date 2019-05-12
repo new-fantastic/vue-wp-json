@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="wpData !== null && wpData !== false"
+    v-if="wpData !== null && wpData !== false && wpData"
     class="page"
     :key="wpData.id"
   >
@@ -29,7 +29,6 @@
     <div
       class="page__content"
     >
-      <BaseMedia :id="416"/>
       <Sections
         v-if="wpData"
         :data="wpData"
@@ -44,20 +43,15 @@
 </template>
 
 <script>
-import rootStore from "@vue-storefront/store";
-import config from 'config'
-import Breadcrumbs from 'theme/components/core/Breadcrumbs.vue'
 import { ContentTypes } from '../types'
-import { getLangByRoute, getLangAndCmpName } from '../util/Lang'
 import BaseMedia from '../components/Base/BaseMedia.vue'
 import meta from '../mixins/meta'
 
 export default {
   mixins: [meta('website')],
   components: {
-    Sections: () => import("../components/TheRoot.js"),
-    Breadcrumbs,
-    BaseMedia
+    BaseMedia,
+    Sections: () => import("../components/TheRoot.js")
   },
 
   data () {
@@ -75,8 +69,6 @@ export default {
       return this.getCategories;
     },
     wpData () {
-      const { lang, langComponentName } = getLangAndCmpName(this.$route)
- 
       return this.$store.state.wp_rest_content.pages[this.$route.params.slug]
     }
   },
@@ -84,7 +76,7 @@ export default {
     async $route(to) {
       await this.$store.dispatch("wp_rest_content/loadContent", {
         slug: to.params.slug,
-        lang: getLangByRoute(to),
+        lang: 'pl',
         type: ContentTypes.Page
       });
     },
@@ -97,21 +89,14 @@ export default {
       }
     }
   },
-  async asyncData({ store, route }) {
-    const config = store.state.config;
-    const lang = getLangByRoute(route)
+  async created() {
+    const config = this.$wp.config
 
-    await store.dispatch("wp_rest_content/loadContent", {
-      slug: route.params.slug,
-      lang,
+    await this.$store.dispatch("wp_rest_content/loadContent", {
+      slug: this.$route.params.slug,
+      lang: 'pl',
       type: ContentTypes.Page
-    });
-
-    await store.dispatch("category/list", {
-      includeFields: config.entities.optimize
-        ? config.entities.category.includeFields
-        : null
-    });
+    })
   }
 };
 </script>

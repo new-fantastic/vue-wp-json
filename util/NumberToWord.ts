@@ -22,5 +22,8 @@ export default (obj: Number): String => {
     case 10:
       return 'Ten';
     }
+
+  throw new Error('Bad number')
+  return ''
 }
   
