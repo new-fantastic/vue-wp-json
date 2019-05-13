@@ -1,5 +1,6 @@
   import NumberToWord from '../util/NumberToWord'
   import Section from './Content/Section.vue'
+  import Vue from 'vue'
 
   export default {
     functional: true,
@@ -12,15 +13,12 @@
         type: Object,
         default: null,
         validator(value) {
-          if(!('acf' in value)) {
-            return false
-          }
-          if(!('sections' in value.acf)) {
-            return false
-          }
-
-          if(value.acf.sections.length < 1) {
-            return false
+          if(Vue.prototype.$wp.validators) {
+            for(let customValidator of Vue.prototype.$wp.validators) {
+              if(!customValidator(value)) {
+                return false
+              }
+            }
           }
 
           return true

@@ -1,5 +1,7 @@
 <template>
   <video 
+    v-bind="$attrs"
+    v-on="$on"
     :width="mediaDetails.width" 
     :height="mediaDetails.height" 
     controls

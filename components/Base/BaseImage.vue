@@ -1,5 +1,7 @@
 <template>
   <img 
+    v-bind="$attrs"
+    v-on="$listeners"
     :src="item.link"
   />
 </template>

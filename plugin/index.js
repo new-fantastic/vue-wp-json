@@ -1,7 +1,8 @@
-import TheRoot from './components/TheRoot.js'
-import { module }from './store'
-import { mediaModule } from './store/media'
-import { routes } from './router/routes'
+import TheRoot from '../components/TheRoot.js'
+import { module }from '../store'
+import { mediaModule } from '../store/media'
+import { routes } from '../router/routes'
+import registerPlugin from './registerPlugin'
 
 const MAIN_MODULE_KEY = 'wp_rest_content'
 const MEDIA_MODULE_KEY = 'wpr_media'
@@ -54,6 +55,17 @@ export default {
           lang: 'pl'
         })
       ])
+
+      if('plugins' in options) {
+        // Register plugins
+        if(Array.isArray(options.plugins)) {
+          for(let plugin of options.plugins) {
+            registerPlugin(Vue, plugin)
+          }
+        } else {
+          registerPlugin(Vue, options.plugins)
+        }
+      }
     } catch(e) {
       console.error(e.message)
     }
