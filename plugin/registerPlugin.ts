@@ -6,4 +6,10 @@ export default (Vue, plugin) => {
 
     Vue.prototype.$wp.validators.push(plugin.validator)
   }
+
+  if('blocks' in plugin) {
+    for(const [key, value] of Object.entries(plugin.blocks)) {
+      Vue.component(key, value)
+    }
+  }
 }
