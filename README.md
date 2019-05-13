@@ -2,7 +2,7 @@
 
 <br>
 
-Wordpress REST API plugin for Vue.js providing an out-of-box routing and data handling.
+💫 Wordpress REST API plugin for Vue.js providing an out-of-box routing and data handling 💫
 
 <br>
 
