@@ -196,7 +196,7 @@ Additional features available with PRO version of module available here: https:/
 
 <br>
 
-https://github.com/new-fantastic/vuejs/modules/vue-wp-json-yoast
+https://github.com/new-fantastic/vue-wp-json-yoast
 
 <br>
 
@@ -205,7 +205,7 @@ https://github.com/new-fantastic/vuejs/modules/vue-wp-json-yoast
 
 <br>
 
-https://store.newfantastic.com/vuejs/modules/vue-wp-json-qtranslate
+https://github.com/new-fantastic/vue-wp-json-qtranslate-x
 
 <br>
 
