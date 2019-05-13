@@ -6,11 +6,49 @@ Wordpress REST API plugin for Vue.js providing an out-of-box routing and data ha
 
 <br>
 
+- [Installation](#installation)
+
+  - [Vue.js](#a-vuejs)
+  - [Nuxt.js](#b-nuxtjs)
+  - [Vue Storefront](#c-vue-storefront)
+  
+- [Usage](#usage)
+
+  - [Pages](#pages)
+  - [Posts](#posts)
+  - [Media](#media)
+  - [Menus](#menus)
+
+- [PRO Version](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro)
+
+  - [Custom Post Types](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#custom-post-types)
+  - [Post Statuses](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#post-statuses)
+  - [Authentication](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#authentication)
+  - [Users](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#users)
+  - [Comments](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#comments)
+  - [Categories](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#categories)
+  - [Tags](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#tags)
+  - [Taxonomies](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#taxonomies)
+
+- [External Modules](#additional-modules)
+
+  - [Free Extensions](#free-extensions)
+  
+    - [Yoast SEO Extension](#yoast-extension)
+    - [qTranslate Extension](https://store.newfantastic.com/vuejs/modules/vue-wp-json-qtranslate)
+
+  - [PRO Extensions](#pro-extensions)
+
+    - [Advanced Custom Fields Extension](https://store.newfantastic.com/vuejs/modules/vue-wp-json-acf)
+    - [DIVI Page Builder Extension (planned for Fall 2019)](https://store.newfantastic.com/vuejs/modules/vue-wp-json-divi)
+
+<br>
+
 ## Installation
 
 <br>
 
-### A. Vue.js App
+### A. Vue.js
 
 <br>
 
@@ -72,7 +110,7 @@ Vue.use(MetaInfo)
 
 <br>
 
-### B. Nuxt.js App
+### B. Nuxt.js
 
 <br>
 
@@ -80,7 +118,7 @@ For Nuxt.js we have developed a dedicated  module that is available here: <a hre
 
 <br>
 
-### C. Vue Storefront App
+### C. Vue Storefront
 
 <br>
 
@@ -108,6 +146,14 @@ The process is the same as above. You just need to create and publish new post i
 
 <br>
 
+### Media
+
+<br>
+
+Lorem ipsum.
+
+<br>
+
 ### Menus
 
 <br>
@@ -127,11 +173,7 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 
 <br>
 
-### Custom post types
-
-<br>
-
-To be added
+Additional features available with PRO version of module available here: https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro
 
 <br>
 
@@ -145,6 +187,8 @@ To be added
 
 - [Yoast SEO Extension](#yoast-extension)
 
+- [qTranslate Extension](#qtranslate-extension)
+
 <br>
 
 <a name="yoast-extension"></a>
@@ -152,17 +196,24 @@ To be added
 
 <br>
 
-https://github.com/new-fantastic/vue-wp-json-yoast
+https://github.com/new-fantastic/vuejs/modules/vue-wp-json-yoast
 
 <br>
 
-### Paid Extensions
+<a name="qtranslate-extension"></a>
+#### qTranslate Extension
+
+<br>
+
+https://store.newfantastic.com/vuejs/modules/vue-wp-json-qtranslate
+
+<br>
+
+### PRO Extensions
 
 <br>
 
 - [Advanced Custom Fields Extension](#acf-extension)
-
-- [qTranslate Extension](#qtranslate-extension)
 
 - [DIVI Page Builder Extension (planned for Fall 2019)](#divi-extension)
 
@@ -173,16 +224,7 @@ https://github.com/new-fantastic/vue-wp-json-yoast
 
 <br>
 
-https://store.newfantastic.com/vue-wp-json-acf
-
-<br>
-
-<a name="qtranslate-extension"></a>
-#### qTranslate Extension
-
-<br>
-
-https://store.newfantastic.com/vue-wp-json-qtranslate
+https://store.newfantastic.com/vuejs/modules/vue-wp-json-acf
 
 <br>
 
@@ -191,4 +233,4 @@ https://store.newfantastic.com/vue-wp-json-qtranslate
 
 <br>
 
-https://store.newfantastic.com/vue-wp-json-divi
+https://store.newfantastic.com/vuejs-modules/vue-wp-json-divi
