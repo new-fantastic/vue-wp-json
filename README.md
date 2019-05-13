@@ -30,7 +30,7 @@ yarn add vue-wp-json
 
 <br>
 
-#### 2. Go to your `main.js`/`main.ts` file, import the module catalog and register it:
+#### 2. Go to your app's `main.js`/`main.ts` file, import the module catalog and register it:
 
 <br>
 
@@ -92,7 +92,7 @@ For Vue Storefront we have developed a dedicated module that is available here: 
 
 <br>
 
-### Creating Pages
+### Pages
 
 <br>
 
@@ -100,7 +100,7 @@ All you need to do to create new page's route in your app is creating it on in W
 
 <br>
 
-### Creating Posts
+### Posts
 
 <br>
 
@@ -108,7 +108,7 @@ The process is the same as above. You just need to create and publish new post i
 
 <br>
 
-### Creating Menus
+### Menus
 
 <br>
 
@@ -131,15 +131,19 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 
 <br>
 
-### Additional modules
+To be added
+
+<br>
+
+## Additional modules
 
 <br>
 
 ### Free Extensions
 
-- [Yoast SEO Extension](#yoast-extension)
+<br>
 
-- [qTranslate Extension](#qtranslate-extension)
+- [Yoast SEO Extension](#yoast-extension)
 
 <br>
 
@@ -148,8 +152,7 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 
 <br>
 
-<a name="qtranslate-extension"></a>
-#### qTranslate Extension
+https://github.com/new-fantastic/vue-wp-json-yoast
 
 <br>
 
@@ -158,6 +161,8 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 <br>
 
 - [Advanced Custom Fields Extension](#acf-extension)
+
+- [qTranslate Extension](#qtranslate-extension)
 
 - [DIVI Page Builder Extension (planned for Fall 2019)](#divi-extension)
 
@@ -168,84 +173,22 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 
 <br>
 
-This module extends `nuxt-wp-json` functionality by handling the `acf` object present in `/wp-json` after installing <a href="https://pl.wordpress.org/plugins/advanced-custom-fields/">Advanced Custom Fields</a> + <a href="https://wordpress.org/plugins/acf-to-rest-api/">ACF to REST API</a> Wordpress plugins. Advanced Custom Fields' main advantage is flexibility and freedom in creating custom data objects allowing you to more advanced layouts/interactions.
-
-The module comes with a preset providing basic layouting system based on:
-
-##### Page
+https://store.newfantastic.com/vue-wp-json-acf
 
 <br>
 
-- Page Options:
-- Page Content:
-  - Sections
+<a name="qtranslate-extension"></a>
+#### qTranslate Extension
 
 <br>
 
-##### Section
-
-<br>
-
-- Section Options:
-  - Margins
-  - Desktop / Mobile Visibility
-  - Height
-- Section Content
-  - 1 / 2 / 3 / 4 Columns
-
-<br>
-
-#### Column
-
-- Column Options:
-  - Desktop/ Mobile Visibility
-  - Desktop / Mobile Height
-- Column Content:
-  - Content Blocks
-
-<br>
-
-##### Block
-
-###### Banner:
-
-<br>
-
-- Banner Options:
-  - Margins/Padding
-  - Height
-  - Content Placement on X/Y axis
--Banner Content:
-  - Background media with options:
-     - Image/Video
-     - Desktop/Mobile source file
-  - Description with options:
-    - Text Color
-  - Actions with components:
-    - Button with options:
-      - Text color
-      - Background color
-      - Size
-      - Button icon
-
-<br>
-
-###### WYSIWYG
-
-<br>
-
-- WYSIWYG Options:
-  - Padding
-  - Height
-  - Content Placement on X/Y axis
-- WYSIWYG Content:
-  - Pure HTML Output from WYSIWYG
+https://store.newfantastic.com/vue-wp-json-qtranslate
 
 <br>
 
 <a name="divi-extension"></a>
-### DIVI Page Builder Extension
+### DIVI Page Builder Extension (planned for Fall 2019)
 
 <br>
 
-To be released by Fall 2019
+https://store.newfantastic.com/vue-wp-json-divi
