@@ -8,7 +8,12 @@ interface Block {
   [propName: string]: Object
 }
 
+interface Layouts {
+  Section?: Object
+}
+
 export interface WPExtension {
   validator?: ValidatorFunc
-  blocks: Block
+  blocks?: Block,
+  layouts?: Layouts
 }
