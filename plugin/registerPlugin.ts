@@ -16,7 +16,6 @@ export default (Vue, plugin) => {
   if('layouts' in plugin) {
     Vue.prototype.$wp.layouts = {}
     if('Section' in plugin.layouts) {
-      console.log('here')
       Vue.prototype.$wp.layouts.section = true
       Vue.component('AlternativeSection', plugin.layouts.Section)
     }

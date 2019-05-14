@@ -29,7 +29,7 @@
       if(context.props.data && context.props.data.acf && context.props.data.acf.sections) {
 
         const wpSections = []
-        const chosenSection = Vue.prototype.$wp.layouts.section
+        const chosenSection = Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.section
           ? 'AlternativeSection'
           : Section
         context.props.data.acf.sections.forEach((el, index) => {
