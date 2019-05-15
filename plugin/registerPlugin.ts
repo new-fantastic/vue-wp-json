@@ -28,4 +28,17 @@ export default (Vue, plugin) => {
       Vue.prototype.$wp.layouts.post = plugin.layouts.Post
     }
   }
+
+  if('filters' in plugin) {
+    Vue.prototype.$wp.filters = {}
+    if('api' in plugin.filters) {
+      Vue.prototype.$wp.filters.api = {}
+      for(const [key, value] of Object.entries(plugin.filters.api)) {
+        if(!Vue.prototype.$wp.filters.api[key]) {
+          Vue.prototype.$wp.filters.api[key] = []
+        }
+        Vue.prototype.$wp.filters.api[key].push(value)
+      }
+    }
+  }
 }

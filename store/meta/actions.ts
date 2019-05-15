@@ -4,6 +4,8 @@ import Vue from 'vue'
 import * as types from './mutation-types'
 import { ActionTree } from 'vuex';
 
+import { UrlCreator } from '../../util/UrlCreator'
+
 const typeBaseUrl = '/wp-json'
 
 export const actions: ActionTree<Object, any> = {
@@ -11,10 +13,17 @@ export const actions: ActionTree<Object, any> = {
   async load ({commit}) {
     const config = Vue.prototype.$wp.config
 
-    const baseUrl = config.url + typeBaseUrl
+    const base = new UrlCreator(config.url, [typeBaseUrl])
+
+    if(Vue.prototype.$wp.filters && Vue.prototype.$wp.filters.api 
+      && Vue.prototype.$wp.filters.api.meta) {
+      for(let filter of Vue.prototype.$wp.filters.api.meta) {
+        filter(base)
+      }
+    }
 
     try {
-      const { data } = await axios.get(baseUrl)
+      const { data } = await axios.get(base.url)
       commit(types.SET_META_CONTENT, {
         data: {
           name: data.name,

@@ -17,5 +17,10 @@ interface Layouts {
 export interface WPExtension {
   validator?: ValidatorFunc
   blocks?: Block,
-  layouts?: Layouts
+  layouts?: Layouts,
+  filters?: {
+    [propName: string]: {
+      [propName: string]: (value: any) => any
+    }
+  }
 }
