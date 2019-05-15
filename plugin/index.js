@@ -8,7 +8,7 @@ import { meta }from '../store/meta'
 import { routes } from '../router/routes'
 import registerPlugin from './registerPlugin'
 
-export const ModulePrefix = 'wpr'
+export const ModulePrefix = 'wp'
 
 export default {
   async install (Vue, options) {
@@ -42,14 +42,6 @@ export default {
       store.registerModule(`${ModulePrefix}_page`, page)
       store.registerModule(`${ModulePrefix}_post`, post)
 
-      await Promise.all([
-        store.dispatch(`${ModulePrefix}_menu/load`, {
-          menuSlugs: options.config.menus
-        }),
-        store.dispatch(`${ModulePrefix}_meta/load`),
-        store.dispatch(`${ModulePrefix}_media/load`)
-      ])
-
       if('plugins' in options) {
         // Register plugins
         if(Array.isArray(options.plugins)) {
@@ -60,6 +52,14 @@ export default {
           registerPlugin(Vue, options.plugins)
         }
       }
+
+      await Promise.all([
+        store.dispatch(`${ModulePrefix}_menu/load`, {
+          menuSlugs: options.config.menus
+        }),
+        store.dispatch(`${ModulePrefix}_meta/load`),
+        store.dispatch(`${ModulePrefix}_media/load`)
+      ])
 
       // Do we have router?
       if (!('router' in options)) {

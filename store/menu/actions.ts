@@ -4,6 +4,8 @@ import Vue from 'vue'
 import * as types from './mutation-types'
 import { ActionTree } from 'vuex';
 
+import { UrlCreator } from '../../util/UrlCreator'
+
 const typeBaseUrl = '/wp-json/menus/v1/menus'
 
 export const actions: ActionTree<Object, any> = {
@@ -17,7 +19,14 @@ export const actions: ActionTree<Object, any> = {
     const config = Vue.prototype.$wp.config
 
     // const part = lang == 'pl' ? '' : '/' + lang
-    const baseUrl = config.url + typeBaseUrl
+    const base = new UrlCreator(config.url, [typeBaseUrl])
+
+    if(Vue.prototype.$wp.filters && Vue.prototype.$wp.filters.api 
+      && Vue.prototype.$wp.filters.api.menu) {
+      for(let filter of Vue.prototype.$wp.filters.api.menu) {
+        filter(base)
+      }
+    }
 
     const fixUrls = items => {
       const fixedItems = []
@@ -45,9 +54,11 @@ export const actions: ActionTree<Object, any> = {
         // Few menus in paralel
         const requests = []
         for(let slug of menuSlugs) {
+          base.addAtTheEnd(slug)
           requests.push(
-            axios.get(baseUrl + '/' + slug)
+            axios.get(base.url)
           )
+          base.removeFromTheEnd()
         }
         let response = await Promise.all(requests)
         response.forEach(c => {
@@ -61,7 +72,8 @@ export const actions: ActionTree<Object, any> = {
         })
 
       } else {
-        let response = await axios.get(baseUrl + '/' + menuSlugs)
+        base.addAtTheEnd(menuSlugs)
+        let response = await axios.get(base.url)
         commit(types.SET_MENU_CONTENT, {
           data: response.data,
           slotName: menuSlugs
