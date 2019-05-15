@@ -1,4 +1,5 @@
 import { ContentTypes } from '../../types'
+import { ModulePrefix } from '../index'
 
 export default (contentType, notFoundUrl = 'page-not-found') => ({
   components: {
@@ -8,16 +9,19 @@ export default (contentType, notFoundUrl = 'page-not-found') => ({
   computed: {
     wpData () {
       return contentType === ContentTypes.Post 
-        ? this.$store.state.wp_rest_content.posts[this.$route.params.slug]
-        : this.$store.state.wp_rest_content.pages[this.$route.params.slug]
+        ? this.$store.state[`${ModulePrefix}_post`].post[this.$route.params.slug]
+        : this.$store.state[`${ModulePrefix}_page`].page[this.$route.params.slug]
     }
   },
 
   watch: {
     async $route(to) {
-      await this.$store.dispatch("wp_rest_content/loadContent", {
+      const prefix = contentType === ContentTypes.Post 
+        ? `${ModulePrefix}_post`
+        : `${ModulePrefix}_page`
+
+      await this.$store.dispatch(`${prefix}/load`, {
         slug: to.params.slug,
-        lang: 'pl',
         type: contentType
       });
     },
@@ -34,10 +38,12 @@ export default (contentType, notFoundUrl = 'page-not-found') => ({
 
   async created() {
     const config = this.$wp.config
+    const prefix = contentType === ContentTypes.Post 
+        ? `${ModulePrefix}_post`
+        : `${ModulePrefix}_page`
 
-    await this.$store.dispatch("wp_rest_content/loadContent", {
+    await this.$store.dispatch(`${prefix}/load`, {
       slug: this.$route.params.slug,
-      lang: 'pl',
       type: contentType
     });
   }

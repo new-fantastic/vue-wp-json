@@ -1,11 +1,14 @@
 import TheRoot from '../components/TheRoot.js'
-import { module }from '../store'
-import { mediaModule } from '../store/media'
+import { media }from '../store/media'
+import { lang }from '../store/lang'
+import { post }from '../store/post'
+import { page }from '../store/page'
+import { menu }from '../store/menu'
+import { meta }from '../store/meta'
 import { routes } from '../router/routes'
 import registerPlugin from './registerPlugin'
 
-const MAIN_MODULE_KEY = 'wp_rest_content'
-const MEDIA_MODULE_KEY = 'wpr_media'
+export const ModulePrefix = 'wpr'
 
 export default {
   async install (Vue, options) {
@@ -32,20 +35,19 @@ export default {
       Vue.component('Sections', TheRoot)
 
       // Register VueX modules
-      store.registerModule(MAIN_MODULE_KEY, module)
-      store.registerModule(MEDIA_MODULE_KEY, mediaModule)
+      store.registerModule(`${ModulePrefix}_lang`, lang)
+      store.registerModule(`${ModulePrefix}_media`, media)
+      store.registerModule(`${ModulePrefix}_menu`, menu)
+      store.registerModule(`${ModulePrefix}_meta`, meta)
+      store.registerModule(`${ModulePrefix}_page`, page)
+      store.registerModule(`${ModulePrefix}_post`, post)
 
       await Promise.all([
-        store.dispatch('wp_rest_content/loadMenu', {
-          menuSlugs: options.config.menus,
-          lang: 'pl'
+        store.dispatch(`${ModulePrefix}_menu/load`, {
+          menuSlugs: options.config.menus
         }),
-        store.dispatch('wp_rest_content/loadMeta', {
-          lang: 'pl'
-        }),
-        store.dispatch('wpr_media/loadMedia', {
-          lang: 'pl'
-        })
+        store.dispatch(`${ModulePrefix}_meta/load`),
+        store.dispatch(`${ModulePrefix}_media/load`)
       ])
 
       if('plugins' in options) {
@@ -75,7 +77,7 @@ export default {
 
       router.addRoutes(routes(customPage, customPost))
     } catch(e) {
-      console.error(e.message)
+      console.error(e, e.message)
     }
   }
 }
