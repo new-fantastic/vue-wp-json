@@ -1,4 +1,5 @@
 import { ContentTypes } from '../types'
+import { ModulePrefix } from '../plugin/index'
 
 export default (created = true, asyncData = false, customConfig) => {
   const mixin = {
@@ -6,8 +7,8 @@ export default (created = true, asyncData = false, customConfig) => {
       wpData () {
         const config = this.$wp.config
       
-        return this.$store.state.wp_rest_content.pages[config.pages[this.$route.name]]
-          ? this.$store.state.wp_rest_content.pages[config.pages[this.$route.name]]
+        return this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
+          ? this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
           : null
       }
     }
@@ -18,9 +19,8 @@ export default (created = true, asyncData = false, customConfig) => {
       const config = customConfig ? customConfig : this.$wp.config
   
       if (config.pages[this.$route.name]) {
-        await this.$store.dispatch('wp_rest_content/loadContent', {
+        await this.$store.dispatch(`${ModulePrefix}_page/load`, {
           slug: config.pages[this.$route.name],
-          lang: 'pl',
           type: ContentTypes.Page
         })
       }
@@ -32,9 +32,8 @@ export default (created = true, asyncData = false, customConfig) => {
       const config = customConfig ? customConfig : this.$wp.config
   
       if (config.pages[route.name]) {
-        await store.dispatch('wp_rest_content/loadContent', {
+        await store.dispatch(`${ModulePrefix}_page/load`, {
           slug: config.pages[route.name],
-          lang: 'pl',
           type: ContentTypes.Page
         })
       }
