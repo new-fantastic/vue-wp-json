@@ -10,7 +10,7 @@ interface PartialRoute {
 const pagePrefix = 'page'
 const postPrefix = 'post'
 
-export const routes = [
-  { name: pagePrefix, path: `/${pagePrefix}/:slug`, component: lazyStaticPage },
-  { name: postPrefix, path: `/${postPrefix}/:slug`, component: lazyStaticPost }
-]
+export const routes = (pageCmp, postCmp) => ([
+  { name: pagePrefix, path: `/${pagePrefix}/:slug`, component: pageCmp ? pageCmp : lazyStaticPage},
+  { name: postPrefix, path: `/${postPrefix}/:slug`, component: postCmp ? postCmp : lazyStaticPost}
+])
