@@ -9,7 +9,9 @@ interface Block {
 }
 
 interface Layouts {
-  Section?: Object
+  Section?: Object,
+  Page?: Object,
+  Post?: Object
 }
 
 export interface WPExtension {

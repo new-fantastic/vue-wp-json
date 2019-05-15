@@ -35,14 +35,6 @@ export default {
       store.registerModule(MAIN_MODULE_KEY, module)
       store.registerModule(MEDIA_MODULE_KEY, mediaModule)
 
-      // Do we have router?
-      if (!('router' in options)) {
-        throw new Error('No router instance provided in config!')
-      }
-
-      const router = options.router
-      router.addRoutes(routes)
-
       await Promise.all([
         store.dispatch('wp_rest_content/loadMenu', {
           menuSlugs: options.config.menus,
@@ -66,6 +58,22 @@ export default {
           registerPlugin(Vue, options.plugins)
         }
       }
+
+      // Do we have router?
+      if (!('router' in options)) {
+        throw new Error('No router instance provided in config!')
+      }
+
+      const router = options.router
+      const customPage = Vue.prototype.$wp.layouts.page 
+        ? Vue.prototype.$wp.layouts.page 
+        : undefined
+
+      const customPost = Vue.prototype.$wp.layouts.post 
+        ? Vue.prototype.$wp.layouts.post
+        : undefined
+
+      router.addRoutes(routes(customPage, customPost))
     } catch(e) {
       console.error(e.message)
     }

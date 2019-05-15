@@ -19,5 +19,13 @@ export default (Vue, plugin) => {
       Vue.prototype.$wp.layouts.section = true
       Vue.component('AlternativeSection', plugin.layouts.Section)
     }
+
+    if('Page' in plugin.layouts) {
+      Vue.prototype.$wp.layouts.page = plugin.layouts.Page
+    }
+
+    if('Post' in plugin.layouts) {
+      Vue.prototype.$wp.layouts.post = plugin.layouts.Post
+    }
   }
 }

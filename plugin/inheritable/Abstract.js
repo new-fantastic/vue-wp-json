@@ -1,8 +1,8 @@
-import { ContentTypes } from '../types'
+import { ContentTypes } from '../../types'
 
 export default (contentType, notFoundUrl = 'page-not-found') => ({
   components: {
-    Sections: () => import("../components/TheRoot.js")
+    Sections: () => import("../../components/TheRoot.js")
   },
 
   computed: {

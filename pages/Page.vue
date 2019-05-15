@@ -42,14 +42,9 @@
 </template>
 
 <script>
-import { ContentTypes } from '../types'
-import meta from '../mixins/meta'
-import Abstract from './Abstract'
+  import Page from '../plugin/inheritable/Page'
 
-export default {
-  mixins: [ 
-    Abstract(ContentTypes.Page),
-    meta('website') 
-  ]
-};
+  export default {
+    mixins: [Page]
+  };
 </script>
