@@ -79,6 +79,7 @@ import vueWpJson from 'vue-wp-json'
 Vue.use(vueWpJson, {
   config: {
     url: 'your-wordpress-url.com/',
+    lang: 'en', // Your site's default language. It'll be added to html lang attribute.
     pages: {
       home: "home-page"
       // Here put pairs like - routeName: "slugInApi"
