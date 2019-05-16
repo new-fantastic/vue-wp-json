@@ -1,5 +1,3 @@
-import { VueConstructor } from 'vue';
-
 interface ValidatorFunc {
   (value: any): boolean
 }
@@ -16,14 +14,18 @@ interface Layouts {
 }
 
 export interface WPExtension {
-  validator?: ValidatorFunc,
-  renderRoot?: (value: any, chosenSection: String | Object, h: Function) => Array<any>,
-  sectionData: (data: any) => { columns: Array<any>, anyFilledColumn: Boolean, columnAmount: Number },
   blocks?: Block,
   layouts?: Layouts,
-  filters?: {
-    api: {
+  middleware?: {
+    api?: {
       [propName: string]: (value: any) => any
+    },
+    root?: {
+      validator?: ValidatorFunc,
+      interpret?: (value: any, chosenSection: String | Object, h: Function) => Array<any>
+    },
+    section?: {
+      interpret?: (data: any) => { columns: Array<any>, anyFilledColumn: Boolean, columnAmount: Number }
     }
   }
 }

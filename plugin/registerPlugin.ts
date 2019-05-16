@@ -1,11 +1,4 @@
 export default (Vue, plugin) => {
-  if('validator' in plugin) {
-    if(!Vue.prototype.$wp.validators) {
-      Vue.prototype.$wp.validators = []
-    }
-
-    Vue.prototype.$wp.validators.push(plugin.validator)
-  }
 
   if('blocks' in plugin) {
     for(const [key, value] of Object.entries(plugin.blocks)) {
@@ -34,30 +27,59 @@ export default (Vue, plugin) => {
     }
   }
 
-  if('filters' in plugin) {
-    Vue.prototype.$wp.filters = {}
-    if('api' in plugin.filters) {
-      Vue.prototype.$wp.filters.api = {}
-      for(const [key, value] of Object.entries(plugin.filters.api)) {
-        if(!Vue.prototype.$wp.filters.api[key]) {
-          Vue.prototype.$wp.filters.api[key] = []
-        }
-        Vue.prototype.$wp.filters.api[key].push(value)
+  if('middleware' in plugin) {
+
+    if('api' in plugin.middleware) {
+      Vue.prototype.$wp.api = {}
+      for(const [key, value] of Object.entries(plugin.middleware.api)) {
+          if(!Vue.prototype.$wp.api[key]) {
+            Vue.prototype.$wp.api[key] = []
+          }
+          Vue.prototype.$wp.api[key].push(value)
       }
     }
+
+    if('root' in plugin.middleware) {
+
+      if('validator' in plugin.middleware.root) {
+  
+        if(!Vue.prototype.$wp.validators) {
+          Vue.prototype.$wp.validators = {}
+        }
+        if(!('root' in Vue.prototype.$wp.validators)) {
+          Vue.prototype.$wp.validators.root = []
+        }
+    
+        Vue.prototype.$wp.validators.root.push(plugin.middleware.root.validator)
+      }
+      
+      if('interpret' in plugin.middleware.root) {
+        if(!Vue.prototype.$wp.interpret) {
+          Vue.prototype.$wp.interpret = {}
+        }
+        if(!('root' in Vue.prototype.$wp.interpret)) {
+          Vue.prototype.$wp.interpret.root = []
+        }
+  
+        Vue.prototype.$wp.interpret.root.push(plugin.middleware.root.interpret)
+      }
+    }
+
+    if('section' in plugin.middleware) {
+
+      if('interpret' in plugin.middleware.section) {
+        if(!Vue.prototype.$wp.interpret) {
+          Vue.prototype.$wp.interpret = {}
+        }
+        if(!('section' in Vue.prototype.$wp.interpret)) {
+          Vue.prototype.$wp.interpret.section = []
+        }
+  
+        Vue.prototype.$wp.interpret.section.push(plugin.middleware.section.interpret)
+      }
+
+    }
+
   }
 
-  if('renderRoot' in plugin) {
-    if(!Vue.prototype.$wp.renderRoot) {
-      Vue.prototype.$wp.renderRoot = []
-    }
-    Vue.prototype.$wp.renderRoot.push(plugin.renderRoot)
-  }
-
-  if('sectionData' in plugin) {
-    if(!Vue.prototype.$wp.sectionData) {
-      Vue.prototype.$wp.sectionData = []
-    }
-    Vue.prototype.$wp.sectionData.push(plugin.sectionData)
-  }
 }
