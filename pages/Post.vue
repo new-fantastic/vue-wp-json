@@ -32,16 +32,10 @@
           </span>
         </div>
         <Sections
-          v-if="wpData && wpData.acf && wpData.acf.sections !== null"
+          v-if="wpData"
           :data="wpData"
         />
-        <p
-          v-else
-        >
-          {{ $t('Not found') }}
-        </p>
       </div>
-    <div v-if="!(wpData.acf && wpData.acf.sections)" v-html="wpData.content.rendered"/>
   </div>
 </template>
 

@@ -4,7 +4,7 @@
     class="page"
     :key="wpData.id"
   >
-    <template v-if="wpData.acf && wpData.acf.sections">
+    <template v-if="wpData">
       <div
         class="page__heading margin__y--sm"
       >
@@ -14,12 +14,6 @@
         </div>
         <h1
           class="page__title"
-          :class="{
-            'text-align__left' : wpData.acf.page_options.page_title.alignment === 'left',
-            'text-align__center' : wpData.acf.page_options.page_title.alignment === 'center',
-            'text-align__right' : wpData.acf.page_options.page_title.alignment === 'right'
-          }"
-          v-if="wpData.acf.page_options.page_title.visibility === true"
           v-html="wpData.title.rendered"
         />
       </div>
@@ -30,14 +24,8 @@
           v-if="wpData"
           :data="wpData"
         />
-        <p
-          v-else
-        >
-          {{ $t('Not found') }}
-        </p>
       </div>
     </template>
-    <div v-else v-html="wpData.content.rendered"/>
   </div>
 </template>
 

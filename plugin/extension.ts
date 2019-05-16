@@ -10,16 +10,19 @@ interface Block {
 
 interface Layouts {
   Section?: Object,
+  Column?: Object,
   Page?: Object,
   Post?: Object
 }
 
 export interface WPExtension {
-  validator?: ValidatorFunc
+  validator?: ValidatorFunc,
+  renderRoot?: (value: any, chosenSection: String | Object, h: Function) => Array<any>,
+  sectionData: (data: any) => { columns: Array<any>, anyFilledColumn: Boolean, columnAmount: Number },
   blocks?: Block,
   layouts?: Layouts,
   filters?: {
-    [propName: string]: {
+    api: {
       [propName: string]: (value: any) => any
     }
   }
