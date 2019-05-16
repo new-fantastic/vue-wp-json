@@ -16,9 +16,9 @@ export const actions: ActionTree<Object, any> = {
 
     const base = new UrlCreator(config.url, [typeBaseUrl, slug])
 
-    if(Vue.prototype.$wp.filters && Vue.prototype.$wp.filters.api 
-      && Vue.prototype.$wp.filters.api.post) {
-      for(let filter of Vue.prototype.$wp.filters.api.post) {
+    if(Vue.prototype.$wp.api 
+      && Vue.prototype.$wp.api.post) {
+      for(let filter of Vue.prototype.$wp.api.post) {
         filter(base)
       }
     }

@@ -16,9 +16,9 @@ export const actions: ActionTree<Object, any> = {
     // const part = lang == 'pl' ? '' : '/' + lang
     const base = new UrlCreator(config.url, [typeBaseUrl, slug])
 
-    if(Vue.prototype.$wp.filters && Vue.prototype.$wp.filters.api 
-      && Vue.prototype.$wp.filters.api.page) {
-      for(let filter of Vue.prototype.$wp.filters.api.page) {
+    if(Vue.prototype.$wp.api 
+      && Vue.prototype.$wp.api.page) {
+      for(let filter of Vue.prototype.$wp.api.page) {
         filter(base)
       }
     }

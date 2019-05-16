@@ -25,11 +25,11 @@ export default {
   },
   created () {
     try {
-      if(this.$wp.sectionData && this.$wp.sectionData.length >= 1) {
-        const customOptionsAmount = this.$wp.sectionData.length
+      if(this.$wp.interpret && this.$wp.interpret.section && this.$wp.interpret.section.length >= 1) {
+        const customOptionsAmount = this.$wp.interpret.section.length
         let counter = 0
 
-        for(let filter of this.$wp.sectionData) {
+        for(let filter of this.$wp.interpret.section) {
           try {
             const val = filter(this.data)
             this.columns = val.columns
@@ -38,7 +38,7 @@ export default {
             
             break;
           } catch(e) {
-            // console.log(e)
+            console.log(e)
             counter++
           }
         }
