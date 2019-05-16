@@ -26,7 +26,7 @@ export const actions: ActionTree<Object, any> = {
     try {
       const response = await axios.get(base.url)
 
-      if(response.data.status == 404 || response.data.length < 1) {
+      if(response.data.status == 404) {
         throw new Error('Endpoint ain\'t ready')
       }
     

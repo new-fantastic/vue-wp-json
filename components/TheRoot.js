@@ -26,26 +26,43 @@
       }
     },
     render(h, context) {
-      if(context.props.data && context.props.data.acf && context.props.data.acf.sections) {
+      if(context.props.data) {
 
         const wpSections = []
         const chosenSection = Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.section
           ? 'AlternativeSection'
           : Section
-        context.props.data.acf.sections.forEach((el, index) => {
 
-          wpSections.push(
-            h(chosenSection, {
-              props: {
-                data: el
+        if(Vue.prototype.$wp.renderRoot && Vue.prototype.$wp.renderRoot.length >= 1) {
+            const customOptionsAmount = Vue.prototype.$wp.renderRoot.length
+            let counter = 0
+
+            for(let shaper of Vue.prototype.$wp.renderRoot) {
+              try {
+                const val = shaper(context.props.data, chosenSection, h)
+                wpSections.push(...val)
+                break; // If any shaper fullfilled conditions, we do not need anymore
+              } catch(e) {
+                counter++
               }
-            })
-          )
+            }
 
-        })
-
-        return wpSections.length > 1 ? wpSections : wpSections[0]
-        
+            if(counter === customOptionsAmount) {
+              return h(chosenSection, {
+                props: {
+                  data: context.props.data
+                }
+              })
+            } else {
+              return wpSections.length > 1 ? wpSections : wpSections[0]
+            }
+        } else {
+          return h(chosenSection, {
+            props: {
+              data: context.props.data
+            }
+          })
+        }
       }
     }
   }

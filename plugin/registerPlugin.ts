@@ -20,6 +20,11 @@ export default (Vue, plugin) => {
       Vue.component('AlternativeSection', plugin.layouts.Section)
     }
 
+    if('Column' in plugin.layouts) {
+      Vue.prototype.$wp.layouts.column = true
+      Vue.component('AlternativeColumn', plugin.layouts.Column)
+    }
+
     if('Page' in plugin.layouts) {
       Vue.prototype.$wp.layouts.page = plugin.layouts.Page
     }
@@ -40,5 +45,19 @@ export default (Vue, plugin) => {
         Vue.prototype.$wp.filters.api[key].push(value)
       }
     }
+  }
+
+  if('renderRoot' in plugin) {
+    if(!Vue.prototype.$wp.renderRoot) {
+      Vue.prototype.$wp.renderRoot = []
+    }
+    Vue.prototype.$wp.renderRoot.push(plugin.renderRoot)
+  }
+
+  if('sectionData' in plugin) {
+    if(!Vue.prototype.$wp.sectionData) {
+      Vue.prototype.$wp.sectionData = []
+    }
+    Vue.prototype.$wp.sectionData.push(plugin.sectionData)
   }
 }

@@ -1,11 +1,12 @@
 import { getColumnAmount, layoutNameToCmpName, prepareColumnToRow } from '../../util/Layout'
-import NumberToWord from '../../util/NumberToWord'
 import Column from '../../components/Content/Column'
+import NotFound from '../../components/Content/Blocks/NotFound'
 
 export default {
   name: 'Section',
   components: {
-    Column
+    Column,
+    NotFound
   },
   props: {
     data: {
@@ -24,24 +25,40 @@ export default {
   },
   created () {
     try {
-      this.columnAmount = getColumnAmount(this.data.acf_fc_layout)
-      this.sectionName = `grid__${this.columnAmount}-col`
-      const columns = this.data['section_content']
+      if(this.$wp.sectionData && this.$wp.sectionData.length >= 1) {
+        const customOptionsAmount = this.$wp.sectionData.length
+        let counter = 0
 
-      for(let i = 1; i <= this.columnAmount; i++) {
-        const prepared = prepareColumnToRow(columns['column_' + i], this.columnAmount)
-        if(prepared === false) {
-          this.columns.push(false)
-        } else {
-          this.columns.push(prepared)
-          if(!this.anyFilledColumn) {
-            this.anyFilledColumn = true
+        for(let filter of this.$wp.sectionData) {
+          try {
+            const val = filter(this.data)
+            this.columns = val.columns
+            this.anyFilledColumn = val.anyFilledColumn
+            this.columnAmount = val.columnAmount
+            
+            break;
+          } catch(e) {
+            // console.log(e)
+            counter++
           }
         }
+
+        if(counter === customOptionsAmount) {
+          this.columns.push(prepareColumnToRow(this.data))
+          this.anyFilledColumn = true
+          this.columnAmount = 1
+        }
+      } else {
+        this.columns.push(prepareColumnToRow(this.data))
+        this.anyFilledColumn = true
+        this.columnAmount = 1
       }
+
+      this.sectionName = `grid__${this.columnAmount}-col`
 
       this.success = true
     } catch(e) {
+      console.log('err', e)
       this.success = false
     }
   }
