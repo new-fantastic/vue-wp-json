@@ -1,12 +1,12 @@
-interface ValidatorFunc {
+export interface ValidatorFunc {
   (value: any): boolean
 }
 
-interface Block {
+export interface Block {
   [propName: string]: Object
 }
 
-interface Layouts {
+export interface Layouts {
   Section?: Object,
   Column?: Object,
   Page?: Object,

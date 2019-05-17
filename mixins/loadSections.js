@@ -1,5 +1,5 @@
 import { ContentTypes } from '../types'
-import { ModulePrefix } from '../plugin/index'
+import { ModulePrefix } from '../index'
 
 export default (created = true, asyncData = false, customConfig) => {
   const mixin = {
