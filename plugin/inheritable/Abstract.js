@@ -1,5 +1,5 @@
 import { ContentTypes } from '../../types'
-import { ModulePrefix } from '../index'
+import { ModulePrefix } from '../../index'
 
 export default (contentType, notFoundUrl = 'page-not-found') => ({
   components: {
