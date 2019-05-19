@@ -19,28 +19,28 @@
   - [Media](#media)
   - [Menus](#menus)
 
-- [PRO Version (Coming soon)](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro)
+- [PRO Version (Coming soon)](https://vuejs.shop/modules/vue-wp-json-pro)
 
-  - [Custom Post Types](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#custom-post-types)
-  - [Post Statuses](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#post-statuses)
-  - [Authentication](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#authentication)
-  - [Users](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#users)
-  - [Comments](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#comments)
-  - [Categories](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#categories)
-  - [Tags](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#tags)
-  - [Taxonomies](https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro/docs/#taxonomies)
+  - [Custom Post Types](https://vuejs.shop/modules/vue-wp-json-pro/docs/#custom-post-types)
+  - [Post Statuses](https://vuejs.shop/modules/vue-wp-json-pro/docs/#post-statuses)
+  - [Authentication](https://vuejs.shop/modules/vue-wp-json-pro/docs/#authentication)
+  - [Users](https://vuejs.shop/modules/vue-wp-json-pro/docs/#users)
+  - [Comments](https://vuejs.shop/modules/vue-wp-json-pro/docs/#comments)
+  - [Categories](https://vuejs.shop/modules/vue-wp-json-pro/docs/#categories)
+  - [Tags](https://vuejs.shop/modules/vue-wp-json-pro/docs/#tags)
+  - [Taxonomies](https://vuejs.shop/modules/vue-wp-json-pro/docs/#taxonomies)
 
 - [External Modules (Coming soon)](#additional-modules)
 
   - [Free Extensions](#free-extensions)
 
     - [Yoast SEO Extension (Coming soon)](#yoast-extension)
-    - [qTranslate Extension (Coming soon)](https://store.newfantastic.com/vuejs/modules/vue-wp-json-qtranslate)
+    - [qTranslate Extension (Coming soon)](https://vuejs.shop/modules/vue-wp-json-qtranslate)
 
   - [PRO Extensions](#pro-extensions)
 
-    - [Advanced Custom Fields Extension (Coming soon)](https://store.newfantastic.com/vuejs/modules/vue-wp-json-acf)
-    - [DIVI Page Builder Extension (planned for Fall 2019)](https://store.newfantastic.com/vuejs/modules/vue-wp-json-divi)
+    - [Advanced Custom Fields Extension (Coming soon)](https://vuejs.shop/modules/vue-wp-json-acf)
+    - [DIVI Page Builder Extension (planned for Fall 2019)](https://vuejs.shop/modules/vue-wp-json-divi)
 
 <br>
 
@@ -174,7 +174,7 @@ this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
 
 <br>
 
-More information about additional features available with PRO version of module will be available here: https://store.newfantastic.com/vuejs/modules/vue-wp-json-pro
+More information about additional features available with PRO version of module will be available here: https://vuejs.shop/modules/vue-wp-json-pro
 
 <br>
 
@@ -228,7 +228,7 @@ https://github.com/new-fantastic/vue-wp-json-qtranslate-x
 
 <br>
 
-https://store.newfantastic.com/vuejs/modules/vue-wp-json-acf
+https://vuejs.shop/modules/vue-wp-json-acf
 
 <br>
 
@@ -238,4 +238,4 @@ https://store.newfantastic.com/vuejs/modules/vue-wp-json-acf
 
 <br>
 
-https://store.newfantastic.com/vuejs-modules/vue-wp-json-divi
+https://vuejs.shop/modules/vue-wp-json-divi
