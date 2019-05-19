@@ -21,21 +21,20 @@
       <div
         class="post__content"
       >
-        <div class="author">Autor: </div>
-        <div class="date">Data: {{ wpData.date_gmt.replace('T', ' ') }}</div>
-        <div class="tags">Tagi: 
-          <span v-for="(tag, index) in wpData.tags.slice(0, -1)" :key="index">
+        <!-- <div class="author">Author: </div> -->
+        <div class="date">Date: {{ wpData.date_gmt.replace('T', ' ') }}</div>
+        <!-- <div class="tags">Tags:  -->
+          <!-- <span v-for="(tag, index) in wpData.tags.slice(0, -1)" :key="index">
             {{ tag }},&nbsp;
           </span>
           <span v-if="wpData.tags.length > 0">
             {{ wpData.tags[wpData.tags.length - 1] }}
-          </span>
-        </div>
-        <Sections
-          v-if="wpData"
-          :data="wpData"
-        />
+          </span> -->
       </div>
+      <Sections
+        v-if="wpData"
+        :data="wpData"
+      />
   </div>
 </template>
 

@@ -44,6 +44,6 @@ export class UrlCreator {
       tmp = '/' + tmp
     }
     
-    return tmp
+    return tmp;
   }
 }

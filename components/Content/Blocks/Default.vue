@@ -22,8 +22,6 @@ export default {
 
 <style>
 
-  @import '../../../styles/main.css';
-
   p {
     margin-bottom: 1rem;
   }

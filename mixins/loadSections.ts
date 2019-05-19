@@ -1,8 +1,10 @@
+import Vue from 'vue'
+import { VueConstructor } from 'vue/types'
 import { ContentTypes } from '../types'
 import { ModulePrefix } from '../index'
 
-export default (created = true, asyncData = false, customConfig) => {
-  const mixin = {
+export default (created = true, asyncData = false, customConfig?: any): VueConstructor<Record<never, any> & Vue> => {
+  const mixin: any = {
     computed: {
       wpData () {
         const config = this.$wp.config
@@ -40,5 +42,5 @@ export default (created = true, asyncData = false, customConfig) => {
     }
   }
 
-  return mixin
+  return Vue.extend(mixin)
 }

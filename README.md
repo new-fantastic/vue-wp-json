@@ -89,10 +89,10 @@ Vue.use(vueWpJson, {
       "first-menu-slug",
       "second-menu-slug"
       // There provide your menus' slug, if you have only one menu, provide it as a string. If you do not have any menu, set to false or just delete this key
-    ],
-    store,
-    router // Injecting VueX Store and Router is obligatory
-  }
+    ]
+  },
+  store,
+  router // Injecting VueX Store and Router is obligatory
 })
 ```
 
