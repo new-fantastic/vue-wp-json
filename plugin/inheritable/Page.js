@@ -4,7 +4,7 @@ import Abstract from './Abstract'
 
 export default {
   mixins: [ 
-    Abstract(ContentTypes.Page),
+    Abstract(ContentTypes.Page, true, true),
     meta('website') 
   ]
 };

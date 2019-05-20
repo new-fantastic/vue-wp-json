@@ -2,7 +2,6 @@ import TheRoot from './components/TheRoot.js'
 
 import { routes } from './router/routes'
 import registerPlugin from './plugin/registerPlugin'
-import * as types from './store/lang/mutation-types'
 
 // Initializers
 import * as vuex from './plugin/initializers/store'
@@ -59,6 +58,7 @@ export default {
       if(!manualVuexMode) {
         vuex.loadBase(store.dispatch, options.config.menus)
         vuex.setLang(store.commit, options.config.lang)
+        vuex.setConfig(store.commit, options.config)
       }
 
       // Do we have router?
@@ -80,24 +80,24 @@ export default {
       } 
 
       // Set lang in html
-      if(document) {
-        const html = document.querySelector('html')
+      // if(document) {
+      //   const html = document.querySelector('html')
 
-        if(html) {
-          html.setAttribute('lang', options.config.lang)
-        }
+      //   if(html) {
+      //     html.setAttribute('lang', options.config.lang)
+      //   }
 
-        const el = document.createElement('link');
-        el.setAttribute('rel', 'alternate')
+      //   const el = document.createElement('link');
+      //   el.setAttribute('rel', 'alternate')
 
-        const url = window.location.origin.substr(-1) === '/'
-          ? window.location.origin
-          : window.location.origin + '/'
-        el.setAttribute('href', `${url}${options.config.lang}`)
-        el.setAttribute('hreflang', `${options.config.lang}`)
+      //   const url = window.location.origin.substr(-1) === '/'
+      //     ? window.location.origin
+      //     : window.location.origin + '/'
+      //   el.setAttribute('href', `${url}${options.config.lang}`)
+      //   el.setAttribute('hreflang', `${options.config.lang}`)
 
-        document.head.appendChild(el)
-      }
+      //   document.head.appendChild(el)
+      // }
       
     } catch(e) {
       console.error(e, e.message)
