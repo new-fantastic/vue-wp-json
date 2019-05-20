@@ -31,18 +31,16 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
 
   if (asyncData) {
     // asyncData can be asyncData or fetch (string)
-    mixin.fetch = async function ({ store, route }) {
-      // console.log(store.state[`${ModulePrefix}_config`])
-      // console.log('fetch')
-      const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config
+    // mixin.fetch = async function ({ store, route }) {
+    //   const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config
   
-      if (config.pages[route.name]) {
-        await store.dispatch(`${ModulePrefix}_page/load`, {
-          slug: config.pages[route.name],
-          type: ContentTypes.Page
-        })
-      }
-    }
+    //   if (config.pages[route.name]) {
+    //     await store.dispatch(`${ModulePrefix}_page/load`, {
+    //       slug: config.pages[route.name],
+    //       type: ContentTypes.Page
+    //     })
+    //   }
+    // }
 
     mixin.asyncData = async function ({store, route}) {
       const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config
@@ -60,7 +58,6 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
       }
 
       const wpData = countWpData()
-      console.log('async', wpData)
 
       return {
         wpData

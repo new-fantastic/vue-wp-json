@@ -2,18 +2,9 @@ import { ContentTypes } from '../../types'
 import { ModulePrefix } from '../../index'
 
 export default (contentType, created = true, asyncData = false, notFoundUrl = 'page-not-found') => {
-  console.log('as', asyncData)
   const mixin: any = {
     components: {
       Sections: () => import("../../components/TheRoot.js")
-    },
-  
-    computed: {
-      wpData () {
-        return contentType === ContentTypes.Post 
-          ? this.$store.state[`${ModulePrefix}_post`].post[this.$route.params.slug]
-          : this.$store.state[`${ModulePrefix}_page`].page[this.$route.params.slug]
-      }
     },
   
     watch: {
@@ -64,6 +55,24 @@ export default (contentType, created = true, asyncData = false, notFoundUrl = 'p
         slug: route.params.slug,
         type: contentType
       });
+
+      const countWpData = () => {
+        return store.state
+          [prefix]
+          [contentType === ContentTypes.Post ? 'post' : 'page']
+          [route.params.slug]
+          ? store.state
+            [prefix]
+            [contentType === ContentTypes.Post ? 'post' : 'page']
+            [route.params.slug]
+          : null
+      }
+
+      const wpData = countWpData()
+
+      return {
+        wpData
+      }
     }
   }
 
