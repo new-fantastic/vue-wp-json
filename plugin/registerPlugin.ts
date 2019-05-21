@@ -1,4 +1,10 @@
-export default (Vue, plugin) => {
+import { SET_LAYOUT } from '../store/layouts/mutation-types'
+import { ModulePrefix } from '../index'
+
+export default (Vue, plugin, store?) => {
+
+  // Change name to registerExtension
+  // How to wait for Core register and then register extensions?
 
   if('blocks' in plugin) {
     for(const [key, value] of Object.entries(plugin.blocks)) {
@@ -20,10 +26,23 @@ export default (Vue, plugin) => {
 
     if('Page' in plugin.layouts) {
       Vue.prototype.$wp.layouts.page = plugin.layouts.Page
+      Vue.component('AlternativePage', plugin.layouts.Page)
+      if(store && store.commit) {
+        store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+          key: 'page',
+          value: plugin.layouts.Page
+        })
+      } else if (plugin.store) {
+        plugin.store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+          key: 'page',
+          value: plugin.layouts.Page
+        });
+      }
     }
 
     if('Post' in plugin.layouts) {
       Vue.prototype.$wp.layouts.post = plugin.layouts.Post
+      Vue.component('AlternativePost', plugin.layouts.Post)
     }
   }
 

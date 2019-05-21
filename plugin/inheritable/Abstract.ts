@@ -6,6 +6,10 @@ export default (contentType, created = true, asyncData = false, notFoundUrl = 'p
     components: {
       Sections: () => import("../../components/TheRoot.js")
     },
+
+    props: {
+      wpDataFallback: Object
+    },
   
     watch: {
       async $route(to) {
@@ -27,22 +31,34 @@ export default (contentType, created = true, asyncData = false, notFoundUrl = 'p
           }
         }
       }
+    },
+
+    created () {
+      if(!this.wpData) {
+        this.wpData = this.wpDataFallback
+      }
     }
   }
 
-  if(created) {
-    mixin.created = async function () {
+  // if(created) {
+  // PARENT LOAD DATA
+  // PROBABLY FUNCTION TO DELETE
+  //   mixin.created = async function () {
 
-      const prefix = contentType === ContentTypes.Post 
-          ? `${ModulePrefix}_post`
-          : `${ModulePrefix}_page`
+  //     const prefix = contentType === ContentTypes.Post 
+  //         ? `${ModulePrefix}_post`
+  //         : `${ModulePrefix}_page`
   
-      await this.$store.dispatch(`${prefix}/load`, {
-        slug: this.$route.params.slug,
-        type: contentType
-      });
-    }
-  }
+  //     await this.$store.dispatch(`${prefix}/load`, {
+  //       slug: this.$route.params.slug,
+  //       type: contentType
+  //     });
+
+  //     if(!this.wpData) {
+  //       this.wpData = this.wpDataFallback
+  //     }
+  //   }
+  // }
 
   if(asyncData) {
     mixin.asyncData = async function ({store, route}) {

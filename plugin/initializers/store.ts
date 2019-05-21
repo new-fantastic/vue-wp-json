@@ -7,6 +7,7 @@ import { page }from '../../store/page'
 import { menu }from '../../store/menu'
 import { meta }from '../../store/meta'
 import { config }from '../../store/config'
+import { layouts }from '../../store/layouts'
 
 import { SET_LANG } from '../../store/lang/mutation-types'
 import { SET_CONFIG } from '../../store/config/mutation-types'
@@ -19,6 +20,7 @@ export const registerModules = (store: any) => {
   store.registerModule(`${ModulePrefix}_page`, page)
   store.registerModule(`${ModulePrefix}_post`, post)
   store.registerModule(`${ModulePrefix}_config`, config)
+  store.registerModule(`${ModulePrefix}_layouts`, layouts)
 }
 
 export const loadBase = async (dispatch: Function, menuSlugs: any) => {
