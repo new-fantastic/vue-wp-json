@@ -1,10 +1,28 @@
 import { SET_LAYOUT } from '../store/layouts/mutation-types'
 import { ModulePrefix } from '../index'
 
-export default (Vue, plugin, store?) => {
+export default async (Vue, p, store?) => {
 
   // Change name to registerExtension
   // How to wait for Core register and then register extensions?
+
+  // In Vue version plugin will be a plugin's object
+  // In Nuxt version plugin will be part of plugin's directory
+  // For vue-wp-json-acf, plugin = 'acf'
+
+  let x = p
+  let enviroment = 'vue'
+  if (typeof p === 'string') {
+    x = await import(`../../vue-wp-json-${p}/index.js`)
+    enviroment = 'nuxt'
+  }
+
+  let plugin
+  if(Object.keys(x).includes('default')) {
+    plugin = x.default
+  } else {
+    plugin = x
+  } 
 
   if('blocks' in plugin) {
     for(const [key, value] of Object.entries(plugin.blocks)) {
@@ -25,24 +43,57 @@ export default (Vue, plugin, store?) => {
     }
 
     if('Page' in plugin.layouts) {
-      Vue.prototype.$wp.layouts.page = plugin.layouts.Page
+      if(enviroment === 'nuxt')
+        Vue.prototype.$wp.layouts.page = 'AlternativePage'
+      else
+        Vue.prototype.$wp.layouts.page = plugin.layouts.Page
+
       Vue.component('AlternativePage', plugin.layouts.Page)
+      let value
+      if(enviroment === 'nuxt')
+        value = 'AlternativePage'
+      else
+      value = plugin.layouts.Page
+
       if(store && store.commit) {
         store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
           key: 'page',
-          value: plugin.layouts.Page
+          value
         })
       } else if (plugin.store) {
         plugin.store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
           key: 'page',
-          value: plugin.layouts.Page
+          value
         });
       }
     }
 
     if('Post' in plugin.layouts) {
-      Vue.prototype.$wp.layouts.post = plugin.layouts.Post
+
+      if(enviroment === 'nuxt')
+        Vue.prototype.$wp.layouts.post = 'AlternativePost'
+      else
+        Vue.prototype.$wp.layouts.post = plugin.layouts.Post
+
       Vue.component('AlternativePost', plugin.layouts.Post)
+      let value
+      if(enviroment === 'nuxt')
+        value = 'AlternativePost'
+      else
+        value = plugin.layouts.Post
+
+      if(store && store.commit) {
+        store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+          key: 'post',
+          value
+        })
+      } else if (plugin.store) {
+        plugin.store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+          key: 'post',
+          value
+        });
+      }
+
     }
   }
 

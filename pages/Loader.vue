@@ -26,16 +26,16 @@
       if (pageType === 'page') {
         if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.page) {
           return h(Vue.prototype.$wp.layouts.page, fallbackProps)
-        } else if(store.layouts.page) {
-          return h(store.layouts.page, fallbackProps)
+        } else if(store.state.layouts.page) {
+          return h(store.state.layouts.page, fallbackProps)
         } else {
           return h(Page, fallbackProps)
         }
       } else {
         if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.post) {
           return h(Vue.prototype.$wp.layouts.post, fallbackProps)
-        } else if(store.layouts.post) {
-          return h(store.layouts.post, fallbackProps)
+        } else if(store.state.layouts.post) {
+          return h(store.state.layouts.post, fallbackProps)
         } else {
           return h(Post, fallbackProps)
         }
