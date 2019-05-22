@@ -4,3 +4,8 @@ export enum ContentTypes {
   Menu,
   Meta
 }
+
+export enum FetchHookTypes {
+  Created,
+  AsyncData
+}

@@ -1,23 +1,27 @@
 import Vue from 'vue'
 import { VueConstructor } from 'vue/types'
-import { ContentTypes } from '../types'
+import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
 
-export default (created = true, asyncData = false, customConfig?: any): VueConstructor<Record<never, any> & Vue> => {
-  const mixin: any = {
-    computed: {
-      // Delete in nuxt version
-      // wpData () {
-      //   const config = this.$wp.config
-      
-      //   return this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
-      //     ? this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
-      //     : null
-      // }
-  }
-}
+export default (
+  createdOrAsync: FetchHookTypes = FetchHookTypes.Created, 
+  customConfig?: any)
+  : VueConstructor<Record<never, any> & Vue> => {
 
-  if (created) {
+  const mixin: any = {}
+
+  if (createdOrAsync === FetchHookTypes.Created) {
+    // Appears in Vue version
+    mixin.computed = {
+      wpData () {
+        const config = this.$wp.config
+      
+        return this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
+          ? this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
+          : null
+      }
+    }
+
     mixin.created = async function () {
       const config = customConfig ? customConfig : this.$wp.config
   
@@ -30,18 +34,8 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
     }
   }
 
-  if (asyncData) {
+  if (createdOrAsync === FetchHookTypes.AsyncData) {
     // Appears in Nuxt version
-    // mixin.asyncData = async function ({ store, route }) {
-    //   const config = customConfig ? customConfig : this.$wp.config
-  
-    //   if (config.pages[route.name]) {
-    //     await store.dispatch(`${ModulePrefix}_page/load`, {
-    //       slug: config.pages[route.name],
-    //       type: ContentTypes.Page
-    //     })
-    //   }
-    // }
 
     mixin.asyncData = async function ({store, route}) {
       const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config

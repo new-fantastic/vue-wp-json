@@ -3,13 +3,17 @@
   import { pagePrefix, postPrefix } from '../router/routes' 
   import Page from './Page'
   import Post from './Post'
-  import { ContentTypes } from '../types'
+  import { ContentTypes, FetchHookTypes } from '../types'
   import { ModulePrefix } from '../index'
+  import Loader from '../mixins/loader'
+
+  const BaseViews = {
+    Page, Post
+  }
 
   export default {
     name: 'Loader',
     render (h) {
-      // console.log(ctx)
       const store = this.$store
       const route = this.$route
 
@@ -23,54 +27,25 @@
         }
       }
 
+      const lookForCustomLayout = (type) => {
+        const lowerType = type.toLowerCase()
+
+        if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts[lowerType]) {
+          return h(Vue.prototype.$wp.layouts[lowerType], fallbackProps)
+        } else if(store.state.layouts.lowerType) {
+          return h(store.state.layouts.lowerType, fallbackProps)
+        } else {
+          return h(BaseViews[type], fallbackProps)
+        }
+      }
+
       if (pageType === 'page') {
-        if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.page) {
-          return h(Vue.prototype.$wp.layouts.page, fallbackProps)
-        } else if(store.state.layouts.page) {
-          return h(store.state.layouts.page, fallbackProps)
-        } else {
-          return h(Page, fallbackProps)
-        }
+        return lookForCustomLayout('Page')
       } else {
-        if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.post) {
-          return h(Vue.prototype.$wp.layouts.post, fallbackProps)
-        } else if(store.state.layouts.post) {
-          return h(store.state.layouts.post, fallbackProps)
-        } else {
-          return h(Post, fallbackProps)
-        }
+        return lookForCustomLayout('Post')
       }
     },
 
-    async asyncData ({store, route}) {
-      const short = route.name === pagePrefix 
-        ? 'page'
-        : 'post'
-
-      const prefix = `${ModulePrefix}_${short}`
-  
-      await store.dispatch(`${prefix}/load`, {
-        slug: route.params.slug,
-        type: short === 'page' ? ContentTypes.Post : ContentTypes.Page
-      });
-
-      const countWpData = () => {
-        return store.state
-          [prefix]
-          [short]
-          [route.params.slug]
-          ? store.state
-            [prefix]
-            [short]
-            [route.params.slug]
-          : null
-      }
-
-      const wpData = countWpData()
-
-      return {
-        wpData
-      }
-    }
+    mixins: [Loader(FetchHookTypes.AsyncData)]
   }
 </script>

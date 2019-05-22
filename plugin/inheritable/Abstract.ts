@@ -1,7 +1,16 @@
-import { ContentTypes } from '../../types'
+import { ContentTypes, FetchHookTypes } from '../../types'
 import { ModulePrefix } from '../../index'
+import meta from '../../mixins/meta'
 
-export default (contentType, created = true, asyncData = false, notFoundUrl = 'page-not-found') => {
+export default (
+  contentType, 
+  createdOrAsync: FetchHookTypes = FetchHookTypes.Created, 
+  notFoundUrl = 'page-not-found') => {
+
+  const type = contentType === ContentTypes.Page
+    ? 'website'
+    : 'article'
+
   const mixin: any = {
     components: {
       Sections: () => import("../../components/TheRoot.js")
@@ -26,7 +35,16 @@ export default (contentType, created = true, asyncData = false, notFoundUrl = 'p
       wpData: {
         immediate: true,
         handler (n) {
-          if(n === false) {
+          if(n === false && this.wpDataFallback === null) {
+            this.$router.push(notFoundUrl)
+          }
+        }
+      },
+
+      wpDawpDataFallback: {
+        immediate: true,
+        handler (n) {
+          if(n === false && this.wpData === null) {
             this.$router.push(notFoundUrl)
           }
         }
@@ -37,57 +55,20 @@ export default (contentType, created = true, asyncData = false, notFoundUrl = 'p
       if(!this.wpData) {
         this.wpData = this.wpDataFallback
       }
-    }
-  }
+    },
+    
+    mixins: [
+      meta(type)
+    ],
 
-  // if(created) {
-  // PARENT LOAD DATA
-  // PROBABLY FUNCTION TO DELETE
-  //   mixin.created = async function () {
+    head () {
+      return this.head
+    },
 
-  //     const prefix = contentType === ContentTypes.Post 
-  //         ? `${ModulePrefix}_post`
-  //         : `${ModulePrefix}_page`
-  
-  //     await this.$store.dispatch(`${prefix}/load`, {
-  //       slug: this.$route.params.slug,
-  //       type: contentType
-  //     });
-
-  //     if(!this.wpData) {
-  //       this.wpData = this.wpDataFallback
-  //     }
-  //   }
-  // }
-
-  if(asyncData) {
-    mixin.asyncData = async function ({store, route}) {
-
-      const prefix = contentType === ContentTypes.Post 
-          ? `${ModulePrefix}_post`
-          : `${ModulePrefix}_page`
-  
-      await store.dispatch(`${prefix}/load`, {
-        slug: route.params.slug,
-        type: contentType
-      });
-
-      const countWpData = () => {
-        return store.state
-          [prefix]
-          [contentType === ContentTypes.Post ? 'post' : 'page']
-          [route.params.slug]
-          ? store.state
-            [prefix]
-            [contentType === ContentTypes.Post ? 'post' : 'page']
-            [route.params.slug]
-          : null
-      }
-
-      const wpData = countWpData()
-
-      return {
-        wpData
+    computed: {
+      head () {
+        const type = 'website'
+        return meta('website')
       }
     }
   }
