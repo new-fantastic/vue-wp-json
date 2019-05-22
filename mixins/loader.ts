@@ -2,13 +2,28 @@ import Vue from 'vue'
 import { VueConstructor } from 'vue/types'
 import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
-import { pagePrefix, postPrefix } from '../router/routes' 
+import { pagePrefix, postPrefix } from '../router/routes'
 
-export default (
-  createdOrAsync: FetchHookTypes = FetchHookTypes.Created)
-  : VueConstructor<Record<never, any> & Vue> => {
+export default (): VueConstructor<Record<never, any> & Vue> => {
 
-    const mixin: any = {}
+    let downloadedData = false
+
+    const mixin: any = {
+      watch: {
+        async $route(to) {
+          const short = to.name === pagePrefix 
+            ? `${ModulePrefix}_page`
+            : `${ModulePrefix}_post`
+    
+          await this.$store.dispatch(`${short}/load`, {
+            slug: to.params.slug,
+            type: short === `${ModulePrefix}_page` 
+            ? ContentTypes.Page 
+            : ContentTypes.Post
+          });
+        },
+      }
+    }
 
     const fetchData = async (store, route) => {
       const short = route.name === pagePrefix 
@@ -20,8 +35,8 @@ export default (
       await store.dispatch(`${prefix}/load`, {
         slug: route.params.slug,
         type: short === 'page' 
-          ? ContentTypes.Post 
-          : ContentTypes.Page
+          ? ContentTypes.Page 
+          : ContentTypes.Post
       });
 
       return (() => {
@@ -36,30 +51,39 @@ export default (
       })()
     }
 
-    if (createdOrAsync === FetchHookTypes.AsyncData) {
       mixin.asyncData = async ({ store, route, redirect }) => {
-        
+
         const wpData = await fetchData(store, route)
         if(!wpData) {
           redirect('/')
+        } else {
+          downloadedData = true
         }
   
         return {
           wpData
         }
       }
-    }
 
-    if (createdOrAsync === FetchHookTypes.Created) {
       mixin.created = async () => {
 
-        this.wpData = await fetchData(this.$store, this.$route)
-        if(!this.wpData) {
-          this.$router.push('/')
+        // What did I mean with these conditions?
+        // I wanted to make sure that data is downloaded only once
+        // In asyncData for Nuxt
+        // In created for Vue
+
+        const nuxtClientCondition = process 
+          && 'server' in process 
+          && process.server
+
+        if(!nuxtClientCondition && !downloadedData && this && this.wpData === null) {
+          this.wpData = await fetchData(this.$store, this.$route)
+          if(!this.wpData) {
+            this.$router.push('/')
+          }
         }
         
       }
-    }
   
     return Vue.extend(mixin)
   }

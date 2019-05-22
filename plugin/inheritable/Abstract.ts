@@ -21,16 +21,6 @@ export default (
     },
   
     watch: {
-      async $route(to) {
-        const prefix = contentType === ContentTypes.Post 
-          ? `${ModulePrefix}_post`
-          : `${ModulePrefix}_page`
-  
-        await this.$store.dispatch(`${prefix}/load`, {
-          slug: to.params.slug,
-          type: contentType
-        });
-      },
   
       wpData: {
         immediate: true,
