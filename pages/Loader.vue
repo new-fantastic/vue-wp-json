@@ -13,6 +13,11 @@
 
   export default {
     name: 'Loader',
+    data () {
+      return {
+        wpData: null
+      }
+    },
     render (h) {
       const store = this.$store
       const route = this.$route
@@ -32,8 +37,8 @@
 
         if(Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts[lowerType]) {
           return h(Vue.prototype.$wp.layouts[lowerType], fallbackProps)
-        } else if(store.state.layouts.lowerType) {
-          return h(store.state.layouts.lowerType, fallbackProps)
+        } else if(store.state.layouts && store.state.layouts[lowerType]) {
+          return h(store.state.layouts[lowerType], fallbackProps)
         } else {
           return h(BaseViews[type], fallbackProps)
         }
@@ -46,6 +51,6 @@
       }
     },
 
-    mixins: [Loader(FetchHookTypes.AsyncData)]
+    mixins: [Loader]
   }
 </script>

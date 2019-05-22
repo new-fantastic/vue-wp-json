@@ -4,11 +4,36 @@ import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
 import { pagePrefix, postPrefix } from '../router/routes'
 
-export default (): VueConstructor<Record<never, any> & Vue> => {
+const fetchData = async (store, route) => {
+  const short = route.name === pagePrefix 
+  ? 'page'
+  : 'post'
 
-    let downloadedData = false
+  const prefix = `${ModulePrefix}_${short}`
 
-    const mixin: any = {
+  await store.dispatch(`${prefix}/load`, {
+    slug: route.params.slug,
+    type: short === 'page' 
+      ? ContentTypes.Page 
+      : ContentTypes.Post
+  });
+
+  return (() => {
+    const result = store.state
+    [prefix]
+    [short]
+    [route.params.slug]
+
+    return result || result === false
+      ? result
+      : null
+  })()
+}
+
+let downloadedData = false
+
+export default {
+  
       watch: {
         async $route(to) {
           const short = to.name === pagePrefix 
@@ -22,36 +47,30 @@ export default (): VueConstructor<Record<never, any> & Vue> => {
             : ContentTypes.Post
           });
         },
-      }
-    }
+      },
 
-    const fetchData = async (store, route) => {
-      const short = route.name === pagePrefix 
-      ? 'page'
-      : 'post'
+      async created () {
 
-      const prefix = `${ModulePrefix}_${short}`
+        // What did I mean with these conditions?
+        // I wanted to make sure that data is downloaded only once
+        // In asyncData for Nuxt
+        // In created for Vue
 
-      await store.dispatch(`${prefix}/load`, {
-        slug: route.params.slug,
-        type: short === 'page' 
-          ? ContentTypes.Page 
-          : ContentTypes.Post
-      });
+        const nuxtClientCondition = process 
+          && 'server' in process 
+          && process.server
 
-      return (() => {
-        const result = store.state
-        [prefix]
-        [short]
-        [route.params.slug]
 
-        return result || result === false
-          ? result
-          : null
-      })()
-    }
+        if(!nuxtClientCondition && !downloadedData && this && (this.wpData === null || this.wpData === undefined)) {
+          this.wpData = await fetchData(this.$store, this.$route)
+          if(!this.wpData) {
+            this.$router.push('/')
+          }
+        }
+        
+      },
 
-      mixin.asyncData = async ({ store, route, redirect }) => {
+      async asyncData ({ store, route, redirect }) {
 
         const wpData = await fetchData(store, route)
         if(!wpData) {
@@ -64,26 +83,4 @@ export default (): VueConstructor<Record<never, any> & Vue> => {
           wpData
         }
       }
-
-      mixin.created = async () => {
-
-        // What did I mean with these conditions?
-        // I wanted to make sure that data is downloaded only once
-        // In asyncData for Nuxt
-        // In created for Vue
-
-        const nuxtClientCondition = process 
-          && 'server' in process 
-          && process.server
-
-        if(!nuxtClientCondition && !downloadedData && this && this.wpData === null) {
-          this.wpData = await fetchData(this.$store, this.$route)
-          if(!this.wpData) {
-            this.$router.push('/')
-          }
-        }
-        
-      }
-  
-    return Vue.extend(mixin)
-  }
+}

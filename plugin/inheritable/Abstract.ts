@@ -16,6 +16,12 @@ export default (
       Sections: () => import("../../components/TheRoot.js")
     },
 
+    data () {
+      return {
+        wpData: null
+      }
+    },
+
     props: {
       wpDataFallback: Object
     },
@@ -31,11 +37,14 @@ export default (
         }
       },
 
-      wpDawpDataFallback: {
+      wpDataFallback: {
         immediate: true,
         handler (n) {
           if(n === false && this.wpData === null) {
             this.$router.push(notFoundUrl)
+          }
+          if(n && JSON.stringify(n) !== JSON.stringify(this.wpData)) {
+            this.wpData = n
           }
         }
       }
