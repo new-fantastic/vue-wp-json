@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import { VueConstructor } from 'vue/types'
-import { ContentTypes } from '../types'
+import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
 
-export default (created = true, asyncData = false, customConfig?: any): VueConstructor<Record<never, any> & Vue> => {
-  const mixin: any = {
-    computed: {
+export default (
+  createdOrAsync: FetchHookTypes = FetchHookTypes.Created, 
+  customConfig?: any)
+  : VueConstructor<Record<never, any> & Vue> => {
+
+  const mixin: any = {}
+
+  if (createdOrAsync === FetchHookTypes.Created) {
+    // Appears in Vue version
+    mixin.computed = {
       wpData () {
         const config = this.$wp.config
       
@@ -14,9 +21,7 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
           : null
       }
     }
-  }
 
-  if (created) {
     mixin.created = async function () {
       const config = customConfig ? customConfig : this.$wp.config
   
@@ -29,9 +34,11 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
     }
   }
 
-  if (asyncData) {
-    mixin.asyncData = async function ({ store, route }) {
-      const config = customConfig ? customConfig : this.$wp.config
+  if (createdOrAsync === FetchHookTypes.AsyncData) {
+    // Appears in Nuxt version
+
+    mixin.asyncData = async function ({store, route}) {
+      const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config
   
       if (config.pages[route.name]) {
         await store.dispatch(`${ModulePrefix}_page/load`, {
@@ -39,7 +46,19 @@ export default (created = true, asyncData = false, customConfig?: any): VueConst
           type: ContentTypes.Page
         })
       }
+      const countWpData = () => {
+        return store.state[`${ModulePrefix}_page`].page[config.pages[route.name]]
+          ? store.state[`${ModulePrefix}_page`].page[config.pages[route.name]]
+          : null
+      }
+
+      const wpData = countWpData()
+
+      return {
+        wpData
+      }
     }
+
   }
 
   return Vue.extend(mixin)

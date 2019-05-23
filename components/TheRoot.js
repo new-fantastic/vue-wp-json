@@ -48,22 +48,17 @@
               }
             }
 
-            if(counter === customOptionsAmount) {
-              return h(chosenSection, {
-                props: {
-                  data: context.props.data
-                }
-              })
-            } else {
+            if(!(counter === customOptionsAmount)) {
               return wpSections.length > 1 ? wpSections : wpSections[0]
-            }
-        } else {
-          return h(chosenSection, {
-            props: {
-              data: context.props.data
-            }
-          })
-        }
+            } 
+        } 
+
+        return h(chosenSection, {
+          props: {
+            data: context.props.data
+          }
+        })
+      
       }
     }
   }
