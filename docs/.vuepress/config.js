@@ -1,45 +1,27 @@
 module.exports = {
   themeConfig: {
+    logo: '/assets/logo.png',
     nav: [
-      { text: 'Guide', link: '/' },
-      { text: 'Config Reference', link: '/' },
+      { text: 'Guide', link: '/guide/' },
+      { text: 'API', link: '/api' },
+      { text: 'Contribution Guide', link: '/contribution-guide' },
       { text: 'Changelog', link: 'https://github.com/new-fantastic/vue-wp-json' },
       { text: 'GitHub', link: 'https://github.com/new-fantastic/vue-wp-json' },
       { text: 'Support us', link: 'https://github.com/new-fantastic/vue-wp-json' }
     ],
     sidebar: [
       {
-        title: 'Intruduction',
-        collapsable: false,
+        title: 'Guide',
         children: [
-          ['/', 'What is it?'],
-          ['/', 'How it works'],
-          ['/', 'Features'],
-          ['/', 'Schema'],
-          ['/', 'Todo']
+          ['/guide/introduction/', 'Introduction'],
+          ['/guide/getting-started/', 'Getting Started'],
         ]
       },
       {
-        title: 'Contribution guide',
+        title: 'API',
         children: [
-          ['/', 'Reporting Issues'],
-          ['/', 'Pull requests']
-        ]
-      },
-      {
-        title: 'Getting started',
-        children: [
-          ['/', 'Installation'],
-          ['/', 'Configuration'],
-          ['/', 'Features'],
-          ['/', 'Todo']
-        ]
-      },
-      {
-        title: 'Structures',
-        children: [
-          ['/structure/store/', 'Vuex Store'],
-          ['/structure/wp/', '$wp']
+          ['/api/store/', 'Vuex Store'],
+          ['/api/wp/', '$wp']
         ]
       },
       {
@@ -55,6 +37,13 @@ module.exports = {
           ['/', 'Custom Section template'],
           ['/', 'Custom Column template'],
           ['/', 'Custom Blocks']
+        ]
+      },
+      {
+        title: 'Contribution guide',
+        children: [
+          ['/contribution-guide/reporting-issues', 'Reporting Issues'],
+          ['/contribution-guide/pull requests', 'Pull requests']
         ]
       },
       {
