@@ -1,1 +1,3 @@
-# Structure
+# API
+
+Introduction to API
