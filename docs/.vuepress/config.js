@@ -39,7 +39,7 @@ module.exports = {
         title: 'Structures',
         children: [
           ['/', 'Vuex Store'],
-          ['/', '$wp']
+          ['/structure/wp/', '$wp']
         ]
       },
       {
