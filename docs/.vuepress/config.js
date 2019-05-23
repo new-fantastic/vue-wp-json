@@ -38,7 +38,7 @@ module.exports = {
       {
         title: 'Structures',
         children: [
-          ['/', 'Vuex Store'],
+          ['/structure/store/', 'Vuex Store'],
           ['/structure/wp/', '$wp']
         ]
       },
@@ -55,6 +55,12 @@ module.exports = {
           ['/', 'Custom Section template'],
           ['/', 'Custom Column template'],
           ['/', 'Custom Blocks']
+        ]
+      },
+      {
+        title: 'Misc',
+        children: [
+          ['/', 'UrlCreator']
         ]
       }
     ]
