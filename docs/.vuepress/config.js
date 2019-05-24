@@ -1,10 +1,10 @@
 module.exports = {
   themeConfig: {
-    logo: '/assets/logo.png',
+    logo: 'https://cdn.newfantastic.com/images/vue-wp-json-logo.png',
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API', link: '/api/' },
-      { text: 'Contribution Guide', link: '/contribution-guide' },
+      { text: 'Contribution Guide', link: '/contribution-guide/' },
       { text: 'GitHub', link: 'https://github.com/new-fantastic/vue-wp-json' },
       { text: 'Support us', link: 'https://github.com/new-fantastic/vue-wp-json' }
     ],
@@ -24,13 +24,6 @@ module.exports = {
           children: [
             ['/guide/getting-started/installation', 'Installation'],
             ['/guide/getting-started/usage', 'Usage'],
-          ]
-        },
-        {
-          title: 'Contribution guide',
-          children: [
-            ['/contribution-guide/reporting-issues', 'Reporting Issues'],
-            ['/contribution-guide/pull requests', 'Pull requests']
           ]
         },
         {
@@ -61,6 +54,15 @@ module.exports = {
             ['/', 'Custom Section template'],
             ['/', 'Custom Column template'],
             ['/', 'Custom Blocks']
+          ]
+        }
+      ],
+      '/contribution-guide/' : [
+        {
+          title: 'Contribution guide',
+          children: [
+            ['/contribution-guide/reporting-issues/', 'Reporting Issues'],
+            ['/contribution-guide/pull-requests/', 'Pull requests']
           ]
         }
       ]
