@@ -12,6 +12,7 @@ module.exports = {
       '/guide/': [
         {
           title: 'Introduction',
+          collapsable: false,
           children: [
             ['/guide/introduction/why/', 'Why would you use this module?'],
             ['/guide/introduction/features/', 'Features'],
@@ -21,6 +22,7 @@ module.exports = {
         },
         {
           title: 'Getting Started',
+          collapsable: false,
           children: [
             ['/guide/getting-started/installation/', 'Installation'],
             ['/guide/getting-started/usage/', 'Usage'],
@@ -28,6 +30,7 @@ module.exports = {
         },
         {
           title: 'Extending the Module',
+          collapsable: false,
           children: [
             ['#', 'Validators'],
             ['#', 'Interpreters'],
@@ -44,6 +47,7 @@ module.exports = {
       '/api/' : [
         {
           title: 'Core',
+          collapsable: false,
           children: [
             ['#', 'Lifecycle'],
             ['#1', 'Validators'],
@@ -54,6 +58,7 @@ module.exports = {
         },
         {
           title: 'Wordpress REST API',
+          collapsable: false,
           children: [
             ['#', 'API Endpoint Filter'],
             ['#5', 'UrlCreator'],
@@ -61,6 +66,7 @@ module.exports = {
         },
         {
           title: 'Templates',
+          collapsable: false,
           children: [
             ['#6', 'Custom Page Template'],
             ['#7', 'Custom Post Template'],
@@ -73,6 +79,7 @@ module.exports = {
       '/contribution-guide/' : [
         {
           title: 'Contribution guide',
+          collapsable: false,
           children: [
             ['/contribution-guide/reporting-issues/', 'Reporting Issues'],
             ['/contribution-guide/pull-requests/', 'Pull requests']
