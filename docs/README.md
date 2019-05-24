@@ -1,4 +1,26 @@
-<div
+---
+home: true
+heroImage: https://newfantastic.ams3.digitaloceanspaces.com/images/vue-wp-json-logo-small.png
+actionText: Get Started →
+actionLink: /guide/introduction/why/
+features:
+- title: Easy to install
+  details: Basic installation requires just downloading the NPM module and adding config.
+- title: Easy to use
+  details: Vue Wordpress module comes with set of essential features enabling you to kick-off your new project in matter of seconds.
+- title: SSR ready
+  details: Ready to use with Nuxt.js and Server-Side Rendered Vue.js apps.
+- title: Time-saving
+  details: Do more in less time. Increase your efficiency and drastically shorten development time thanks to out-of-the-box functionalities.
+- title: Flexible
+  details: Ready to use with Nuxt.js apps including Server Side Rendering and automatic routing.
+- title: Modular
+  details: Ready to use with Nuxt.js apps including Server Side Rendering and automatic routing.
+footer: MIT Licensed | Copyright © 2019-present Filip Jędrasik, Aleksander Grygier
+---
+
+
+<!-- <div
   style="
     position: absolute;
     left: 50%;
@@ -65,4 +87,4 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->

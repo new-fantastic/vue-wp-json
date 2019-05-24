@@ -1,6 +1,8 @@
 module.exports = {
+  title: 'Vue Wordpress',
+  description: '💫 Wordpress module for Vue.js 💫',
   themeConfig: {
-    logo: 'https://cdn.newfantastic.com/images/vue-wp-json-logo.png',
+    // logo: 'https://cdn.newfantastic.com/images/vue-wp-json-logo.png',
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API', link: '/api/' },
