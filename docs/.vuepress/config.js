@@ -27,33 +27,46 @@ module.exports = {
           ]
         },
         {
-          title: 'Misc',
+          title: 'Extending the Module',
           children: [
-            ['/', 'UrlCreator']
+            ['#', 'Validators'],
+            ['#', 'Interpreters'],
           ]
-        }
+        },
+        // {
+        //   title: 'Frequent issues',
+        //   children: [
+        //     ['#', 'Problems with Installation'],
+        //     ['#', 'Problems with Extensions'],
+        //   ]
+        // },
       ],
       '/api/' : [
         {
-          title: 'API',
+          title: 'Core',
           children: [
-            ['/api/store/', 'Vuex Store'],
-            ['/api/wp/', '$wp']
+            ['#', 'Lifecycle'],
+            ['#1', 'Validators'],
+            ['#2', 'Interpreters'],
+            ['#11', 'Vuex Store'],
+            ['#12', '$wp'],
           ]
         },
         {
-          title: 'Extensions',
+          title: 'Wordpress REST API',
           children: [
-            ['/', 'VueWpJson Lifecycle'],
-            ['/', 'Validators'],
-            ['/', 'TheRoot Interpreter'],
-            ['/', 'Section Interpreter'],
-            ['/', 'API Endpoints filter'],
-            ['/', 'Custom Page template'],
-            ['/', 'Custom Post template'],
-            ['/', 'Custom Section template'],
-            ['/', 'Custom Column template'],
-            ['/', 'Custom Blocks']
+            ['#', 'API Endpoint Filter'],
+            ['#5', 'UrlCreator'],
+          ]
+        },
+        {
+          title: 'Templates',
+          children: [
+            ['#6', 'Custom Page Template'],
+            ['#7', 'Custom Post Template'],
+            ['#8', 'Custom Section Template'],
+            ['#9', 'Custom Column Template'],
+            ['#10', 'Custom Blocks'],
           ]
         }
       ],
