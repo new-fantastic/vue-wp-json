@@ -13,10 +13,10 @@ module.exports = {
         {
           title: 'Introduction',
           children: [
-            ['/guide/introduction/why-you-would-use-this-module', 'Why would you use this module?'],
-            ['/guide/introduction/features', 'Features'],
-            ['/guide/introduction/schema', 'Schema'],
-            ['/guide/introduction/to-do', 'To Do'],
+            ['/guide/introduction/why/', 'Why would you use this module?'],
+            ['/guide/introduction/features/', 'Features'],
+            ['/guide/introduction/schema/', 'Schema'],
+            ['/guide/introduction/to-do/', 'To Do'],
           ]
         },
         {
