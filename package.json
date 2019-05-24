@@ -4,14 +4,17 @@
   "description": "💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "vuepress": "^0.14.11"
   },
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "./prepare.sh"
+    "prepublish": "./prepare.sh",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": {
     "type": "git",
@@ -31,7 +34,7 @@
     "rest-api",
     "wp-json"
   ],
-  "author": "Filip Jędrasik <filip@newfantastic.com>",
+  "author": "Filip Jędrasik <filip@newfantastic.com>, Aleksander Grygier <alek@newfantastic.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/new-fantastic/vue-wp-json/issues"
