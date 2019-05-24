@@ -1,3 +1,7 @@
+---
+sidebar: false
+---
+
 <div
   style="
     position: absolute;
@@ -18,8 +22,6 @@
     <p>
       We prepared an easy-to-follow guide for you to have a smooth kick-off with Vue.js WordPress module.
     </p>
-    <br>
-    <h3>We would recommend starting with these:</h3>
     <div
       style="
         margin: auto;
@@ -40,29 +42,10 @@
           border: none;
           border-radius: .5rem;
           font-size: 1rem;
-          margin-right: 3rem;
         "
       >
         <router-link :to="'/guide/introduction/why/'" style="color: #fff !important;">
-          Why use this module?
-        </router-link>
-      </button>
-      <button
-        style="
-          display: flex;
-          padding: 1rem 2rem;
-          justify-content: center;
-          -webkit-apparance: none;
-          -moz-appearance: none;
-          background-color: #46bd87;
-          color: #fff;
-          border: none;
-          border-radius: .5rem;
-          font-size: 1rem;
-        "
-      >
-        <router-link :to="'/guide/getting-started/installation/'" style="color: #fff !important;">
-          Installation
+          Let's go!
         </router-link>
       </button>
     </div>
