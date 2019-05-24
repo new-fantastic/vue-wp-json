@@ -22,8 +22,8 @@ module.exports = {
         {
           title: 'Getting Started',
           children: [
-            ['/guide/getting-started/installation', 'Installation'],
-            ['/guide/getting-started/usage', 'Usage'],
+            ['/guide/getting-started/installation/', 'Installation'],
+            ['/guide/getting-started/usage/', 'Usage'],
           ]
         },
         {
