@@ -5,17 +5,17 @@ actionText: Get Started →
 actionLink: /guide/introduction/why/
 features:
 - title: Easy to install
-  details: Basic installation requires just downloading the NPM module and adding config.
+  details: Basic installation requires downloading the  module from NPM and adding basic config to your app.
 - title: Easy to use
-  details: Vue Wordpress module comes with set of essential features enabling you to kick-off your new project in matter of seconds.
+  details: Vue Wordpress module comes with set of essential features allowing you to kick-off your new project in matter of seconds.
 - title: SSR ready
-  details: Ready to use with Nuxt.js and Server-Side Rendered Vue.js apps.
+  details: This module is ready to use with Nuxt.js and Server-Side Rendered Vue.js apps.
 - title: Time-saving
-  details: Do more in less time. Increase your efficiency and drastically shorten development time thanks to out-of-the-box functionalities.
+  details: Do more in less time. Increase your efficiency and drastically shorten development time thanks to out-of-the-box routing and Vuex data handling.
 - title: Flexible
-  details: Ready to use with Nuxt.js apps including Server Side Rendering and automatic routing.
-- title: Modular
-  details: Ready to use with Nuxt.js apps including Server Side Rendering and automatic routing.
+  details: Use this module with any type of Vue.js project.
+- title: Extendable
+  details: Build your own modules/plugins extending the core functionalities of Vue Wordpress.
 footer: MIT Licensed | Copyright © 2019-present Filip Jędrasik, Aleksander Grygier
 ---
 

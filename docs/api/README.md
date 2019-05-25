@@ -17,35 +17,53 @@ sidebar: false
   <div
     style="text-align: center;"
   >
-    <h1>API</h1>
+    <h1
+      style="font-size: 3rem;"
+    >
+      API
+    </h1>
     <br>
-    <p>
-      Here you can learn about core functionalities of this module and handling data fetched from WordPress.
+    <p
+      style="
+        font-size: 1.6rem;
+        line-height: 1.8;
+        color: #6a8bad;
+        max-width: 39rem;
+      "
+    >
+      Here you can learn about module's core functionalities and handling data fetched from WordPress.
+      <br>
+      <br>
+      <span style="font-size: 3rem;">🎮</span>
     </p>
     <div
       style="
         margin: auto;
-        margin-top: 4rem;
+        margin-top: 5rem;
         display: flex;
         justify-content: center;
       "
     >
       <button
         style="
-          display: flex;
-          padding: 1rem 2rem;
+          display: inline-block;
           justify-content: center;
           -webkit-apparance: none;
           -moz-appearance: none;
-          background-color: #46bd87;
+          font-size: 1.2rem;
+          line-height: 1.7;
           color: #fff;
+          background-color: #3eaf7c;
+          padding: 0.8rem 1.6rem;
           border: none;
-          border-radius: .5rem;
-          font-size: 1rem;
+          border-radius: 4px;
+          transition: background-color 0.1s ease;
+          box-sizing: border-box;
+          border-bottom: 1px solid #389d70 !important;
         "
       >
-        <router-link :to="'/api/core/'" style="color: #fff !important;">
-          Get started
+        <router-link :to="'/guide/introduction/why/'" style="color: #fff !important;">
+          Dig in →
         </router-link>
       </button>
     </div>
