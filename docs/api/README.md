@@ -28,10 +28,10 @@ sidebar: false
         font-size: 1.6rem;
         line-height: 1.8;
         color: #6a8bad;
-        max-width: 39rem;
+        max-width: 48rem;
       "
     >
-      Here you can learn about module's core functionalities and handling data fetched from WordPress.
+      Learn about handling Vuex data fetched from WordPress <br>and how to extend module's functionalities.
       <br>
       <br>
       <span style="font-size: 3rem;">🎮</span>

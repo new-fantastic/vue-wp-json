@@ -28,10 +28,10 @@ sidebar: false
         font-size: 1.6rem;
         line-height: 1.8;
         color: #6a8bad;
-        max-width: 39rem;
+        max-width: 42rem;
       "
     >
-      An easy-to-follow guide for you <br>to have a smooth start with Vue.js WordPress module.
+      An easy-to-follow guide for you to have <br>a smooth start with Vue.js WordPress module.
       <br>
       <br>
       <span style="font-size: 3rem;">🚀</span>
