@@ -1,6 +1,7 @@
 module.exports = {
   title: 'Vue Wordpress',
   description: '💫 Wordpress module for Vue.js 💫',
+  ga: 'UA-140780613-1',
   themeConfig: {
     // logo: 'https://cdn.newfantastic.com/images/vue-wp-json-logo.png',
     nav: [
