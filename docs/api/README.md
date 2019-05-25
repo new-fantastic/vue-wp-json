@@ -62,7 +62,7 @@ sidebar: false
           border-bottom: 1px solid #389d70 !important;
         "
       >
-        <router-link :to="'/guide/introduction/why/'" style="color: #fff !important;">
+        <router-link :to="'/guide/introduction/why/'" style="color: #fff !important; text-decoration: none !important;">
           Dig in →
         </router-link>
       </button>
