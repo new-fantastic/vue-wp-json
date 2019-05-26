@@ -1,1 +1,0 @@
-{"version":3,"file":"mutations.js","sourceRoot":"","sources":["../../../store/layouts/mutations.ts"],"names":[],"mappings":";AACA,OAAO,KAAK,KAAK,MAAM,kBAAkB,CAAA;AAEzC,MAAM,CAAC,IAAM,SAAS;IACpB,GAAC,KAAK,CAAC,UAAU,IAAjB,UAAoB,KAAK,EAAE,OAAO;QAChC,KAAK,CAAC,OAAO,CAAC,OAAO,CAAC,GAAG,CAAC,GAAG,OAAO,CAAC,KAAK,CAAA;IAC5C,CAAC;OACF,CAAA"}
