@@ -1,0 +1,1 @@
+{"version":3,"file":"Post.js","sourceRoot":"","sources":["../../../plugin/inheritable/Post.js"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,aAAa,CAAA;AAC1C,OAAO,QAAQ,MAAM,YAAY,CAAA;AAEjC,eAAe;IACX,MAAM,EAAE;QACJ,QAAQ,CAAC,YAAY,CAAC,IAAI,EAAE,IAAI,EAAE,IAAI,CAAC;KAC1C;CACJ,CAAA"}
