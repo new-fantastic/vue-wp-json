@@ -28,8 +28,13 @@ export const actions: ActionTree<Object, any> = {
       }
     }
 
-    const fixUrls = items => {
+    const fixUrls = itemsBefore => {
       const fixedItems = []
+
+      // If itemsBefore is Object, we have to convert it to array
+      const items = Array.isArray(itemsBefore)
+        ? itemsBefore
+        : Object.values(itemsBefore)
 
       for(let item of items) {
         const prefix = item.object == 'page'
