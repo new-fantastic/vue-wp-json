@@ -10,7 +10,7 @@
       :src="item.link" 
       :type="mediaDetails.mime_type"
     />
-    Twoja przeglądarka nie obsługuje tagu video
+    Your browser does not support Video markup
   </video>
 </template>
 
