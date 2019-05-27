@@ -38,6 +38,9 @@ module.exports = {
             ['/guide/extending-the-module/essentials/', 'Essentials'],
             ['/guide/extending-the-module/validators/', 'Validators'],
             ['/guide/extending-the-module/interpreters/', 'Interpreters'],
+            ['/guide/extending-the-module/modifying-endpoints/', 'Modifying endpoints'],
+            ['/guide/extending-the-module/custom-layouts/', 'Custom layouts'],
+            ['/guide/extending-the-module/custom-blocks/', 'Custom blocks'],
           ]
         },
         // {

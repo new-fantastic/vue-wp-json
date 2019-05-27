@@ -1,4 +1,4 @@
-# Installation
+# Essentials
 
 <br>
 
