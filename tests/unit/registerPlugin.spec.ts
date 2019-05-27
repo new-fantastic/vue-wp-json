@@ -395,6 +395,89 @@ describe('registerPlugin', () => {
     .extendOptions.a).toBe(newValue)
   })
 
-  
+  it('registers API\'s middleware', () => {
+
+    const key = 'page'
+
+    const extension = {
+      middleware: {
+        api: {
+          [key]: () => { console.log('test func') }
+        }
+      }
+    }
+
+    registerPlugin(localVue, extension)
+
+    expect(localVue.prototype.$wp.api).toBeDefined()
+    expect(localVue.prototype.$wp.api[key]).toBeDefined()
+    expect(localVue.prototype.$wp.api[key]).toBeInstanceOf(Array)
+    expect(localVue.prototype.$wp.api[key]).toContain(extension.middleware.api[key])
+
+  })
+
+  it('registers Root\'s validator', () => {
+
+    const extension = {
+      middleware: {
+        root: {
+          validator (value) {
+            return true
+          }
+        }
+      }
+    }
+
+    registerPlugin(localVue, extension)
+
+    expect(localVue.prototype.$wp.validators).toBeDefined()
+    expect(localVue.prototype.$wp.validators.root).toBeDefined()
+    expect(localVue.prototype.$wp.validators.root).toBeInstanceOf(Array)
+    expect(localVue.prototype.$wp.validators.root).toContain(extension.middleware.root.validator)
+    expect(typeof localVue.prototype.$wp.validators.root[0]()).toBe('boolean')
+
+  })
+
+  it('registers Root\'s interpreter', () => {
+
+    const extension = {
+      middleware: {
+        root: {
+          interpret (data, chosenSection, h) {
+            return []
+          }
+        }
+      }
+    }
+
+    registerPlugin(localVue, extension)
+
+    expect(localVue.prototype.$wp.interpret).toBeDefined()
+    expect(localVue.prototype.$wp.interpret.root).toBeDefined()
+    expect(localVue.prototype.$wp.interpret.root).toBeInstanceOf(Array)
+    expect(localVue.prototype.$wp.interpret.root).toContain(extension.middleware.root.interpret)
+    
+  })
+
+  it('registers Section\'s interpreter', () => {
+
+    const extension = {
+      middleware: {
+        section: {
+          interpret (data, chosenSection, h) {
+            return []
+          }
+        }
+      }
+    }
+
+    registerPlugin(localVue, extension)
+
+    expect(localVue.prototype.$wp.interpret).toBeDefined()
+    expect(localVue.prototype.$wp.interpret.section).toBeDefined()
+    expect(localVue.prototype.$wp.interpret.section).toBeInstanceOf(Array)
+    expect(localVue.prototype.$wp.interpret.section).toContain(extension.middleware.section.interpret)
+    
+  })
 
 })
