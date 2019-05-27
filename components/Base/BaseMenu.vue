@@ -10,17 +10,6 @@
         required: true
       }
     },
-    computed: {
-      menu () {
-        return this.$store.state[`${ModulePrefix}_menu`].menu[this.slug]
-      },
-      menuItems () {
-        return this.menu.items.map(v => ({
-          ...v,
-          isLinkExternal: IsLinkExternal(v.url)
-        }))
-      }
-    },
     render (h) {
       const createProperLink = item => {
         if(IsLinkExternal(item.url)) {
@@ -52,7 +41,13 @@
         }, toReturn)
       }
 
-      return h('ul', this.menuItems.map(v => {
+      const menu = this.$store.state[`${ModulePrefix}_menu`].menu[this.slug]
+      const menuItems = menu.items.map(v => ({
+        ...v,
+        isLinkExternal: IsLinkExternal(v.url)
+      }))
+
+      return h('ul', menuItems.map(v => {
         return withSubitems(v)
       }))
     }
