@@ -1,5 +1,6 @@
 import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
+import Meta from '../plugin/inheritable/Meta'
 
 export default (
   slug: string,
@@ -52,6 +53,11 @@ export default (
     }
 
   }
+
+  // META
+  mixin.mixins = [
+    Meta('website') // Page
+  ]
 
   return mixin
 }

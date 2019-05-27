@@ -1,10 +1,8 @@
-import { ContentTypes, FetchHookTypes } from '../../types'
-import { ModulePrefix } from '../../index'
-import meta from '../../mixins/meta'
+import { ContentTypes } from '../../types'
+import Meta from './Meta'
 
 export default (
   contentType, 
-  createdOrAsync: FetchHookTypes = FetchHookTypes.Created, 
   notFoundUrl = 'page-not-found') => {
 
   const type = contentType === ContentTypes.Page
@@ -57,19 +55,9 @@ export default (
     },
     
     mixins: [
-      meta(type)
-    ],
+      Meta(type)
+    ]
 
-    head () {
-      return this.head
-    },
-
-    computed: {
-      head () {
-        const type = 'website'
-        return meta('website')
-      }
-    }
   }
 
   return mixin
