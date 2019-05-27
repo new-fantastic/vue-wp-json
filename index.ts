@@ -79,24 +79,27 @@ export default {
         router.addRoutes(routes())
 
       // Set lang in html
-      // if(document) {
-      //   const html = document.querySelector('html')
+      const nuxtServer = process
+      && process.server;
 
-      //   if(html) {
-      //     html.setAttribute('lang', options.config.lang)
-      //   }
+      if (!nuxtServer && document) {
+        const html = document.querySelector('html')
 
-      //   const el = document.createElement('link');
-      //   el.setAttribute('rel', 'alternate')
+        if(html) {
+          html.setAttribute('lang', options.config.lang)
+        }
 
-      //   const url = window.location.origin.substr(-1) === '/'
-      //     ? window.location.origin
-      //     : window.location.origin + '/'
-      //   el.setAttribute('href', `${url}${options.config.lang}`)
-      //   el.setAttribute('hreflang', `${options.config.lang}`)
+        const el = document.createElement('link');
+        el.setAttribute('rel', 'alternate')
 
-      //   document.head.appendChild(el)
-      // }
+        const url = window.location.origin.substr(-1) === '/'
+          ? window.location.origin
+          : window.location.origin + '/'
+        el.setAttribute('href', `${url}${options.config.lang}`)
+        el.setAttribute('hreflang', `${options.config.lang}`)
+
+        document.head.appendChild(el)
+      }
       
     } catch(e) {
       console.error(e, e.message)

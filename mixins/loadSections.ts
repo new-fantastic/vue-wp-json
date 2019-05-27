@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import { VueConstructor } from 'vue/types'
 import { ContentTypes, FetchHookTypes } from '../types'
 import { ModulePrefix } from '../index'
 
 export default (
-  createdOrAsync: FetchHookTypes = FetchHookTypes.Created, 
-  customConfig?: any)
-  : VueConstructor<Record<never, any> & Vue> => {
+  slug: string,
+  createdOrAsync: FetchHookTypes = FetchHookTypes.Created) => {
+
+  if(!slug || slug.length < 1) {
+    throw new Error('Slug no provided')
+  }
 
   const mixin: any = {}
 
@@ -14,52 +15,43 @@ export default (
     // Appears in Vue version
     mixin.computed = {
       wpData () {
-        const config = this.$wp.config
-      
-        return this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
-          ? this.$store.state[`${ModulePrefix}_page`].page[config.pages[this.$route.name]]
+        return this.$store.state[`${ModulePrefix}_page`].page[slug]
+          ? this.$store.state[`${ModulePrefix}_page`].page[slug]
           : null
       }
     }
 
     mixin.created = async function () {
-      const config = customConfig ? customConfig : this.$wp.config
   
-      if (config.pages[this.$route.name]) {
         await this.$store.dispatch(`${ModulePrefix}_page/load`, {
-          slug: config.pages[this.$route.name],
+          slug,
           type: ContentTypes.Page
         })
-      }
+
     }
   }
 
   if (createdOrAsync === FetchHookTypes.AsyncData) {
     // Appears in Nuxt version
 
-    mixin.asyncData = async function ({store, route}) {
-      const config = customConfig ? customConfig : store.state[`${ModulePrefix}_config`].config
-  
-      if (config.pages[route.name]) {
-        await store.dispatch(`${ModulePrefix}_page/load`, {
-          slug: config.pages[route.name],
-          type: ContentTypes.Page
-        })
-      }
-      const countWpData = () => {
-        return store.state[`${ModulePrefix}_page`].page[config.pages[route.name]]
-          ? store.state[`${ModulePrefix}_page`].page[config.pages[route.name]]
-          : null
-      }
+    mixin.asyncData = async function ({store}) {
+   
+      await store.dispatch(`${ModulePrefix}_page/load`, {
+        slug,
+        type: ContentTypes.Page
+      })
 
-      const wpData = countWpData()
+      const wpData = store.state[`${ModulePrefix}_page`].page[slug]
+        ? store.state[`${ModulePrefix}_page`].page[slug]
+        : null
 
       return {
         wpData
       }
+
     }
 
   }
 
-  return Vue.extend(mixin)
+  return mixin
 }

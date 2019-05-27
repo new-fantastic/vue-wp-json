@@ -12,9 +12,6 @@ Example value:
 config: {
   lang: 'en',
   url: 'https://wp.mybackend.com/',
-  pages: {
-    home: "home-page"
-  },
   menus: ["info", "contact"]
 }
 ```

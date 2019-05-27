@@ -13,7 +13,8 @@ export default async (Vue, p, store?) => {
   let x = p
   let enviroment = 'vue'
   if (typeof p === 'string') {
-    x = await import(`../../vue-wp-json-${p}/index.js`)
+    let name = p.replace('vue-wp-json-', '')
+    x = await import(`../../vue-wp-json-${name}/index.js`)
     enviroment = 'nuxt'
   }
 

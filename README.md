@@ -80,11 +80,6 @@ Vue.use(vueWpJson, {
   config: {
     url: 'your-wordpress-url.com/',
     lang: 'en', // Your site's default language. It'll be added to html lang attribute.
-    pages: {
-      home: "home-page"
-      // Here put pairs like - routeName: "slugInApi"
-      // Then plugin will download page structure from /wp-json/wp/v2/pages?slug=home-page when current route is called 'home'
-    },
     menus: [
       "first-menu-slug",
       "second-menu-slug"

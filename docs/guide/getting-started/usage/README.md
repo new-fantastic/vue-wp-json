@@ -21,12 +21,7 @@ If you do not like to use page/post prefix you can register your own Views in ro
 }
 ```
 
-After that you need to inform Module which **slug** fetch for which **route**. For that in config, inside of **pages key** add:
-```
-"my-custom-page": "slug-in-wordpress"
-```
-
-Then let's create **MyCustomPage** View. You should import mixin in your View and data will be available under **wpData**.
+Then create **MyCustomPage** View. You should import mixin in your View and data will be available under **wpData**.
 
 ```vue
 <template>
@@ -44,11 +39,12 @@ Then let's create **MyCustomPage** View. You should import mixin in your View an
 
   export default {
     name: 'MyCustomPage',
-    mixins: [loadSections(FetchHookTypes.Created)]
+    mixins: [loadSections('wp-page-slug', FetchHookTypes.Created)]
   }
 </script>
 ```
 
+As **wp-page-slug** type slug of your page in Wordpress site!
 We have access to the **Sections** component from our mixin. It renders fetched Page. 
 
 loadSections takes one argument of FetchHookTypes type. Currently, there are 2 possible values:
@@ -57,7 +53,7 @@ loadSections takes one argument of FetchHookTypes type. Currently, there are 2 p
 
 If we do not provide any value to the function, it will by default use __FetchHookTypes.Created__. So for Vue App's without SSR, we can use just:
 ```js
-loadSections()
+loadSections('wp-page-slug')
 ```
 
 <br>
