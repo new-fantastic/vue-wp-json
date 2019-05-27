@@ -35,8 +35,9 @@ module.exports = {
           title: 'Extending the Module',
           collapsable: false,
           children: [
-            ['#', 'Validators'],
-            ['#', 'Interpreters'],
+            ['/guide/extending-the-module/essentials/', 'Essentials'],
+            ['/guide/extending-the-module/validators/', 'Validators'],
+            ['/guide/extending-the-module/interpreters/', 'Interpreters'],
           ]
         },
         // {
