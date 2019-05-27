@@ -1,6 +1,7 @@
 import loadSections from '../../mixins/loadSections'
 import { ContentTypes, FetchHookTypes } from '../../types';
 import { ModulePrefix } from '../../index'
+import Meta from '../../plugin/inheritable/Meta'
 
 describe('loadSections', () => {
   const that: any = {
@@ -92,6 +93,24 @@ describe('loadSections', () => {
     const { wpData } = await HookAsync2.asyncData({ store })
 
     expect(wpData).toBe(store.state[`${ModulePrefix}_page`].page[slug])
+
+  })
+
+  it('adds proper Meta mixin', async () => {
+
+    expect(HookCreated.mixins).toBeInstanceOf(Array)
+
+    let found = false
+    let lookingFor = Meta('website')
+
+    for (let mixin of HookCreated.mixins) {
+      if (JSON.stringify(mixin) === JSON.stringify(lookingFor)) {
+        found = true
+        break
+      }
+    }
+
+    expect(found).toBe(true)
 
   })
 
