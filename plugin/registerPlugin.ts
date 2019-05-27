@@ -1,7 +1,7 @@
 import { SET_LAYOUT } from '../store/layouts/mutation-types'
 import { ModulePrefix } from '../index'
 
-export default async (Vue, p, store?) => {
+export default async (Vue, p, store?, forceEnvironment?) => {
 
   // Change name to registerExtension
   // How to wait for Core register and then register extensions?
@@ -11,11 +11,20 @@ export default async (Vue, p, store?) => {
   // For vue-wp-json-acf, plugin = 'acf'
 
   let x = p
-  let enviroment = 'vue'
+  let environment = 'vue'
   if (typeof p === 'string') {
     let name = p.replace('vue-wp-json-', '')
-    x = await import(`../../vue-wp-json-${name}/index.js`)
-    enviroment = 'nuxt'
+    try {
+      x = await import(`../../vue-wp-json-${name}/index.js`)
+    } catch(e) {
+      throw new Error(`Extension "${name}" does not exist`)
+    } 
+    
+    environment = 'nuxt'
+  }
+
+  if(forceEnvironment) {
+    environment = forceEnvironment
   }
 
   let plugin
@@ -31,8 +40,14 @@ export default async (Vue, p, store?) => {
     }
   }
 
+  if(!('$wp' in Vue.prototype)) {
+    Vue.prototype.$wp = {}
+  }
+
   if('layouts' in plugin) {
+
     Vue.prototype.$wp.layouts = {}
+
     if('Section' in plugin.layouts) {
       Vue.prototype.$wp.layouts.section = true
       Vue.component('AlternativeSection', plugin.layouts.Section)
@@ -44,41 +59,37 @@ export default async (Vue, p, store?) => {
     }
 
     if('Page' in plugin.layouts) {
-      if(enviroment === 'nuxt')
+      if(environment === 'nuxt')
         Vue.prototype.$wp.layouts.page = 'AlternativePage'
       else
         Vue.prototype.$wp.layouts.page = plugin.layouts.Page
 
       Vue.component('AlternativePage', plugin.layouts.Page)
       let value
-      if(enviroment === 'nuxt')
+      if(environment === 'nuxt')
         value = 'AlternativePage'
       else
-      value = plugin.layouts.Page
+        value = plugin.layouts.Page
 
       if(store && store.commit) {
         store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
           key: 'page',
           value
         })
-      } else if (plugin.store) {
-        plugin.store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
-          key: 'page',
-          value
-        });
-      }
+      } 
+      
     }
 
     if('Post' in plugin.layouts) {
 
-      if(enviroment === 'nuxt')
+      if(environment === 'nuxt')
         Vue.prototype.$wp.layouts.post = 'AlternativePost'
       else
         Vue.prototype.$wp.layouts.post = plugin.layouts.Post
 
       Vue.component('AlternativePost', plugin.layouts.Post)
       let value
-      if(enviroment === 'nuxt')
+      if(environment === 'nuxt')
         value = 'AlternativePost'
       else
         value = plugin.layouts.Post
@@ -88,11 +99,6 @@ export default async (Vue, p, store?) => {
           key: 'post',
           value
         })
-      } else if (plugin.store) {
-        plugin.store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
-          key: 'post',
-          value
-        });
       }
 
     }
