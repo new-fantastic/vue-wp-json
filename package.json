@@ -1,11 +1,12 @@
 {
   "name": "vue-wp-json",
-  "version": "1.0.40",
+  "version": "1.0.42",
   "description": "💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.18.0",
-    "vuepress": "^0.14.11"
+    "vuepress": "^0.14.11",
+    "vue-meta-info": "^0.1.7"
   },
   "directories": {
     "test": "tests"

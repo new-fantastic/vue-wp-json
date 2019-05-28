@@ -6,6 +6,8 @@ import registerPlugin from './plugin/registerPlugin'
 // Initializers
 import * as vuex from './plugin/initializers/store'
 
+import MetaInfo from 'vue-meta-info'
+
 export const ModulePrefix = 'wp'
 
 export default {
@@ -23,6 +25,7 @@ export default {
         throw new Error('No lang provided!')
       }
       // Register it in app
+      Vue.use(MetaInfo)
       Vue.prototype.$wp = {}
       Vue.prototype.$wp.config = options.config;
 
