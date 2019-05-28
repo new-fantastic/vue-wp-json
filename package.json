@@ -5,8 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.18.0",
-    "vuepress": "^0.14.11",
     "vue-meta-info": "^0.1.7"
+  },
+  "devDependencies": {
+    "vuepress": "^0.14.11"
   },
   "directories": {
     "test": "tests"
@@ -41,5 +43,5 @@
   "bugs": {
     "url": "https://github.com/new-fantastic/vue-wp-json/issues"
   },
-  "homepage": "https://github.com/new-fantastic/vue-wp-json#readme"
+  "homepage": "https://github.com/new-fantastic/vue-wp-json#readme"  
 }
