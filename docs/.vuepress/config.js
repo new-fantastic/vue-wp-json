@@ -29,6 +29,7 @@ module.exports = {
           children: [
             ['/guide/getting-started/installation/', 'Installation'],
             ['/guide/getting-started/usage/', 'Usage'],
+            ['/guide/getting-started/pwa/', 'PWA'],
           ]
         },
         {
