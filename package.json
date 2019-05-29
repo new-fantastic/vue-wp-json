@@ -1,6 +1,6 @@
 {
   "name": "@vue-wordpress/core",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫",
   "main": "index.js",
   "dependencies": {
@@ -43,5 +43,5 @@
   "bugs": {
     "url": "https://github.com/vue-wordpess/core/issues"
   },
-  "homepage": "https://github.com/vue-wordpess/core#readme"  
+  "homepage": "https://github.com/vue-wordpess/core#readme"
 }
