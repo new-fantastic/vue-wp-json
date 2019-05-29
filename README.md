@@ -1,16 +1,16 @@
-# vue-wp-json
+# Vue Wordpress Core Module
 
 <br>
 
-💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫
+Vue.js module for WordPress, PWA ready, with full support for Vuex Store, Vue Router, Vue SSR and Nuxt.js [https://vuewordpress.io/](https://vuewordpress.io/)
 
 <br>
 
 - [Installation](#installation)
 
   - [Vue.js](#a-vuejs)
-  - [Nuxt.js (Coming soon)](#b-nuxtjs)
-  - [Vue Storefront](#c-vue-storefront)
+  - [Nuxt.js](#b-nuxtjs)
+  - [Vue Storefront (Coming soon)](#c-vue-storefront)
 
 - [Usage](#usage)
 
@@ -46,191 +46,88 @@
 
 ## Installation
 
-<br>
 
-### A. Vue.js
 
 <br>
+
+
+
+### Vue.js
+
+
+
+<br>
+
+
 
 #### 1. Go to your app's main directory and run:
 
-<br>
-
 ```bash
-npm install vue-wp-json
+npm install @vue-wordpress/core
 ```
 
 or
 
 ```bash
-yarn add vue-wp-json
+
+yarn add @vue-wordpress/core
 ```
 
-<br>
-
-#### 2. Go to your app's `main.js` / `main.ts` file, import the module catalog and register it:
-
-<br>
+#### 2. Go to your app's `main.js` / `main.ts` file, import the module catalog and register it:
 
 ```javascript
-import Vue from 'vue'
-import vueWpJson from 'vue-wp-json'
 
-Vue.use(vueWpJson, {
+import  Vue  from  'vue'
+
+import  Wordpress  from  '@vue-wordpress/core'
+
+Vue.use(Wordpress, {
   config: {
-    url: 'your-wordpress-url.com/',
-    lang: 'en', // Your site's default language. It'll be added to html lang attribute.
+    url:  'https://your-wordpress-url.com/',
+    lang:  'en', // Your site's default language – It will be added to the html lang attribute.
     menus: [
-      "first-menu-slug",
-      "second-menu-slug"
-      // There provide your menus' slug, if you have only one menu, provide it as a string. If you do not have any menu, set to false or just delete this key
+      "main-menu",
+      "footer-menu"
+      // Here you can provide your menus' slugs
+      // If you have only one menu, simply addi it as a string.
+      // If you do not have any menus, set this value to false or just delete this key
     ]
   },
   store,
-  router // Injecting VueX Store and Router is obligatory
+  router
+  // Injecting VueX Store and Router is obligatory
 })
 ```
 
-<br>
 
-If you would like to set proper meta tags automatically for Pages/Posts, all you need to do is to install `vue-meta-info` and register it as a plugin, for example in your main.js/ts
 
 <br>
 
-```
-import Vue from 'vue'
-import MetaInfo from 'vue-meta-info'
 
-Vue.use(MetaInfo)
-```
 
-<br>
+#### And that is it – you are ready to go!
 
-### B. Nuxt.js (Coming soon)
+
 
 <br>
 
-For Nuxt.js we have developed a dedicated  module that is available here: <a href="https://github.com/new-fantastic/nuxt-wp-json">`nuxt-wp-json`</a>
 
-<br>
 
-### C. Vue Storefront
+### Nuxt.js
 
-<br>
+<br>  
 
-For Vue Storefront we have developed a dedicated module that is available here: <a href="https://github.com/new-fantastic/vsf-wp-json">`vsf-wp-json`</a>
+If you want to use this module with **Nuxt.js**, we have created a dedicated package available here: <a href="https://github.com/vue-wordpress/core">`@vue-wordpress/nuxt`</a>
 
-<br>
 
-## Usage
 
-<br>
+<br> 
 
-### Pages
+### Vue Storefront
 
-<br>
 
-All you need to do to create new Page's route in your app is to create it in Wordpress Admin in **_Pages_** tab. It will automatiaclly be available under `/page/<:page_slug>` route.
 
-<br>
+<br>  
 
-### Posts
-
-<br>
-
-The process is the same as above. You just need to create and publish new post in Wordpress Admin at **_Posts_** tab. It will automatiaclly be  available under `/post/<:post_slug>` route.
-
-<br>
-
-### Media
-
-<br>
-
-To be written.
-
-<br>
-
-### Menus
-
-<br>
-
-To be able to use WordPress Menus in your app, you **have to install additional plugin in your WordPress** - **<a href="https://pl.wordpress.org/plugins/wp-rest-api-v2-menus/">WP-REST-API V2 Menus plugin</a>**. It extends native Wordpress REST API by adding a new endpoint with menus at `/wp-json/menus/v1/menus/`. After you have added the plugin `vue-wp-json` will automatically detect and store your menus at:
-
-<br>
-
-```
-store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
-this.$store.state.wp_rest_content.menus[YOUR_MENU_SLUG]
-```
-
-<br>
-
-## Advanced Usage
-
-<br>
-
-More information about additional features available with PRO version of module will be available here: https://vuejs.shop/modules/vue-wp-json-pro
-
-<br>
-
-## Additional modules (Coming soon)
-
-<br>
-
-### Free Extensions
-
-<br>
-
-- [Yoast SEO Extension (Coming soon)](#yoast-extension)
-
-- [qTranslate Extension (Coming soon)](#qtranslate-extension)
-
-<br>
-
-<a name="yoast-extension"></a>
-
-#### Yoast SEO Extension (Coming soon)
-
-<br>
-
-https://github.com/new-fantastic/vue-wp-json-yoast
-
-<br>
-
-<a name="qtranslate-extension"></a>
-
-#### qTranslate Extension (Coming soon)
-
-<br>
-
-https://github.com/new-fantastic/vue-wp-json-qtranslate-x
-
-<br>
-
-### PRO Extensions
-
-<br>
-
-- [Advanced Custom Fields Extension](#acf-extension)
-
-- [DIVI Page Builder Extension (planned for Fall 2019)](#divi-extension)
-
-<br>
-
-<a name="acf-extension"></a>
-
-#### Advanced Custom Fields Extension (Coming soon)
-
-<br>
-
-https://vuejs.shop/modules/vue-wp-json-acf
-
-<br>
-
-<a name="divi-extension"></a>
-
-#### DIVI Page Builder Extension (planned for Fall 2019)
-
-<br>
-
-https://vuejs.shop/modules/vue-wp-json-divi
+If you want to use this module with **Vue Storefront**, we have created a dedicated package available here:
+ <a href="https://github.com/vue-wordpress/vsf">`@vue-wordpress/vsf`</a>

@@ -1,5 +1,5 @@
 {
-  "name": "vue-wp-json",
+  "name": "@vue-wordpress/core",
   "version": "1.0.42",
   "description": "💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫",
   "main": "index.js",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/new-fantastic/vue-wp-json.git"
+    "url": "git+https://github.com/vue-wordpess/core.git"
   },
   "keywords": [
     "vue",
@@ -41,7 +41,7 @@
   "author": "Filip Jędrasik <filip@newfantastic.com>, Aleksander Grygier <alek@newfantastic.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/new-fantastic/vue-wp-json/issues"
+    "url": "https://github.com/vue-wordpess/core/issues"
   },
-  "homepage": "https://github.com/new-fantastic/vue-wp-json#readme"  
+  "homepage": "https://github.com/vue-wordpess/core#readme"  
 }
