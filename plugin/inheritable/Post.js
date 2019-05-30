@@ -3,6 +3,6 @@ import Abstract from './Abstract'
 
 export default {
     mixins: [
-        Abstract(ContentTypes.Post, true, true)
+        Abstract(ContentTypes.Post)
     ]
 }
