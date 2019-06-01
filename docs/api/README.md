@@ -31,7 +31,7 @@ sidebar: false
         max-width: 48rem;
       "
     >
-      Learn about handling Vuex data fetched from WordPress <br>and how to extend module's functionalities.
+      Learn about handling Vuex data<br> fetched from WordPress
       <br>
       <br>
       <span style="font-size: 3rem;">🎮</span>
@@ -62,7 +62,7 @@ sidebar: false
           border-bottom: 1px solid #389d70 !important;
         "
       >
-        <router-link :to="'/guide/introduction/why/'" style="color: #fff !important; text-decoration: none !important;">
+        <router-link :to="'/api/store/'" style="color: #fff !important; text-decoration: none !important;">
           Dig in →
         </router-link>
       </button>
