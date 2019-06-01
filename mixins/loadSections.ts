@@ -45,8 +45,10 @@ const LoaderRequestToFetches =
 }
 
 export default (
-  slug: string | Array<LoaderRequestElement | string>,
+  slug: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
   createdOrAsync: FetchHookTypes = FetchHookTypes.Created) => {
+
+  let metaSource: string 
 
   if(!slug || slug.length < 1) {
     throw new Error('Slug no provided')
@@ -61,17 +63,28 @@ export default (
     computed = { }
 
     if (typeof slug === 'string') {
-      computed[slug] = () => {
-        const type = ContentTypeToString(ContentTypes.Page)
+      metaSource = slug
 
-        return this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-          ? this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-          : null
+      computed = {
+        ...computed,
+        [slug]() {
+          const type = ContentTypeToString(ContentTypes.Page)
+  
+          return this.$store.state[`${ModulePrefix}_${type}`][type][slug]
+            ? this.$store.state[`${ModulePrefix}_${type}`][type][slug]
+            : null
+        }
       }
-    } else {
+
+      computed
+    } else if (Array.isArray(slug)) {
       // slug - array of request elements in this example
       for (let requestElement of slug) {
         if (typeof requestElement === 'string') {
+          if(!metaSource) {
+            metaSource = requestElement
+          }
+          
           computed = {
             ...computed,
             [requestElement]() {
@@ -88,6 +101,10 @@ export default (
           if('dataName' in requestElement) {
             dataName = requestElement.dataName
           }
+          if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
+            metaSource = dataName
+          }
+
           let contentType = 'post' in requestElement && requestElement.post === true 
             ? ContentTypes.Post
             : ContentTypes.Page
@@ -105,12 +122,38 @@ export default (
         }
       }
 
-      mixin = { computed }
+    } else {
+      let requestElement = slug
 
+      let slugName = requestElement.slug
+      let dataName = slugName
+      if('dataName' in requestElement) {
+        dataName = requestElement.dataName
+      }
+      if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
+        metaSource = dataName
+      }
+
+      let contentType = 'post' in requestElement && requestElement.post === true 
+        ? ContentTypes.Post
+        : ContentTypes.Page
+
+      computed = {
+        ...computed, 
+        [dataName]() { 
+          const type = ContentTypeToString(contentType)
+
+          return this.$store.state[`${ModulePrefix}_${type}`][type][slugName]
+            ? this.$store.state[`${ModulePrefix}_${type}`][type][slugName]
+            : null
+        }
+      }
     }
 
+    // mixin = { computed }
+
     mixin = {
-      ...mixin, 
+      computed, 
       async created() {
 
         const requests = []
@@ -124,9 +167,26 @@ export default (
             })
           )
 
-        } else {
+        } else if (Array.isArray(slug)) {
           // slug - array of request elements in this example
           requests.push(...LoaderRequestToFetches(slug, this.$store))
+        } else {
+          // slug -- object
+          let requestElement = slug
+          let slugName = requestElement.slug
+
+          let type = 'post' in requestElement && requestElement.post === true 
+            ? 'post'
+            : 'page'
+          
+          requests.push(
+            this.$store.dispatch(`${ModulePrefix}_${type}/load`, {
+              slug: slugName,
+              type: type === 'post' 
+                ? ContentTypes.Post
+                : ContentTypes.Page
+            })
+          )
         }
 
         await Promise.all(requests)
@@ -150,35 +210,87 @@ export default (
           })
         )
 
-      } else {
+      } else if (Array.isArray(slug)) {
         // slug - array of request elements in this example
         requests.push(...LoaderRequestToFetches(slug, store))
+      } else {
+        // slug -- object
+        let requestElement = slug
+        let slugName = requestElement.slug
+
+        let type = 'post' in requestElement && requestElement.post === true 
+          ? 'post'
+          : 'page'
+        
+        requests.push(
+          store.dispatch(`${ModulePrefix}_${type}/load`, {
+            slug: slugName,
+            type: type === 'post' 
+              ? ContentTypes.Post
+              : ContentTypes.Page
+          })
+        )
       }
 
       await Promise.all(requests)
 
       const asyncData = {}
 
-      for (let requestElement of slug) {
-        if (typeof requestElement === 'string') {
-          asyncData[requestElement] = store.state[`${ModulePrefix}_page`].page[requestElement]
-            ? store.state[`${ModulePrefix}_page`].page[requestElement]
-            : null
-        }
-        else {
-          let slug = requestElement.slug
-          let dataName = slug
-          if('dataName' in requestElement) {
-            dataName = requestElement.dataName
-          }
-          let type = 'post' in requestElement && requestElement.post === true 
-            ? 'post'
-            : 'page'
+      if (typeof slug === 'string') {
+        metaSource = slug
 
-          asyncData[dataName] = store.state[`${ModulePrefix}_${type}`][type][slug]
-            ? store.state[`${ModulePrefix}_${type}`][type][slug]
-            : null
+        asyncData[slug] = store.state[`${ModulePrefix}_page`].page[slug]
+          ? store.state[`${ModulePrefix}_page`].page[slug]
+          : null
+
+      } else if (Array.isArray(slug)) {
+        for (let requestElement of slug) {
+          if (typeof requestElement === 'string') {
+            asyncData[requestElement] = store.state[`${ModulePrefix}_page`].page[requestElement]
+              ? store.state[`${ModulePrefix}_page`].page[requestElement]
+              : null
+
+            if(!metaSource) {
+              metaSource = requestElement
+            }
+          }
+          else {
+            let slug = requestElement.slug
+            let dataName = slug
+            if('dataName' in requestElement) {
+              dataName = requestElement.dataName
+            }
+            let type = 'post' in requestElement && requestElement.post === true 
+              ? 'post'
+              : 'page'
+
+            if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
+              metaSource = dataName
+            }
+  
+            asyncData[dataName] = store.state[`${ModulePrefix}_${type}`][type][slug]
+              ? store.state[`${ModulePrefix}_${type}`][type][slug]
+              : null
+          }
         }
+      } else {
+        let requestElement = slug
+        let slugName = requestElement.slug
+        let dataName = slugName
+        if('dataName' in requestElement) {
+          dataName = requestElement.dataName
+        }
+        if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
+          metaSource = dataName
+        }
+
+        let type = 'post' in requestElement && requestElement.post === true 
+          ? 'post'
+          : 'page'
+  
+        asyncData[dataName] = store.state[`${ModulePrefix}_${type}`][type][slugName]
+          ? store.state[`${ModulePrefix}_${type}`][type][slugName]
+          : null
       }
 
       return asyncData
@@ -189,7 +301,7 @@ export default (
 
   // META
   mixin.mixins = [
-    Meta('website') // Page
+    Meta('website', metaSource) // Page
   ]
 
   return mixin
