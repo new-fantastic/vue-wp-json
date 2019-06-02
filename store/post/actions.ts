@@ -10,7 +10,7 @@ const typeBaseUrl = '/wp-json/wp/v2/posts?slug='
 
 export const actions: ActionTree<Object, any> = {
   
-  async load ({commit}, {slug}) {
+  async load ({state, commit}, {slug}) {
 
     const config = Vue.prototype.$wp.config
 
@@ -24,16 +24,18 @@ export const actions: ActionTree<Object, any> = {
     }
 
     try {
-      const response = await axios.get(base.url)
+      if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
+        const response = await axios.get(base.url)
 
-      if(response.data.status == 404 || response.data.length < 1) {
-        throw new Error('Endpoint ain\'t ready')
+        if(response.data.status == 404 || response.data.length < 1) {
+          throw new Error('Endpoint ain\'t ready')
+        }
+      
+        commit(types.SET_POST_CONTENT, {
+          data: response.data,
+          slotName: slug
+        })
       }
-    
-      commit(types.SET_POST_CONTENT, {
-        data: response.data,
-        slotName: slug
-      })
   
     } catch (err) {
       commit(types.SET_POST_CONTENT, {
