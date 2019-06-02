@@ -55,7 +55,7 @@ export default (
     },
     
     mixins: [
-      Meta(type)
+      Meta(type, 'wpData')
     ]
 
   }

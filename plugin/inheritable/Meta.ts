@@ -2,7 +2,7 @@ import meta from '../../mixins/meta'
 import { ContentTypes } from '../../types'
 
 export default (
-  contentType) => {
+  contentType, metaSource: string) => {
 
     const type = contentType === ContentTypes.Page
       ? 'website'
@@ -10,7 +10,7 @@ export default (
 
     const mixin: any = {
       mixins: [
-        meta(type)
+        meta(type, metaSource)
       ],
   
       head () {
@@ -19,7 +19,7 @@ export default (
   
       computed: {
         head () {
-          return meta(type).metaInfo.call(this);
+          return meta(type, metaSource).metaInfo.call(this);
         }
       }
     }

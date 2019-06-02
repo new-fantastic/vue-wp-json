@@ -1,8 +1,9 @@
-export default (type, plainObject?) => ({
+export default (type: string, plainObject: string) => ({
 
     metaInfo() {
-      if(this.wpData !== false && this.wpData) {
-        const iId = Number(this.wpData.featured_media)
+
+      if(this[plainObject] !== false && this[plainObject]) {
+        const iId = Number(this[plainObject].featured_media)
   
         let dt = []
         if (iId > 0) {
@@ -31,8 +32,8 @@ export default (type, plainObject?) => ({
           }
         }
   
-        const description = this.wpData.excerpt.rendered && this.wpData.excerpt.rendered.length > 0 
-          ? { vmid: 'description', name: 'description', content: this.wpData.excerpt.rendered.replace(/<(?:.|\n)*?>/gm, '') }
+        const description = this[plainObject].excerpt.rendered && this[plainObject].excerpt.rendered.length > 0 
+          ? { vmid: 'description', name: 'description', content: this[plainObject].excerpt.rendered.replace(/<(?:.|\n)*?>/gm, '') }
           : {}
   
         let ogDesc = {}
@@ -42,10 +43,10 @@ export default (type, plainObject?) => ({
         }
   
         return {
-          title: this.wpData.title.rendered,
+          title: this[plainObject].title.rendered,
           meta: [
             description,
-            { property: 'og:title', content: this.wpData.title.rendered },
+            { property: 'og:title', content: this[plainObject].title.rendered },
             ogDesc,
             ...dt,
             { property: 'og:type', content: type}

@@ -9,3 +9,10 @@ export enum FetchHookTypes {
   Created,
   AsyncData
 }
+
+export interface LoaderRequestElement {
+  slug: string
+  meta?: Boolean,
+  dataName?: string,
+  post?: Boolean
+}

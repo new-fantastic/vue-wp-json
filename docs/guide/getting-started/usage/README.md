@@ -56,6 +56,8 @@ If we do not provide any value to the function, it will by default use __FetchHo
 loadSections('wp-page-slug')
 ```
 
+**loadSections** is so powerful mixin. It can accept array of slugs, and objects in first argument. Learn more about it [here](/api/loadSections/).
+
 <br>
 
 ## Media

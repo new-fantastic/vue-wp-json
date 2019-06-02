@@ -10,7 +10,7 @@ const typeBaseUrl = '/wp-json/wp/v2/pages?slug='
 
 export const actions: ActionTree<Object, any> = {
 
-  async load ({commit}, {slug}) {
+  async load ({ commit }, {slug}) {
     const config = Vue.prototype.$wp.config
 
     // const part = lang == 'pl' ? '' : '/' + lang
@@ -36,6 +36,7 @@ export const actions: ActionTree<Object, any> = {
       })
   
     } catch (err) {
+      console.log('err', err, base.url)
       commit(types.SET_PAGE_CONTENT, {
         data: false,
         slotName: slug

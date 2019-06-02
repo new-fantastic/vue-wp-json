@@ -70,13 +70,6 @@ export default {
       }
 
       const router = options.router
-      // const customPage = Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.page 
-      //     ? Vue.prototype.$wp.layouts.page 
-      //     : undefined
-
-      //   const customPost = Vue.prototype.$wp.layouts && Vue.prototype.$wp.layouts.post 
-      //     ? Vue.prototype.$wp.layouts.post
-      //     : undefined
 
       if(router !== 'manual')
         router.addRoutes(routes())

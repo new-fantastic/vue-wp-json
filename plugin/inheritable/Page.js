@@ -3,6 +3,6 @@ import Abstract from './Abstract'
 
 export default {
     mixins: [
-        Abstract(ContentTypes.Page, true, true)
+        Abstract(ContentTypes.Page)
     ]
 }
