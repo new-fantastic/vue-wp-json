@@ -60,7 +60,6 @@ export default (
 
   if (createdOrAsync === FetchHookTypes.Created) {
     // Appears in Vue version
-    computed = { }
 
     if (typeof slug === 'string') {
       metaSource = slug
@@ -76,7 +75,6 @@ export default (
         }
       }
 
-      computed
     } else if (Array.isArray(slug)) {
       // slug - array of request elements in this example
       for (let requestElement of slug) {
