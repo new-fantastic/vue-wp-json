@@ -6,7 +6,7 @@ Middleware is the key in your extension's file. Inside of it, you should precise
 
 So the base structure of Extension ready to apply some filters looks like:
 ```ts
-import { WPExtension } from 'vue-wp-json/plugin/extension'
+import { WPExtension } from '@vue-wp-json/core/plugin/extension'
 
 const plugin: WPExtension = {
   middleware: {
@@ -35,7 +35,7 @@ removeFromTheEnd() - removes inserted object which stays at the end
 
 Example of extension which adds /en/ prefix in page/post requests.
 ```ts
-import { WPExtension } from 'vue-wp-json/plugin/extension'
+import { WPExtension } from '@vue-wp-json/core/plugin/extension'
 
 const plugin: WPExtension = {
   middleware: {
