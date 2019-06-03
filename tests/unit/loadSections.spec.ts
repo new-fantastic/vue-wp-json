@@ -3,7 +3,7 @@ import { ContentTypes, FetchHookTypes } from '../../types';
 import { ModulePrefix } from '../../index'
 import Meta from '../../plugin/inheritable/Meta'
 
-describe('loadSections', () => {
+describe.only('loadSections', () => {
   const that: any = {
     $store: {
       state: {
@@ -23,7 +23,7 @@ describe('loadSections', () => {
 
   it('FetchHookTypes.Created, returns null for not existing slug', () => {
     
-    const test = HookCreated.computed.wpData.call(that)
+    const test = HookCreated.computed[slug].call(that)
     expect(test).toBe(null)
   
   })
@@ -39,7 +39,7 @@ describe('loadSections', () => {
     that.$store.state[`${ModulePrefix}_page`].page
     [slug] = wpData
 
-    const test = HookCreated.computed.wpData.call(that)
+    const test = HookCreated.computed[slug].call(that)
 
     expect(test).toBe(wpData)
 
@@ -90,9 +90,9 @@ describe('loadSections', () => {
     }
 
     const HookAsync2 = loadSections(slug, FetchHookTypes.AsyncData)
-    const { wpData } = await HookAsync2.asyncData({ store })
+    const data = await HookAsync2.asyncData({ store })
 
-    expect(wpData).toBe(store.state[`${ModulePrefix}_page`].page[slug])
+    expect(data[slug]).toBe(store.state[`${ModulePrefix}_page`].page[slug])
 
   })
 
