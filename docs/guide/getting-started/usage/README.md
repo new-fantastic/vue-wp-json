@@ -60,6 +60,33 @@ loadSections('wp-page-slug')
 
 <br>
 
+## Plain data
+
+<br>
+
+It is possible that you would want to use plain fetched data - without our abstraction layers. All you need to do that is append **loadSections** mixin.
+
+After that, fetched data will be available under **this** like data/computed value.
+
+Example: 
+```js
+{
+  mixins: [loadSections({
+    slug: 'sample-post-page',
+    post: true,
+    dataName: 'example'
+  })],
+  mounted () {
+    // There we have access to 'sample-post-page' response!
+    console.log(this.example)
+  }
+}
+```
+
+Learn more about loadSections [here](/api/loadSections/).
+
+<br>
+
 ## Media
 
 <br>
