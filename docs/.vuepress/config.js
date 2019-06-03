@@ -57,30 +57,9 @@ module.exports = {
           title: 'Core',
           collapsable: false,
           children: [
-            ['#', 'Lifecycle'],
-            ['#1', 'Validators'],
-            ['#2', 'Interpreters'],
-            ['#11', 'Vuex Store'],
-            ['#12', '$wp'],
-          ]
-        },
-        {
-          title: 'Wordpress REST API',
-          collapsable: false,
-          children: [
-            ['#', 'API Endpoint Filter'],
-            ['#5', 'UrlCreator'],
-          ]
-        },
-        {
-          title: 'Templates',
-          collapsable: false,
-          children: [
-            ['#6', 'Custom Page Template'],
-            ['#7', 'Custom Post Template'],
-            ['#8', 'Custom Section Template'],
-            ['#9', 'Custom Column Template'],
-            ['#10', 'Custom Blocks'],
+            ['/api/store/', 'Vuex Store'],
+            ['/api/wp/', '$wp'],
+            ['/api/loadSections/', 'loadSections'],
           ]
         }
       ],

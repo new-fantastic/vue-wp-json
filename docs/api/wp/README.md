@@ -52,7 +52,3 @@ Inside we can have 2 keys:
 - section
 
 Both will contain an array of functions which will interpret provided data, check if it fulfills conditions, if yes it will transform data and send it further.
-
-## Questions to develop
-1. What will happen, if we register 2 custom Sections/Columns in 2 extensions?
-1. What will happen, if we register 2 custom Page/Post views in 2 extensions?

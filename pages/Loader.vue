@@ -28,7 +28,7 @@
 
       const fallbackProps = {
         props: {
-          wpDataFallback: this.wpData
+          wpData: this.wpData
         }
       }
 

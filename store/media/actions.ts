@@ -13,7 +13,6 @@ export const actions: ActionTree<Object, any> = {
 
     const config = Vue.prototype.$wp.config
 
-    // const part = lang == 'pl' ? '' : '/' + lang
     const base = new UrlCreator(config.url, [typeBaseUrl])
 
     if(Vue.prototype.$wp.api 

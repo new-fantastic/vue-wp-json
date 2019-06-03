@@ -17,7 +17,7 @@ Extension allows developers to change behaviour of certain things in core module
 When we are creating own extension - we should use Typescript. However, it is not obligatory. Example starter:
 
 ```ts
-import { WPExtension } from '../vue-wp-json/plugin/extension'
+import { WPExtension } from '@vue-wp-json/core/plugin/extension'
 
 const plugin: WPExtension = {
   // ...
