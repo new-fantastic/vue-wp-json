@@ -1,7 +1,11 @@
 import { ContentTypes, FetchHookTypes, LoaderRequestElement } from '../types'
 import { ModulePrefix } from '../index'
-import { ContentTypeToString } from '../util/Filters'
+import { ContentTypeToString, StringToContentType } from '../util/Filters'
 import Meta from '../plugin/inheritable/Meta'
+
+const orNull = (value) => {
+  return value ? value : null
+}
 
 const LoaderRequestToFetches = 
 (slug: Array<LoaderRequestElement | string>, store)
@@ -20,21 +24,18 @@ const LoaderRequestToFetches =
       )
 
     } else {
-      let slug = requestElement.slug
-      let dataName = slug
-      if('dataName' in requestElement) {
-        dataName = requestElement.dataName
-      }
-      let type = 'post' in requestElement && requestElement.post === true 
-        ? 'post'
-        : 'page'
+
+      let {
+        slug,
+        contentType
+      } = ConsumeObject(requestElement)
+
+      const type = ContentTypeToString(contentType)
       
       requests.push(
         store.dispatch(`${ModulePrefix}_${type}/load`, {
           slug,
-          type: type === 'post' 
-            ? ContentTypes.Post
-            : ContentTypes.Page
+          type: StringToContentType(type)
         })
       )
 
@@ -44,13 +45,36 @@ const LoaderRequestToFetches =
   return requests
 }
 
+const ConsumeObject = (obj: LoaderRequestElement) => {
+  let slug = obj.slug
+  let dataName = slug
+  let metaSource = null
+  if('dataName' in obj) {
+    dataName = obj.dataName
+  }
+  if(('meta' in obj && obj.meta === true)) {
+    metaSource = dataName
+  }
+
+  let contentType = 'post' in obj && obj.post === true 
+    ? ContentTypes.Post
+    : ContentTypes.Page
+
+  return {
+    slug,
+    dataName,
+    meta: metaSource,
+    contentType
+  }
+}
+
 export default (
-  slug: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
+  loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
   createdOrAsync: FetchHookTypes = FetchHookTypes.Created) => {
 
   let metaSource: string 
 
-  if(!slug || slug.length < 1) {
+  if(!loaderRequest || (Array.isArray(loaderRequest) && loaderRequest.length < 1)) {
     throw new Error('Slug no provided')
   }
 
@@ -60,24 +84,34 @@ export default (
 
   if (createdOrAsync === FetchHookTypes.Created) {
     // Appears in Vue version
+    const requests = []
+    const type = ContentTypeToString(ContentTypes.Page)
 
-    if (typeof slug === 'string') {
-      metaSource = slug
+    if (typeof loaderRequest === 'string') {
+      metaSource = loaderRequest
 
       computed = {
         ...computed,
-        [slug]() {
-          const type = ContentTypeToString(ContentTypes.Page)
-  
-          return this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-            ? this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-            : null
+        [loaderRequest]() {
+          return orNull(
+            this.$store.state[`${ModulePrefix}_${type}`][type][loaderRequest]
+          )
         }
       }
 
-    } else if (Array.isArray(slug)) {
-      // slug - array of request elements in this example
-      for (let requestElement of slug) {
+      mixin = {
+        ...mixin,
+        async created () {
+          await this.$store.dispatch(`${ModulePrefix}_page/load`, {
+            slug: loaderRequest,
+            type: ContentTypes.Page
+          })
+        }
+      }
+
+    } else if (Array.isArray(loaderRequest)) {
+      // loaderRequest - array of request elements in this example
+      for (let requestElement of loaderRequest) {
         if (typeof requestElement === 'string') {
           if(!metaSource) {
             metaSource = requestElement
@@ -86,216 +120,212 @@ export default (
           computed = {
             ...computed,
             [requestElement]() {
-              const type = ContentTypeToString(ContentTypes.Page)
-
-              return this.$store.state[`${ModulePrefix}_${type}`][type][requestElement]
-                ? this.$store.state[`${ModulePrefix}_${type}`][type][requestElement]
-                : null
+              return orNull(
+                this.$store.state[`${ModulePrefix}_page`].page[requestElement]
+              )
             }
           }
-        } else {
-          let slug = requestElement.slug
-          let dataName = slug
-          if('dataName' in requestElement) {
-            dataName = requestElement.dataName
-          }
-          if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
-            metaSource = dataName
-          }
 
-          let contentType = 'post' in requestElement && requestElement.post === true 
-            ? ContentTypes.Post
-            : ContentTypes.Page
+          requests.push(
+            {
+              slug: requestElement,
+              type: ContentTypes.Page
+            }
+          )
+
+        } else {
+          let {
+            slug,
+            dataName,
+            meta,
+            contentType
+          } = ConsumeObject(requestElement)
+
+          const type = ContentTypeToString(contentType)
+          
+          if(meta !== null) {
+            metaSource = meta
+          }
 
           computed = {
             ...computed, 
             [dataName]() { 
-              const type = ContentTypeToString(contentType)
-
-              return this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-                ? this.$store.state[`${ModulePrefix}_${type}`][type][slug]
-                : null
+              
+              return orNull(
+                this.$store.state[`${ModulePrefix}_${type}`][type][slug]
+              )
             }
           }
+
+          requests.push(
+            {
+              slug,
+              type: contentType
+            }
+          )
+        }
+        
+      }
+
+      mixin = {
+        ...mixin,
+        async created () {
+          await Promise.all(requests.map(request => {
+            const type = ContentTypeToString(request.type)
+            return this.$store.dispatch(`${ModulePrefix}_${type}/load`, request)
+          }))
         }
       }
 
     } else {
-      let requestElement = slug
 
-      let slugName = requestElement.slug
-      let dataName = slugName
-      if('dataName' in requestElement) {
-        dataName = requestElement.dataName
-      }
-      if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
-        metaSource = dataName
-      }
+      let {
+        slug,
+        dataName,
+        meta,
+        contentType
+      } = ConsumeObject(loaderRequest)
 
-      let contentType = 'post' in requestElement && requestElement.post === true 
-        ? ContentTypes.Post
-        : ContentTypes.Page
+      const type = ContentTypeToString(contentType)
+      
+      if(meta !== null) {
+        metaSource = meta
+      }
 
       computed = {
         ...computed, 
         [dataName]() { 
-          const type = ContentTypeToString(contentType)
-
-          return this.$store.state[`${ModulePrefix}_${type}`][type][slugName]
-            ? this.$store.state[`${ModulePrefix}_${type}`][type][slugName]
-            : null
-        }
-      }
-    }
-
-    // mixin = { computed }
-
-    mixin = {
-      computed, 
-      async created() {
-
-        const requests = []
-
-        if (typeof slug === 'string') {
-
-          requests.push(
-            this.$store.dispatch(`${ModulePrefix}_page/load`, {
-              slug,
-              type: ContentTypes.Page
-            })
-          )
-
-        } else if (Array.isArray(slug)) {
-          // slug - array of request elements in this example
-          requests.push(...LoaderRequestToFetches(slug, this.$store))
-        } else {
-          // slug -- object
-          let requestElement = slug
-          let slugName = requestElement.slug
-
-          let type = 'post' in requestElement && requestElement.post === true 
-            ? 'post'
-            : 'page'
-          
-          requests.push(
-            this.$store.dispatch(`${ModulePrefix}_${type}/load`, {
-              slug: slugName,
-              type: type === 'post' 
-                ? ContentTypes.Post
-                : ContentTypes.Page
-            })
+          return orNull(
+            this.$store.state[`${ModulePrefix}_${type}`][type][slug]
           )
         }
-
-        await Promise.all(requests)
       }
-    }
-  }
 
-  else if (createdOrAsync === FetchHookTypes.AsyncData) {
-    // Appears in Nuxt version
-
-    mixin.asyncData = async function ({store}) {
-
-      const requests = []
-
-      if (typeof slug === 'string') {
-
-        requests.push(
-          store.dispatch(`${ModulePrefix}_page/load`, {
+      mixin = {
+        ...mixin,
+        async created () {
+          await this.$store.dispatch(`${ModulePrefix}_${type}/load`, {
             slug,
             type: ContentTypes.Page
           })
-        )
-
-      } else if (Array.isArray(slug)) {
-        // slug - array of request elements in this example
-        requests.push(...LoaderRequestToFetches(slug, store))
-      } else {
-        // slug -- object
-        let requestElement = slug
-        let slugName = requestElement.slug
-
-        let type = 'post' in requestElement && requestElement.post === true 
-          ? 'post'
-          : 'page'
-        
-        requests.push(
-          store.dispatch(`${ModulePrefix}_${type}/load`, {
-            slug: slugName,
-            type: type === 'post' 
-              ? ContentTypes.Post
-              : ContentTypes.Page
-          })
-        )
+        }
       }
-
-      await Promise.all(requests)
-
-      const asyncData = {}
-
-      if (typeof slug === 'string') {
-        metaSource = slug
-
-        asyncData[slug] = store.state[`${ModulePrefix}_page`].page[slug]
-          ? store.state[`${ModulePrefix}_page`].page[slug]
-          : null
-
-      } else if (Array.isArray(slug)) {
-        for (let requestElement of slug) {
-          if (typeof requestElement === 'string') {
-            asyncData[requestElement] = store.state[`${ModulePrefix}_page`].page[requestElement]
-              ? store.state[`${ModulePrefix}_page`].page[requestElement]
-              : null
-
-            if(!metaSource) {
-              metaSource = requestElement
-            }
-          }
-          else {
-            let slug = requestElement.slug
-            let dataName = slug
-            if('dataName' in requestElement) {
-              dataName = requestElement.dataName
-            }
-            let type = 'post' in requestElement && requestElement.post === true 
-              ? 'post'
-              : 'page'
-
-            if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
-              metaSource = dataName
-            }
-  
-            asyncData[dataName] = store.state[`${ModulePrefix}_${type}`][type][slug]
-              ? store.state[`${ModulePrefix}_${type}`][type][slug]
-              : null
-          }
-        }
-      } else {
-        let requestElement = slug
-        let slugName = requestElement.slug
-        let dataName = slugName
-        if('dataName' in requestElement) {
-          dataName = requestElement.dataName
-        }
-        if(('meta' in requestElement && requestElement.meta === true) || !metaSource) {
-          metaSource = dataName
-        }
-
-        let type = 'post' in requestElement && requestElement.post === true 
-          ? 'post'
-          : 'page'
-  
-        asyncData[dataName] = store.state[`${ModulePrefix}_${type}`][type][slugName]
-          ? store.state[`${ModulePrefix}_${type}`][type][slugName]
-          : null
-      }
-
-      return asyncData
-
     }
 
-  }
+    mixin = {
+      ...mixin,
+      computed
+    }
+
+  } else if (createdOrAsync === FetchHookTypes.AsyncData) {
+    // Appears in Nuxt version
+    const requests = []
+
+    if (typeof loaderRequest === 'string') {
+
+      metaSource = loaderRequest
+
+      mixin = {
+        ...mixin,
+        async asyncData ({ store }) {
+          const typeAsString = ContentTypeToString(ContentTypes.Page)
+
+          await store.dispatch(`${ModulePrefix}_page/load`, {
+            slug: loaderRequest,
+            type: ContentTypes.Page
+          })
+
+          return {
+            [loaderRequest]: orNull(
+              store.state[`${ModulePrefix}_${typeAsString}`][typeAsString][loaderRequest]
+            )
+          }
+        }
+      }
+    } else if (Array.isArray(loaderRequest)) {
+        // slug - array of request elements in this example
+        mixin = {
+          ...mixin,
+          async asyncData ({ store }) {
+  
+            await Promise.all(LoaderRequestToFetches(loaderRequest, store))
+
+            let data = {}
+            for (let requestElement of loaderRequest) {
+              if (typeof requestElement === 'string') {
+                if(!metaSource) {
+                  metaSource = requestElement
+                }
+                
+                data = {
+                  ...data,
+                  [requestElement]: orNull(
+                      store.state[`${ModulePrefix}_page`].page[requestElement]
+                  )
+                }
+      
+              } else {
+                let {
+                  slug,
+                  dataName,
+                  meta,
+                  contentType
+                } = ConsumeObject(requestElement)
+      
+                const type = ContentTypeToString(contentType)
+                
+                if(meta !== null) {
+                  metaSource = meta
+                }
+      
+                data = {
+                  ...data, 
+                  [dataName]: orNull(
+                      store.state[`${ModulePrefix}_${type}`][type][slug]
+                  )
+                }
+              }
+              
+            }
+
+            return data
+          }
+        }
+        
+      } else {
+        // slug -- object
+        mixin = {
+          ...mixin,
+          async asyncData ({ store }) {
+
+            let {
+              slug,
+              dataName,
+              meta,
+              contentType
+            } = ConsumeObject(loaderRequest)
+      
+            const type = ContentTypeToString(contentType)
+            
+            if(meta !== null) {
+              metaSource = meta
+            }
+
+            await store.dispatch(`${ModulePrefix}_${type}/load`, {
+              slug,
+              type: contentType
+            })
+
+            return {
+              [dataName]: orNull(
+                  store.state[`${ModulePrefix}_${type}`][type][slug]
+              )
+            }
+
+          }
+        }
+      }
+    }
 
   // META
   mixin.mixins = [
