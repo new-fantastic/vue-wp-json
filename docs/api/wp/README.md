@@ -28,7 +28,7 @@ If there is registered a custom Page view or a custom Post view these values wil
 - In case of Nuxt, component's string name (AlternativePage/AlternativePost)
 - In case of Vue, component's object
 
-Additionaly, when we use Nuxt, our __view's name__ will be saved in Vuex Module - __wpr_layouts__ under key page/post. With that, Nuxt can properly recognize custom view and use it on **Server Side**
+Additionaly, when we use Nuxt, our __view's name__ will be saved in Vuex Module - __wp_layouts__ under key page/post. With that, Nuxt can properly recognize custom view and use it on **Server Side**
 
 ## $wp.api
 If there is registered any API Middleware - it will be attached here. **$wp.api** is an object that currently can contains 5 keys:
