@@ -35,7 +35,7 @@ export default {
       }
 
       let store
-      const manualVuexMode = options.store === 'manual'
+      const manualVuexMode = options.store === true
       if(!manualVuexMode) {
         store = options.store
       }
