@@ -1,6 +1,6 @@
 import { ContentTypes, FetchHookTypes, LoaderRequestElement } from '../types'
 import { ModulePrefix } from '../index'
-import { ContentTypeToString } from '../util/Filters'
+import { ContentTypeToString, StringToContentType } from '../util/Filters'
 import Meta from '../plugin/inheritable/Meta'
 
 const orNull = (value) => {
@@ -24,21 +24,18 @@ const LoaderRequestToFetches =
       )
 
     } else {
-      let slug = requestElement.slug
-      let dataName = slug
-      if('dataName' in requestElement) {
-        dataName = requestElement.dataName
-      }
-      let type = 'post' in requestElement && requestElement.post === true 
-        ? 'post'
-        : 'page'
+
+      let {
+        slug,
+        contentType
+      } = ConsumeObject(requestElement)
+
+      const type = ContentTypeToString(contentType)
       
       requests.push(
         store.dispatch(`${ModulePrefix}_${type}/load`, {
           slug,
-          type: type === 'post' 
-            ? ContentTypes.Post
-            : ContentTypes.Page
+          type: StringToContentType(type)
         })
       )
 
@@ -124,7 +121,7 @@ export default (
             ...computed,
             [requestElement]() {
               return orNull(
-                this.$store.state[`${ModulePrefix}_${type}`][type][requestElement]
+                this.$store.state[`${ModulePrefix}_page`].page[requestElement]
               )
             }
           }
@@ -240,7 +237,7 @@ export default (
 
           return {
             [loaderRequest]: orNull(
-              this.$store.state[`${ModulePrefix}_${typeAsString}`][typeAsString][loaderRequest]
+              store.state[`${ModulePrefix}_${typeAsString}`][typeAsString][loaderRequest]
             )
           }
         }
@@ -250,10 +247,8 @@ export default (
         mixin = {
           ...mixin,
           async asyncData ({ store }) {
-            const typeAsString = ContentTypeToString(ContentTypes.Page)
   
-            requests.push(...LoaderRequestToFetches(loaderRequest, store))
-            await Promise.all(requests)
+            await Promise.all(LoaderRequestToFetches(loaderRequest, store))
 
             let data = {}
             for (let requestElement of loaderRequest) {
@@ -318,7 +313,7 @@ export default (
 
             await store.dispatch(`${ModulePrefix}_${type}/load`, {
               slug,
-              type: ContentTypes.Page
+              type: contentType
             })
 
             return {
