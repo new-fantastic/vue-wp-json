@@ -8,8 +8,8 @@ module.exports = {
       { text: 'Guide', link: '/guide/' },
       { text: 'API', link: '/api/' },
       { text: 'Contribution Guide', link: '/contribution-guide/' },
-      { text: 'GitHub', link: 'https://github.com/new-fantastic/vue-wp-json' },
-      { text: 'Support us', link: 'https://github.com/new-fantastic/vue-wp-json' }
+      { text: 'GitHub', link: 'https://github.com/vue-wordpress/core' },
+      { text: 'Support us', link: 'https://github.com/vue-wordpress/core' }
     ],
     sidebar: {
       '/guide/': [

@@ -8,7 +8,7 @@
 
 ### What does the custom view have to have included?
 
-1. Mixin from ```vue-wp-json/plugin/inheritable/Post``` that applies a Post 
+1. Mixin from ```@vue-wordpress/core/plugin/inheritable/Post``` that applies a Post 
 
 2. Section component, e.g:
 ```vue
@@ -83,7 +83,7 @@ const plugin: WPExtension = {
 
 ### What does the custom view have to have included?
 
-1. Mixin from ```vue-wp-json/plugin/inheritable/Page``` that applies a Page 
+1. Mixin from ```@vue-wordpress/core/plugin/inheritable/Page``` that applies a Page 
 
 2. Sections component, e.g:
 ```vue
@@ -133,7 +133,7 @@ const plugin: WPExtension = {
 
 ### What does the custom component have to have included?
 
-1. Mixin from ```vue-wp-json/plugin/inheritable/Section``` that applies a Section 
+1. Mixin from ```@vue-wordpress/core/plugin/inheritable/Section``` that applies a Section 
 
 2. Column component, e.g:
 ```vue
@@ -192,7 +192,7 @@ const plugin: WPExtension = {
 
 ### What does the custom column have to have included?
 
-1. Mixin from ```vue-wp-json/plugin/inheritable/Column``` that applies a Column 
+1. Mixin from ```@vue-wordpress/core/plugin/inheritable/Column``` that applies a Column 
 
 2. Dynamic component, e.g:
 ```vue
