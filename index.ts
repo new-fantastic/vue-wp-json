@@ -35,7 +35,7 @@ export default {
       }
 
       let store
-      const manualVuexMode = options.store === 'manual'
+      const manualVuexMode = options.store === true
       if(!manualVuexMode) {
         store = options.store
       }
@@ -71,8 +71,9 @@ export default {
 
       const router = options.router
 
-      if(router !== 'manual')
+      if(typeof router === 'object') {
         router.addRoutes(routes())
+      }
 
       // Set lang in html
       const nuxtServer = process

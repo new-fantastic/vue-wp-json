@@ -1,12 +1,6 @@
 const lazyLoader = () => import('../pages/Loader.vue')
 const loaderPath = '../pages/Loader.vue'
 
-interface PartialRoute {
-  name: string
-  path: string
-  component: Promise<Object>
-}
-
 export const pagePrefix = 'page'
 export const postPrefix = 'post'
 
