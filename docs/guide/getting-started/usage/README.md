@@ -34,8 +34,8 @@ Then create **MyCustomPage** View. You should import mixin in your View and data
 </template>
 
 <script>
-  import loadSections from 'vue-wp-json/mixins/loadSections'
-  import { FetchHookTypes } from 'vue-wp-json/types'
+  import loadSections from '@vue-wordpress/core/mixins/loadSections'
+  import { FetchHookTypes } from '@vue-wordpress/core/types'
 
   export default {
     name: 'MyCustomPage',
@@ -101,7 +101,7 @@ Inside media object we have information about each file. Keys are media ID, valu
 
 We can use it with **BaseMedia** component which is placed in:
 ```
-@vue-wp-json/core/components/base/BaseMedia.vue
+@vue-wordpress/core/components/base/BaseMedia.vue
 ```
 It will decide what type of media it is and render proper component (Image or Video). All we have to provide as props is **media's id**
 
@@ -132,7 +132,7 @@ There will be object where key is a menu's slug and value is a data.
 
 We provide BaseMenu component with which you can render the simplest possible menu (ul > li > a || router-link). It does not matter how deep submenus it contains. Component support __infinite nesting__. It is placed under:
 ```
-@vue-wp-json/core/components/base/BaseMenu.vue
+@vue-wordpress/core/components/base/BaseMenu.vue
 ```
 
 Just provide as __slug props__ menu's slug, e.g:
