@@ -73,7 +73,7 @@ First one:
 ```js
 modules: [
   [
-    'nuxt-wp-json',
+    '@vue-wordpress/nuxt',
     {
       config: {
         url: 'https://wp.mysite.com/',
@@ -89,7 +89,7 @@ modules: [
 Second one:
 ```js
 modules: [
-  'nuxt-wp-json'
+  '@vue-wordpress/nuxt'
 ],
 wpJson: {
   config: {
