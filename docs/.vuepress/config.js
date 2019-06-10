@@ -60,6 +60,7 @@ module.exports = {
             ['/api/store/', 'Vuex Store'],
             ['/api/wp/', '$wp'],
             ['/api/loadSections/', 'loadSections'],
+            ['/api/base-components/', 'Base Components'],
           ]
         }
       ],
