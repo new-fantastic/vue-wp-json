@@ -2,13 +2,14 @@ import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import { ModulePrefix } from '../../index'
 import BaseMenu from '../../components/Base/BaseMenu'
 
-const Factory = (slug: string, items: Array<any>) => {
+const Factory = (slug: string, items: Array<any>, showDescription: Boolean = false) => {
   return shallowMount(BaseMenu, {
     stubs: {
       RouterLink: RouterLinkStub
     },
     propsData: {
-      slug
+      slug,
+      showDescription
     },
     mocks: {
       $store: {
@@ -186,7 +187,7 @@ describe('BaseMenu', () => {
     expect(vm.find('.first-class.special > ul > .other-one.diffrent').is('li')).toBe(true)
   })
 
-  it('it adds description (p) to Li after link', () => {
+  it('it adds description (p) to Li after link (if enabled)', () => {
     const items = [
       {
         ID: 1,
@@ -206,12 +207,38 @@ describe('BaseMenu', () => {
       }
     ]
 
-    const vm = Factory(slug, items)
+    const vm = Factory(slug, items, true)
 
     expect(vm.find('.first > p').exists()).toBe(true)
     expect(vm.find('.first > p').html()).toBe('<p>' + items[0].description + '</p>')
     expect(vm.find('.first > ul > .second > p').exists()).toBe(true)
     expect(vm.find('.first > ul > .second > p').html()).toBe('<p>' + items[0].child_items[0].description + '</p>')
+  })
+
+  it('it does not add description (p) to Li after link by default', () => {
+    const items = [
+      {
+        ID: 1,
+        url: 'test-a',
+        title: 'Test A',
+        description: 'yolo',
+        classes: ['first'],
+        child_items: [
+          {
+            ID: 3,
+            url: 'test-a-a',
+            title: 'Test A-A',
+            description: '<b><i>other-value</i></b>',
+            classes: ['second']
+          }
+        ]
+      }
+    ]
+
+    const vm = Factory(slug, items, false)
+
+    expect(vm.find('.first > p').exists()).toBe(false)
+    expect(vm.find('.first > ul > .second > p').exists()).toBe(false)
   })
 
 })

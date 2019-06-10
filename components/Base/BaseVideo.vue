@@ -1,7 +1,7 @@
 <template>
   <video 
     v-bind="$attrs"
-    v-on="$on"
+    v-on="$listeners"
     :width="mediaDetails.width" 
     :height="mediaDetails.height" 
     controls

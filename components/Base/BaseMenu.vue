@@ -8,6 +8,10 @@
       slug: {
         type: String,
         required: true
+      },
+      showDescription: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
@@ -35,7 +39,7 @@
           }, item.title))
         }
 
-        if (item.description && item.description.length > 0) {
+        if (this.showDescription && item.description && item.description.length > 0) {
           toReturn.push(h('p', {
             domProps: {
               innerHTML: item.description
