@@ -59,7 +59,7 @@ export default {
       }
 
       if(!manualVuexMode) {
-        vuex.loadBase(store.dispatch, options.config.menus)
+        await vuex.loadBase(store.dispatch, options.config.menus)
         vuex.setLang(store.commit, options.config.lang)
         vuex.setConfig(store.commit, options.config)
       }
