@@ -217,13 +217,28 @@ export default (
       computed
     }
 
-  } else if (createdOrAsync === FetchHookTypes.AsyncData) {
+  } else if (createdOrAsync === FetchHookTypes.AsyncData || createdOrAsync === FetchHookTypes.VoidAsyncData) {
     // Appears in Nuxt version
-    const requests = []
+    // const requests = []
 
     if (typeof loaderRequest === 'string') {
 
       metaSource = loaderRequest
+
+      if(createdOrAsync === FetchHookTypes.VoidAsyncData) {
+        computed = {
+          ...computed,
+          [loaderRequest]() { return orNull(
+            this.$store.state[`${ModulePrefix}_page`].page[loaderRequest]
+          )
+          }
+        }
+      }
+
+      mixin = {
+        ...mixin,
+        computed
+      }
 
       mixin = {
         ...mixin,
@@ -244,6 +259,54 @@ export default (
       }
     } else if (Array.isArray(loaderRequest)) {
         // slug - array of request elements in this example
+        if(createdOrAsync === FetchHookTypes.VoidAsyncData) {
+          for (let requestElement of loaderRequest) {
+            if (typeof requestElement === 'string') {
+              if(!metaSource) {
+                metaSource = requestElement
+              }
+              
+              computed = {
+                ...computed,
+                [requestElement](){ return orNull(
+                    this.$store.state[`${ModulePrefix}_page`].page[requestElement]
+                )
+                }
+              }
+    
+            } else {
+
+              let {
+                slug,
+                dataName,
+                meta,
+                contentType
+              } = ConsumeObject(requestElement)
+    
+              const type = ContentTypeToString(contentType)
+              
+              if(meta !== null) {
+                metaSource = meta
+              }
+    
+              computed = {
+                ...computed, 
+                [dataName]() { return orNull(
+                    this.$store.state[`${ModulePrefix}_${type}`][type][slug]
+                )
+                }
+              }
+            }
+            
+          }
+          
+        }
+  
+        mixin = {
+          ...mixin,
+          computed
+        }
+
         mixin = {
           ...mixin,
           async asyncData ({ store }) {
@@ -294,22 +357,34 @@ export default (
         
       } else {
         // slug -- object
+        let {
+          slug,
+          dataName,
+          meta,
+          contentType
+        } = ConsumeObject(loaderRequest)
+  
+        const type = ContentTypeToString(contentType)
+        metaSource = meta ? meta : dataName
+
+        if(createdOrAsync === FetchHookTypes.VoidAsyncData) {
+          computed = {
+            ...computed,
+            [dataName]() { return orNull(
+              this.$store.state[`${ModulePrefix}_${type}`][type][slug]
+            )
+            }
+          }
+        }
+  
+        mixin = {
+          ...mixin,
+          computed
+        }
+
         mixin = {
           ...mixin,
           async asyncData ({ store }) {
-
-            let {
-              slug,
-              dataName,
-              meta,
-              contentType
-            } = ConsumeObject(loaderRequest)
-      
-            const type = ContentTypeToString(contentType)
-            
-            if(meta !== null) {
-              metaSource = meta
-            }
 
             await store.dispatch(`${ModulePrefix}_${type}/load`, {
               slug,

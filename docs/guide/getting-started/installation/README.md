@@ -124,7 +124,53 @@ That is all. Now you can use NuxtWpJson module!
 
 <br>
 
-Lorem ipsum
+Go to your theme's main directory and run:
+```
+npm install @vue-wordpress/core
+```
+or
+```
+yarn add @vue-wordpress/core
+```
+
+Then open modules directory and type:
+```
+git clone git@github.com:new-fantastic/vsf-wp-json.git;
+```
+
+After that, add module to modules/index.js:
+```ts
+import { WpJson } from './vsf-wp-rest-api'
+
+//...
+
+export const registerModules: VueStorefrontModule[] = [
+  // ...
+    WpJson,
+  // ...
+]
+```
+
+Open config file, then at the end of main object add:
+```json
+"wordpressCms": {
+  "url": "https://wp.myapi.com/",
+  "lang": "en",
+  "menus": ["for-buyers", "footer"]
+}
+```
+
+If you want to register plugin, you can do it by adding in **wordpressCms** - plugins, e.g.:
+```json
+"wordpressCms": {
+  "url": "https://wp.myapi.com/",
+  "lang": "en",
+  "menus": ["for-buyers", "footer"],
+  "plugins": "acf"
+}
+```
+
+Plugin should be inside node_modules/@vue-wordpress. It also must have "vue-wp-json-" prefix.
 
 <br>
 

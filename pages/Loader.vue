@@ -28,7 +28,7 @@
 
       const fallbackProps = {
         props: {
-          wpData: this.wpData
+          wpData: this.wpData ? this.wpData : (this.loadedWpData ? this.loadedWpData : null)
         }
       }
 
