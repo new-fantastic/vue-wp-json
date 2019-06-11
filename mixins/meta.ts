@@ -1,3 +1,5 @@
+import { ModulePrefix } from '@vue-wordpress/core'
+
 export default (type: string, plainObject: string) => ({
 
     metaInfo() {
@@ -7,7 +9,7 @@ export default (type: string, plainObject: string) => ({
   
         let dt = []
         if (iId > 0) {
-          const medium = this.$store.state.wpr_media.media[iId]
+          const medium = this.$store.state[`${ModulePrefix}_media`].media[iId]
           const mimeType = medium.mime_type.split('/')[0]
           switch(mimeType) {
             case 'image':

@@ -49,6 +49,18 @@ export default {
         },
       },
 
+      computed: {
+        loadedWpData () {
+          const short = this.$route.name === pagePrefix 
+            ? 'page'
+            : 'post'
+
+          return this.$store.state[`${ModulePrefix}_${short}`][short][this.$route.params.slug]
+            ? this.$store.state[`${ModulePrefix}_${short}`][short][this.$route.params.slug]
+            : null
+        }
+      },
+
       async created () {
 
         // What did I mean with these conditions?

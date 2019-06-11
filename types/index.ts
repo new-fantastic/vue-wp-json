@@ -7,7 +7,8 @@ export enum ContentTypes {
 
 export enum FetchHookTypes {
   Created,
-  AsyncData
+  AsyncData,
+  VoidAsyncData
 }
 
 export interface LoaderRequestElement {
