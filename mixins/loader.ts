@@ -46,7 +46,12 @@ export default {
             ? ContentTypes.Page 
             : ContentTypes.Post
           });
+
         },
+
+        loadedWpData (n) {
+          this.wpData = n
+        }
       },
 
       computed: {

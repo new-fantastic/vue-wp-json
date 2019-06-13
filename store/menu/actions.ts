@@ -80,7 +80,10 @@ export const actions: ActionTree<Object, any> = {
         base.addAtTheEnd(menuSlugs)
         let response = await axios.get(base.url)
         commit(types.SET_MENU_CONTENT, {
-          data: response.data,
+          data: {
+            ...response.data,
+            items: fixUrls(response.data.items)
+          },
           slotName: menuSlugs
         })
       } 

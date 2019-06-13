@@ -1,6 +1,6 @@
 {
   "name": "@vue-wordpress/core",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "💫 Wordpress REST API plugin for Vue.js with out-of-box routing and data handling 💫",
   "main": "index.js",
   "dependencies": {
