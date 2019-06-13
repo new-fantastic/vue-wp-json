@@ -12,7 +12,7 @@ export const actions: ActionTree<Object, any> = {
   
   async load({commit}, {menuSlugs}) {
 
-    if(menuSlugs === false || !menuSlugs) {
+    if(menuSlugs === false) {
       return
     }
 
@@ -76,7 +76,7 @@ export const actions: ActionTree<Object, any> = {
           })
         })
 
-      } else {
+      } else if (typeof menuSlugs === 'string') {
         base.addAtTheEnd(menuSlugs)
         let response = await axios.get(base.url)
         commit(types.SET_MENU_CONTENT, {
@@ -86,6 +86,32 @@ export const actions: ActionTree<Object, any> = {
           },
           slotName: menuSlugs
         })
+      } else {
+
+        // if (menuSlugs === true) {
+          let firstResponse = await axios.get(base.url)
+          const slugs = firstResponse.data.map(v => v.slug)
+          
+          const requests = []
+          for(let slug of slugs) {
+            base.addAtTheEnd(slug)
+            requests.push(
+              axios.get(base.url)
+            )
+            base.removeFromTheEnd()
+          }
+          let response = await Promise.all(requests)
+          response.forEach(c => {
+            commit(types.SET_MENU_CONTENT, {
+              data: {
+                ...c.data,
+                items: fixUrls(c.data.items)
+              },
+              slotName: c.data.slug
+            })
+          })
+        // } 
+        
       } 
   
     } catch (err) {

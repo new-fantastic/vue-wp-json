@@ -24,9 +24,10 @@ export const registerModules = (store: any) => {
 }
 
 export const loadBase = async (dispatch: Function, menuSlugs: any) => {
+  // Menu slugs can be string, array or boolean
   await Promise.all([
     dispatch(`${ModulePrefix}_menu/load`, {
-      menuSlugs
+      menuSlugs: menuSlugs
     }),
     dispatch(`${ModulePrefix}_meta/load`),
     dispatch(`${ModulePrefix}_media/load`)
