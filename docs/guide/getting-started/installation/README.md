@@ -19,24 +19,55 @@ Go to your app's main.js/main.ts file, import the module catalog and register it
 
 ```javascript
 import Vue from 'vue'
+import store from 'store'
+import router from 'router'
 import Wordpress from '@vue-wordpress/core'
  
 Vue.use(Wordpress, {
   config: {
     url: 'https://your-wordpress-url.com/',
-    lang: 'en', // Your site's default language – It will be added to the html lang attribute.
+    lang: 'en',
     menus: [
       "main-menu",
       "footer-menu"
-      // Here you can provide your menus' slugs
-      // If you have only one menu, simply addi it  as a string.
-      // If you do not have any menus, set this value to false or just delete this key
     ]
   },
   store,
   router
 })
 ```
+
+### config.url 
+Rest API URL
+
+### config.lang
+language of the website (two letter label)
+
+### config.menus
+There are a few possibilities with menu.
+However, you must remember to install [WP-REST-API V2 Menus](https://wordpress.org/plugins/wp-rest-api-v2-menus/) because by default, menus are not accessible on API.
+
+- If you want to fetch each wordpress' menu.   
+You do not even need to put **menus** key inside config object. It is default setting.
+
+- If you want fetch only certain menus. You should provide slugs as value. It can be string for one menu, and array of strings for few arrays.
+```js
+menus: 'my-slug'
+// OR
+menus: [
+  'my-slug',
+  'other-menu',
+  'diffrent'
+]
+```
+
+- If you want to disable fetching menus (one request less). You should set **menus** to false
+```js
+menus: false
+```
+
+### Store and router
+Store is an instance of Vuex Store and router is an instance 
 
 That is all. Now you can use VueWpJson module!
 
