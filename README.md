@@ -84,14 +84,7 @@ import  Wordpress  from  '@vue-wordpress/core'
 Vue.use(Wordpress, {
   config: {
     url:  'https://your-wordpress-url.com/',
-    lang:  'en', // Your site's default language – It will be added to the html lang attribute.
-    menus: [
-      "main-menu",
-      "footer-menu"
-      // Here you can provide your menus' slugs
-      // If you have only one menu, simply addi it as a string.
-      // If you do not have any menus, set this value to false or just delete this key
-    ]
+    lang:  'en' // Your site's default language – It will be added to the html lang attribute.
   },
   store,
   router
