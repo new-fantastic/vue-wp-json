@@ -1,9 +1,9 @@
-import loadSections from '../../mixins/loadSections'
+import wpData from '../../mixins/wpData'
 import { ContentTypes, FetchHookTypes } from '../../types';
 import { ModulePrefix } from '../../index'
 import Meta from '../../plugin/inheritable/Meta'
 
-describe.only('loadSections', () => {
+describe.only('wpData', () => {
   const that: any = {
     $store: {
       state: {
@@ -15,11 +15,11 @@ describe.only('loadSections', () => {
   }
 
   it('throws error if slug not provided', () => {
-    expect(loadSections).toThrowError()
+    expect(wpData).toThrowError()
   })
 
   const slug = 'some-slug'
-  const HookCreated = loadSections(slug, FetchHookTypes.Created)
+  const HookCreated = wpData(slug, FetchHookTypes.Created)
 
   it('FetchHookTypes.Created, returns null for not existing slug', () => {
     
@@ -59,7 +59,7 @@ describe.only('loadSections', () => {
     spy.mockRestore();
 
   })
-  const HookAsync = loadSections(slug, FetchHookTypes.AsyncData)
+  const HookAsync = wpData(slug, FetchHookTypes.AsyncData)
 
   it('FetchHookTypes.AsyncData, dispatches proper action', () => {
 
@@ -89,7 +89,7 @@ describe.only('loadSections', () => {
       dispatch: () => {}
     }
 
-    const HookAsync2 = loadSections(slug, FetchHookTypes.AsyncData)
+    const HookAsync2 = wpData(slug, FetchHookTypes.AsyncData)
     const data = await HookAsync2.asyncData({ store })
 
     expect(data[slug]).toBe(store.state[`${ModulePrefix}_page`].page[slug])

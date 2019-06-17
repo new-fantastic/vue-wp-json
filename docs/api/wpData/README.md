@@ -2,10 +2,10 @@
 sidebarDepth: 2
 ---
 
-# loadSections
+# wpData
 Mixin accepts two arguments - target and fetching mode.
 ```ts
-loadSections(
+wpData(
   target: string | LoaderRequestElement | Array<LoaderRequestElement | string>, 
   fetchingMode: FetchHookTypes
 )
@@ -19,7 +19,7 @@ Example view's fragment:
 
 ```js
 {
-  mixins: [loadSections('example')],
+  mixins: [wpData('example')],
   mounted () {
     // There we have access to response!
     console.log(this.example)
@@ -48,7 +48,7 @@ Example view's fragment:
 
 ```js
 {
-  mixins: [loadSections({
+  mixins: [wpData({
     slug: 'sample-post-page',
     post: true,
     dataName: 'example'
@@ -66,7 +66,7 @@ Example view's fragment:
 
 ```js
 {
-  mixins: [loadSections([
+  mixins: [wpData([
     'contact',
     {
       slug: 'sample-post-page',

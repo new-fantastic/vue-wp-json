@@ -34,12 +34,12 @@ Then create **MyCustomPage** View. You should import mixin in your View and data
 </template>
 
 <script>
-  import loadSections from '@vue-wordpress/core/mixins/loadSections'
+  import wpData from '@vue-wordpress/core/mixins/wpData'
   import { FetchHookTypes } from '@vue-wordpress/core/types'
 
   export default {
     name: 'MyCustomPage',
-    mixins: [loadSections('wp-page-slug', FetchHookTypes.Created)]
+    mixins: [wpData('wp-page-slug', FetchHookTypes.Created)]
   }
 </script>
 ```
@@ -47,16 +47,16 @@ Then create **MyCustomPage** View. You should import mixin in your View and data
 As **wp-page-slug** type slug of your page in Wordpress site!
 We have access to the **Sections** component from our mixin. It renders fetched Page. 
 
-loadSections takes one argument of FetchHookTypes type. Currently, there are 2 possible values:
+wpData takes one argument of FetchHookTypes type. Currently, there are 2 possible values:
 - FetchHookTypes.Created - when data has to be fetched inside __created__ lifecycle hook
 - FetchHookTypes.AsyncData - when data has to be fetched inside __asyncData__ (Nuxt)
 
 If we do not provide any value to the function, it will by default use __FetchHookTypes.Created__. So for Vue App's without SSR, we can use just:
 ```js
-loadSections('wp-page-slug')
+wpData('wp-page-slug')
 ```
 
-**loadSections** is so powerful mixin. It can accept array of slugs, and objects in first argument. Learn more about it [here](/api/loadSections/).
+**wpData** is so powerful mixin. It can accept array of slugs, and objects in first argument. Learn more about it [here](/api/wpData/).
 
 <br>
 
@@ -76,14 +76,14 @@ router: false
 
 <br>
 
-It is possible that you would want to use plain fetched data - without our abstraction layers. All you need to do that is append **loadSections** mixin.
+It is possible that you would want to use plain fetched data - without our abstraction layers. All you need to do that is append **wpData** mixin.
 
 After that, fetched data will be available under **this** like data/computed value.
 
 Example: 
 ```js
 {
-  mixins: [loadSections({
+  mixins: [wpData({
     slug: 'sample-post-page',
     post: true,
     dataName: 'example'
@@ -95,7 +95,7 @@ Example:
 }
 ```
 
-Learn more about loadSections [here](/api/loadSections/).
+Learn more about wpData [here](/api/wpData/).
 
 <br>
 
