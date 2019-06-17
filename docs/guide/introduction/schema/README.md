@@ -2,6 +2,6 @@
 
 <br>
 
-Lorem ipsum
+<img src="https://cdn.vuewordpress.io/vueWordPressSchema.jpg">
 
 <br>
