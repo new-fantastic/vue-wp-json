@@ -19,19 +19,17 @@ Go to your app's main.js/main.ts file, import the module catalog and register it
 
 ```javascript
 import Vue from 'vue'
-import store from 'store'
-import router from 'router'
+import store from './store'
+import router from './router'
 import Wordpress from '@vue-wordpress/core'
  
 Vue.use(Wordpress, {
-  config: {
-    url: 'https://your-wordpress-url.com/',
-    lang: 'en',
-    menus: [
-      "main-menu",
-      "footer-menu"
-    ]
-  },
+  url: 'https://your-wordpress-url.com/',
+  lang: 'en',
+  menus: [
+    "main-menu",
+    "footer-menu"
+  ],
   store,
   router
 })
@@ -106,10 +104,8 @@ modules: [
   [
     '@vue-wordpress/nuxt',
     {
-      config: {
-        url: 'https://wp.mysite.com/',
-        lang: 'en'
-      },
+      url: 'https://wp.mysite.com/',
+      lang: 'en',
       store: true,
       router: true
     }
@@ -123,10 +119,8 @@ modules: [
   '@vue-wordpress/nuxt'
 ],
 wpJson: {
-  config: {
-    url: 'https://wp.mysite.com/',
-    lang: 'en'
-  },
+  url: 'https://wp.mysite.com/',
+  lang: 'en',
   store: true,
   router: true
 }
