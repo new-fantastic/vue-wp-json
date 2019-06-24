@@ -9,11 +9,9 @@ import { meta }from '../../store/meta'
 import { config }from '../../store/config'
 import { layouts }from '../../store/layouts'
 
-import { SET_LANG } from '../../store/lang/mutation-types'
 import { SET_CONFIG } from '../../store/config/mutation-types'
 
 export const registerModules = (store: any) => {
-  store.registerModule(`${ModulePrefix}_lang`, lang)
   store.registerModule(`${ModulePrefix}_media`, media)
   store.registerModule(`${ModulePrefix}_menu`, menu)
   store.registerModule(`${ModulePrefix}_meta`, meta)
@@ -32,10 +30,6 @@ export const loadBase = async (dispatch: Function, menuSlugs: any) => {
     dispatch(`${ModulePrefix}_meta/load`),
     dispatch(`${ModulePrefix}_media/load`)
   ])
-}
-
-export const setLang = (commit: Function, lang: string) => {
-  commit(`${ModulePrefix}_lang/${SET_LANG}`, lang)
 }
 
 export const setConfig = (commit: Function, config: any) => {

@@ -9,17 +9,12 @@ VueWpJson plugin creates few VueX store modules to store a fetched data.
 Simple module which stores config provided by user while registering plugin/Nuxt module. There we inject whole **config object** under "config" key   
 Example value:
 ```js
-config: {
   lang: 'en',
   url: 'https://wp.mybackend.com/',
   menus: ["info", "contact"]
-}
 ```
 
 Creating this module was essential to make it compatibile with Nuxt.
-
-## wp_lang
-There we store website's language under "lang" key. In future, this module will be deleted because we store same data in wp_config
 
 ## wp_layouts
 If we provide Vuex Store as third argument to registerPlugin - there will be stored under keys post/page:

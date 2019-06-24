@@ -9,11 +9,9 @@ VueWpJson plugin injects few core things to __Vue.prototype__. It can be useful 
 There we inject whole **config object**   
 Example value:
 ```js
-config: {
   lang: 'en',
   url: 'https://wp.mybackend.com/',
   menus: ["info", "contact"]
-}
 ```
 
 ## $wp.layouts
