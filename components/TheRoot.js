@@ -48,9 +48,11 @@
             }
 
             if(!(counter === customOptionsAmount)) {
-              return wpSections.length > 1 ? wpSections : wpSections[0]
+              return wpSections.length > 1 
+                ? wpSections 
+                : wpSections[0]
             } 
-        } 
+        }
 
         return h(chosenSection, {
           props: {

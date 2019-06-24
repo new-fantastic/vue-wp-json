@@ -15,19 +15,19 @@ export default {
     try {
       // Config
       // Is it proper
-      if (!('config' in options)) {
-        throw new Error('No config provided!')
-      }
-      if (!('url' in options.config)) {
+      // if (!('config' in options)) {
+      //   throw new Error('No config provided!')
+      // }
+      if (!('url' in options)) {
         throw new Error('No API\'s URL provided!')
       }
-      if (!('lang' in options.config)) {
+      if (!('lang' in options)) {
         throw new Error('No lang provided!')
       }
       // Register it in app
       Vue.use(MetaInfo)
       Vue.prototype.$wp = {}
-      Vue.prototype.$wp.config = options.config;
+      Vue.prototype.$wp.config = options;
 
       // Do we have store?
       if (!('store' in options)) {
@@ -59,9 +59,9 @@ export default {
       }
 
       if(!manualVuexMode) {
-        await vuex.loadBase(store.dispatch, options.config.menus)
-        vuex.setLang(store.commit, options.config.lang)
-        vuex.setConfig(store.commit, options.config)
+        await vuex.loadBase(store.dispatch, options.menus)
+        vuex.setLang(store.commit, options.lang)
+        vuex.setConfig(store.commit, options)
       }
 
       // Do we have router?
@@ -79,11 +79,11 @@ export default {
       const nuxtServer = process
       && process.server;
 
-      if (!nuxtServer && document) {
+      if (!nuxtServer && document !== undefined) {
         const html = document.querySelector('html')
 
         if(html) {
-          html.setAttribute('lang', options.config.lang)
+          html.setAttribute('lang', options.lang)
         }
 
         const el = document.createElement('link');
@@ -92,8 +92,8 @@ export default {
         const url = window.location.origin.substr(-1) === '/'
           ? window.location.origin
           : window.location.origin + '/'
-        el.setAttribute('href', `${url}${options.config.lang}`)
-        el.setAttribute('hreflang', `${options.config.lang}`)
+        el.setAttribute('href', `${url}${options.lang}`)
+        el.setAttribute('hreflang', `${options.lang}`)
 
         document.head.appendChild(el)
       }
