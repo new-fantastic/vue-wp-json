@@ -24,7 +24,7 @@ export const actions: ActionTree<Object, any> = {
     }
 
     try {
-      if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
+      // if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
         const response = await axios.get(base.url)
 
         if(response.data.status == 404 || response.data.length < 1) {
@@ -35,7 +35,7 @@ export const actions: ActionTree<Object, any> = {
           data: response.data,
           slotName: slug
         })
-      }
+      // }
   
     } catch (err) {
       commit(types.SET_POST_CONTENT, {
