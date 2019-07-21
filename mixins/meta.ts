@@ -1,4 +1,4 @@
-import { ModulePrefix } from '@vue-wordpress/core'
+import { ModulePrefix } from '../'
 
 export default (type: string, plainObject: string) => ({
 

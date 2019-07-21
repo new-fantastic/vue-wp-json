@@ -1,7 +1,11 @@
-import { ContentTypes, FetchHookTypes, LoaderRequestElement } from '../types'
-import { ModulePrefix } from '../index'
-import { ContentTypeToString, StringToContentType } from '../util/Filters'
-import Meta from '../plugin/inheritable/Meta'
+import { ContentTypes, FetchHookTypes, LoaderRequestElement } from '../../types'
+import { ModulePrefix } from '../../index'
+import { ContentTypeToString, StringToContentType } from '../../util/Filters'
+import Meta from '../../plugin/inheritable/Meta'
+
+import fhtCreated from './fetchHookTypes/Created'
+import fhtAsyncData from './fetchHookTypes/AsyncData'
+import fhtVoidAsyncData from './fetchHookTypes/VoidAsyncData'
 
 const orNull = (value) => {
   return value ? value : null
@@ -69,6 +73,24 @@ const ConsumeObject = (obj: LoaderRequestElement) => {
 }
 
 export default (
+  loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
+  createdOrAsync: FetchHookTypes = FetchHookTypes.Created) => {
+
+    switch (createdOrAsync) {
+      case FetchHookTypes.Created: 
+        return fhtCreated()
+      case FetchHookTypes.AsyncData: 
+        return fhtAsyncData()
+      case FetchHookTypes.VoidAsyncData: 
+        return fhtVoidAsyncData()
+      break;
+      default:
+        throw new Error("FetchHookType" + createdOrAsync + " does not exist")
+    }
+
+}
+
+const old = (
   loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
   createdOrAsync: FetchHookTypes = FetchHookTypes.Created) => {
 
