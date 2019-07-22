@@ -3,7 +3,7 @@ import { pickMetaSource } from '../../mixins/wpData/fetchHookTypes/Created'
 import { ModulePrefix } from '../../'
 import { ContentTypes, LoaderRequestElement } from '../../types';
 
-describe('FetchHookType: Created', () => {
+describe('FetchHookType: VoidAsyncData', () => {
 
   const that = {
     $store: {

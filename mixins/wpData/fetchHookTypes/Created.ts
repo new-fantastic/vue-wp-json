@@ -1,5 +1,7 @@
 import { ContentTypes, isLoaderRequestElement, FetchHookTypes, LoaderRequestElement } from '../../../types'
 import { ModulePrefix } from '../../../'
+import Meta from '../../meta'
+import pickMetaSource from '../../PickMetaSource'
 
 const buildCreated = function (loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>) {
   return async () => {
@@ -16,7 +18,7 @@ const buildCreated = function (loaderRequest: string | LoaderRequestElement | Ar
         slug: loaderRequest.slug,
         type: isPost ? ContentTypes.Post : ContentTypes.Page
       })
-    } else {
+    } else if (Array.isArray(loaderRequest)) {
       const requests = []
       for (let request of loaderRequest) {
 
@@ -26,6 +28,10 @@ const buildCreated = function (loaderRequest: string | LoaderRequestElement | Ar
         requests.push(buildCreated.call(this, request).call(this))
       }
       await Promise.all(requests)
+    } else {
+
+      throw new Error('FetchHookTypeCreated: loaderRequest cannot be ' + typeof loaderRequest)
+    
     }
 
   }
@@ -62,7 +68,7 @@ const buildComputed = function (loaderRequest: string | LoaderRequestElement | A
 
     return computed;
 
-  } else {
+  } else if (Array.isArray(loaderRequest)) {
     for (let request of loaderRequest) {
 
       computed = {
@@ -72,6 +78,8 @@ const buildComputed = function (loaderRequest: string | LoaderRequestElement | A
 
     }
 
+  } else {
+    throw new Error('FetchHookTypeCreated: loaderRequest cannot be ' + typeof loaderRequest)
   }
 
   return computed
@@ -81,10 +89,14 @@ const buildComputed = function (loaderRequest: string | LoaderRequestElement | A
 export default function (loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>) {
   const created = buildCreated.call(this, loaderRequest)
   const computed = buildComputed.call(this, loaderRequest)
+  const meta = pickMetaSource.call(this, loaderRequest)
 
   return {
     created,
-    computed
+    computed,
+    mixins: [
+      Meta(ContentTypes.Page, meta)
+    ]
   }
 
 }
