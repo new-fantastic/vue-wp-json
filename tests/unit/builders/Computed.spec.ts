@@ -1,143 +1,9 @@
-import FetchHookTypeCreated from '../../mixins/wpData/fetchHookTypes/Created'
-import { pickMetaSource } from '../../mixins/wpData/fetchHookTypes/Created'
-import { ModulePrefix } from '../../'
-import { ContentTypes, LoaderRequestElement } from '../../types';
+import buildComputed from '../../../mixins/wpData/builders/Computed'
+import { ModulePrefix } from '../../../'
+import FetchHookTypeCreated from '../../../mixins/wpData/fetchHookTypes/Created'
+import { LoaderRequestElement, LoaderRequestElementWithValue } from '../../../types'
 
-describe('FetchHookType: Created', () => {
-
-  const that = {
-    $store: {
-      dispatch (state, payload) {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve()
-          }, 100)
-        })
-      }
-    }
-  }
-
-  interface LoaderRequestElementWithValue extends LoaderRequestElement{
-    value: any
-  }
-
-  it('builds proper Created for loaderRequest: string', () => {
-
-    const slug = 'slug'
-
-    const value: any = FetchHookTypeCreated.call(that, slug)
-    const spy = jest.spyOn(that.$store, 'dispatch')
-    const invoke = value.created.call(that)
-
-    expect(spy).toHaveBeenCalledWith(
-      `${ModulePrefix}_page/load`,
-      {
-        slug: slug,
-        type: ContentTypes.Page
-      }
-    )
-
-  })
-
-  it('builds proper Created for loaderRequest: LoaderRequest', () => {
-
-    const tests: LoaderRequestElement[] = [
-      {
-        slug: 'slug',
-        post: true
-      },
-      {
-        slug: 'slug2',
-        post: false
-      },
-      {
-        slug: 'slug3'
-      }
-    ]
-
-    for (let test of tests) {
-
-      const value: any = FetchHookTypeCreated.call(that, test)
-      const spy = jest.spyOn(that.$store, 'dispatch')
-      const invoke = value.created.call(that)
-
-      expect(spy).toHaveBeenCalledWith(
-        'post' in test && test.post 
-          ? `${ModulePrefix}_post/load`
-          : `${ModulePrefix}_page/load`,
-        {
-          slug: test.slug,
-          type: 'post' in test && test.post 
-            ? ContentTypes.Post 
-            : ContentTypes.Page
-        }
-      )
-
-    }
-
-  })
-
-  it('builds proper Created for loaderRequest: Array<LoaderRequest | string>', async () => {
-
-    const test = [
-      {
-        slug: 'slug',
-        post: true
-      },
-      {
-        slug: 'slug2',
-        post: false
-      },
-      'slug3'
-    ]
-
-    const that2 = {
-      $store: {
-        dispatch (state, payload) {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve()
-            }, 100)
-          })
-        }
-      }
-    }
-
-    const value: any = FetchHookTypeCreated.call(that2, test)
-    const spy = jest.spyOn(that2.$store, 'dispatch')
-    const invoke = await value.created.call(that2)
-
-    for (let i = 0, len = test.length; i < len; i++) {
-
-      expect(spy).toHaveBeenNthCalledWith(i+1,
-        typeof test[i] !== 'string' && 'post' in test[i] && test[i].post 
-          ? `${ModulePrefix}_post/load`
-          : `${ModulePrefix}_page/load`,
-        {
-          slug: typeof test[i] === 'string' ? test[i] : test[i].slug,
-          type: typeof test[i] !== 'string' && 'post' in test[i] && test[i].post
-            ? ContentTypes.Post 
-            : ContentTypes.Page
-        }
-      )
-
-    }
-
-  })
-
-  it('throws error when buildCreated gets a bad argument', async () => {
-
-    let error
-    try {
-      const value: any = FetchHookTypeCreated.call(that, [155,12]) // Bad arg
-      await value.created.call(that)
-    } catch(e) {
-      error = e
-    }
-
-    expect(error).toBeInstanceOf(Error)
-
-  })
+describe('Computed Builder', () => {
 
   it('computed returns proper value for loaderRequest: string', () => {
 
@@ -375,8 +241,5 @@ describe('FetchHookType: Created', () => {
     }
 
   })
-
-  
-
 
 })
