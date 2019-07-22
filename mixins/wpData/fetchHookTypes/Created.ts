@@ -32,11 +32,59 @@ const buildCreated = function (loaderRequest: string | LoaderRequestElement | Ar
 
 }
 
+const buildComputed = function (loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>) {
+
+  let computed = {}
+
+  if (typeof loaderRequest === 'string') {
+
+    computed[loaderRequest] = 
+      () => this.$store.state[`${ModulePrefix}_page`].page[loaderRequest]
+        ? this.$store.state[`${ModulePrefix}_page`].page[loaderRequest]
+        : null
+
+    return computed;
+
+  } else if (isLoaderRequestElement(loaderRequest)) {
+
+    const contentType: string = 'post' in loaderRequest && loaderRequest.post
+      ? 'post'
+      : 'page'
+
+    const dataName: string = 'dataName' in loaderRequest 
+      ? loaderRequest.dataName
+      : loaderRequest.slug
+
+    computed[dataName] = 
+      () => this.$store.state[`${ModulePrefix}_${contentType}`][contentType][loaderRequest.slug]
+        ? this.$store.state[`${ModulePrefix}_${contentType}`][contentType][loaderRequest.slug]
+        : null
+
+    return computed;
+
+  } else {
+    for (let request of loaderRequest) {
+
+      computed = {
+        ...computed,
+        ...buildComputed.call(this, request)
+      }
+
+    }
+
+  }
+
+  return computed
+
+}
+
 export default function (loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>) {
   const created = buildCreated.call(this, loaderRequest)
+  const computed = buildComputed.call(this, loaderRequest)
 
   return {
-    created
+    created,
+    computed
   }
 
 }

@@ -78,11 +78,11 @@ export default (
 
     switch (createdOrAsync) {
       case FetchHookTypes.Created: 
-        return fhtCreated()
+        return fhtCreated(loaderRequest)
       case FetchHookTypes.AsyncData: 
-        return fhtAsyncData()
+        return fhtAsyncData(loaderRequest)
       case FetchHookTypes.VoidAsyncData: 
-        return fhtVoidAsyncData()
+        return fhtVoidAsyncData(loaderRequest)
       break;
       default:
         throw new Error("FetchHookType" + createdOrAsync + " does not exist")
