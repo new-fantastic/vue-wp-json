@@ -4,7 +4,7 @@ import { ModulePrefix } from '../../../'
 const buildAsyncData = function (
   loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
   fht: FetchHookTypes) {
-  return async ({ store, route }) => {
+  return async ({ store }) => {
 
     if (typeof loaderRequest === 'string') {
 
@@ -31,17 +31,38 @@ const buildAsyncData = function (
         type: isPost ? ContentTypes.Post : ContentTypes.Page
       })
 
+      if(fht === FetchHookTypes.AsyncData) {
+        const dataName = 'dataName' in loaderRequest && loaderRequest.dataName
+          ? loaderRequest.dataName
+          : loaderRequest.slug
+
+        return {
+          [dataName]: store.state[`${ModulePrefix}_${contentType}`][contentType][loaderRequest.slug]
+            ? store.state[`${ModulePrefix}_${contentType}`][contentType]
+            [loaderRequest.slug]
+            : null
+          }
+      }
+
     } else if (Array.isArray(loaderRequest)) {
 
-      const requests = []
+      let response = {}
+
       for (let request of loaderRequest) {
 
         if(typeof request !== 'string' && !isLoaderRequestElement(request)) {
           throw new Error('FetchHookTypeVoidAsyncData: Bad loaderRequest')
         }
-        requests.push(buildAsyncData.call(this, request).call(this))
+        let localResponse = await buildAsyncData.call(this, request, FetchHookTypes.AsyncData)
+          .call(this, { store })
+        
+        response = {
+          ...response,
+          ...localResponse
+        }
       }
-      await Promise.all(requests)
+      
+      return response
 
     } else {
 

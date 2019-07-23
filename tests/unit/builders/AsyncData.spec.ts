@@ -48,7 +48,7 @@ describe('AsyncData Builder', () => {
 
   })
 
-  it('asyncData returns proper value for loaderRequest: LoaderRequestElement', () => {
+  it('asyncData returns proper value for loaderRequest: LoaderRequestElement', async () => {
 
     const requests: LoaderRequestElementWithValue[] = [
       {
@@ -72,8 +72,7 @@ describe('AsyncData Builder', () => {
         value: 'abc'
       }
     ]
-    const that3 = {
-      $store: {
+    const store = {
         state: {
           [`${ModulePrefix}_page`]: {
             page: { }
@@ -81,9 +80,9 @@ describe('AsyncData Builder', () => {
           [`${ModulePrefix}_post`]: {
             post: { }
           }
-        }
+        },
+        dispatch: () => Promise.resolve()
       }
-    }
 
     for (let request of requests) {
 
@@ -95,148 +94,132 @@ describe('AsyncData Builder', () => {
         ? 'post'
         : 'page'
 
-      that3.$store.state[`${ModulePrefix}_${contentType}`]
+      store.state[`${ModulePrefix}_${contentType}`]
       [contentType]
       [request.slug] = request.value
 
-      const value: any = FetchHookTypeCreated.call(that3, request)
-  
-      expect(value.computed).toBeDefined()
-      expect(dataName in value.computed).toBeTruthy()
-      expect(typeof value.computed[dataName]).toBe('function')
+      const value: any = buildAsyncData(request, FetchHookTypes.AsyncData)
+      expect(value).toBeDefined()
 
-      expect(value.computed[dataName].call(that3)).toBe(
-        that3.$store.state[`${ModulePrefix}_${contentType}`]
-        [contentType]
-        [request.slug]
-      )
+      const exec = await value({ store })
+      expect(dataName in exec).toBeTruthy()
+      expect(exec[dataName]).toBe(request.value)
 
     }
 
   })
 
-  // it('computed returns proper value for loaderRequest: Array<LoaderRequestElement | string>', () => {
+  it('asyncData returns proper value for loaderRequest: Array<LoaderRequestElement | string>', async () => {
 
-  //   const requestsToSend: Array<LoaderRequestElement | string> = [
-  //     {
-  //       slug: 'slug1',
-  //       dataName: 'other1',
-  //       post: true
-  //     },
-  //     {
-  //       slug: 'slug2'
-  //     },
-  //     {
-  //       slug: 'slug3',
-  //       dataName: 'other2'
-  //     },
-  //     {
-  //       slug: 'slug4',
-  //       post: true
-  //     },
-  //     'hello'
-  //   ]
+    const requestsToSend: Array<LoaderRequestElement | string> = [
+      {
+        slug: 'slug1',
+        dataName: 'other1',
+        post: true
+      },
+      {
+        slug: 'slug2'
+      },
+      {
+        slug: 'slug3',
+        dataName: 'other2'
+      },
+      {
+        slug: 'slug4',
+        post: true
+      },
+      'hello'
+    ]
 
-  //   const requestsLocal: Array<LoaderRequestElementWithValue | string> = [
-  //     {
-  //       slug: 'slug1',
-  //       dataName: 'other1',
-  //       post: true,
-  //       value: 'abc'
-  //     },
-  //     {
-  //       slug: 'slug2',
-  //       value: 'abc'
-  //     },
-  //     {
-  //       slug: 'slug3',
-  //       dataName: 'other2',
-  //       value: 'abc'
-  //     },
-  //     {
-  //       slug: 'slug4',
-  //       post: true,
-  //       value: 'abc'
-  //     },
-  //     'hello'
-  //   ]
+    const requestsLocal: Array<LoaderRequestElementWithValue | string> = [
+      {
+        slug: 'slug1',
+        dataName: 'other1',
+        post: true,
+        value: 'abc'
+      },
+      {
+        slug: 'slug2',
+        value: 'abc'
+      },
+      {
+        slug: 'slug3',
+        dataName: 'other2',
+        value: 'abc'
+      },
+      {
+        slug: 'slug4',
+        post: true,
+        value: 'abc'
+      },
+      'hello'
+    ]
 
-  //   const stringsValue: string = 'abc'
+    const stringsValue: string = 'abc'
 
-  //   const that3 = {
-  //     $store: {
-  //       state: {
-  //         [`${ModulePrefix}_page`]: {
-  //           page: { }
-  //         },
-  //         [`${ModulePrefix}_post`]: {
-  //           post: { }
-  //         }
-  //       }
-  //     }
-  //   }
+    const store = {
+        state: {
+          [`${ModulePrefix}_page`]: {
+            page: { }
+          },
+          [`${ModulePrefix}_post`]: {
+            post: { }
+          }
+        },
+        dispatch: () => Promise.resolve()
+      }
 
-  //   for (let request of requestsLocal) {
+    for (let request of requestsLocal) {
 
-  //     if(typeof request === 'string') {
+      if(typeof request === 'string') {
 
-  //       that3.$store.state[`${ModulePrefix}_page`].page
-  //       [request] = stringsValue
+        store.state[`${ModulePrefix}_page`].page
+        [request] = stringsValue
 
-  //     } else {
+      } else {
 
-  //       const contentType = 'post' in request && request.post
-  //         ? 'post'
-  //         : 'page'
+        const contentType = 'post' in request && request.post
+          ? 'post'
+          : 'page'
 
-  //       that3.$store.state[`${ModulePrefix}_${contentType}`]
-  //       [contentType]
-  //       [request.slug] = request.value
+        store.state[`${ModulePrefix}_${contentType}`]
+        [contentType]
+        [request.slug] = request.value
 
-  //     }
+      }
 
-  //   }
+    }
 
-  //   const value: any = FetchHookTypeCreated.call(that3, requestsToSend)
+    const value: any = buildAsyncData(requestsToSend, FetchHookTypes.AsyncData)
+    expect(value).toBeDefined()
 
-  //   expect(value.computed).toBeDefined()
-  //   expect(Object.keys(value.computed).length).toBe(requestsToSend.length)
+    const exec = await value({ store })
+    expect(Object.keys(exec).length).toBe(requestsToSend.length)
+    
+    for(let request of requestsLocal) {
 
-  //   for(let request of requestsLocal) {
+      if (typeof request === 'string') {
 
-  //     if (typeof request === 'string') {
+        expect(request in exec).toBeTruthy()
+        expect(exec[request]).toBe(stringsValue)
 
-  //       expect(request in value.computed).toBeTruthy()
-  //       expect(typeof value.computed[request]).toBe('function')
+      } else {
 
-  //       expect(value.computed[request].call(that3)).toBe(
-  //         that3.$store.state[`${ModulePrefix}_page`].page
-  //         [request]
-  //       )
+        const dataName = 'dataName' in request
+          ? request.dataName
+          : request.slug
 
-  //     } else {
+        const contentType = 'post' in request && request.post
+          ? 'post'
+          : 'page'
 
-  //       const dataName = 'dataName' in request
-  //         ? request.dataName
-  //         : request.slug
+        expect(dataName in exec).toBeTruthy()
+        expect(exec[dataName]).toBe(request.value)
 
-  //       const contentType = 'post' in request && request.post
-  //         ? 'post'
-  //         : 'page'
+      }
 
-  //       expect(dataName in value.computed).toBeTruthy()
-  //       expect(typeof value.computed[dataName]).toBe('function')
+    }
 
-  //       expect(value.computed[dataName].call(that3)).toBe(
-  //         that3.$store.state[`${ModulePrefix}_${contentType}`]
-  //         [contentType]
-  //         [request.slug]
-  //       )
-
-  //     }
-
-  //   }
-
-  // })
+  })
 
 })
