@@ -110,7 +110,7 @@ Vue.use(Wordpress, {
 
 <br>  
 
-If you want to use this module with **Nuxt.js**, we have created a dedicated package available here: <a href="https://github.com/vue-wordpress/core">`@vue-wordpress/nuxt`</a>
+If you want to use this module with **Nuxt.js**, we have created a dedicated package available here: <a href="https://github.com/vue-wordpress/nuxt">`@vue-wordpress/nuxt`</a>
 
 
 
