@@ -165,7 +165,7 @@ git clone git@github.com:new-fantastic/vsf-wp-json.git;
 
 After that, add module to modules/index.js:
 ```ts
-import { WpJson } from './vsf-wp-rest-api'
+import { WpJson } from './vsf-wp-json'
 
 //...
 
