@@ -147,9 +147,13 @@ That is all. Now you can use NuxtWpJson module!
 
 ## Vue Storefront
 
+
 <br>
 
 Go to your theme's main directory and run:
+
+<br>
+
 ```
 npm install @vue-wordpress/core
 ```
@@ -158,12 +162,27 @@ or
 yarn add @vue-wordpress/core
 ```
 
-Then open modules directory and type:
+<br>
+
+Go to your `vue-storefront`'s `modules` catalog and clone the repository with the module.
+
+<br>
+
 ```
-git clone git@github.com:new-fantastic/vsf-wp-json.git;
+cd ../vue-storefront/src/modules;
+git submodule add https://github.com/new-fantastic/vsf-wp-json.git;
 ```
 
+<br>
+
+This will create a Git Submodule for your `vue-storefront` repository. Thanks to that you will be able pull for new updates :)
+
+<br>
+
 After that, add module to modules/index.js:
+
+<br>
+
 ```ts
 import { WpJson } from './vsf-wp-json'
 
@@ -176,26 +195,37 @@ export const registerModules: VueStorefrontModule[] = [
 ]
 ```
 
+<br>
+
 Open config file, then at the end of main object add:
+
+<br>
+
 ```json
 "wordpressCms": {
-  "url": "https://wp.myapi.com/",
+  "url": "https://your-wordpress-url.com/",
   "lang": "en",
   "menus": ["for-buyers", "footer"]
 }
 ```
 
-If you want to register plugin, you can do it by adding in **wordpressCms** - plugins, e.g.:
+<br>
+
+If you want to register plugin, you can do it by adding in **`wordpressCms`** - plugins, e.g.:
+
+<br>
+
 ```json
 "wordpressCms": {
-  "url": "https://wp.myapi.com/",
+  "url": "https://your-wordpress-url.com/",
   "lang": "en",
   "menus": ["for-buyers", "footer"],
   "plugins": "acf"
 }
 ```
 
-Plugin should be inside node_modules/@vue-wordpress. It also must have "vue-wp-json-" prefix.
-
 <br>
 
+Plugin should be inside `node_modules/@vue-wordpress`. It also must have "vue-wp-json-" prefix.
+
+<br>
