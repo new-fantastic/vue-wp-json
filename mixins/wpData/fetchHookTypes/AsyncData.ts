@@ -9,8 +9,8 @@ export default function(
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>
 ) {
-  const asyncData = buildAsyncData.call(this, loaderRequest);
-  const meta = pickMetaSource.call(this, loaderRequest);
+  const asyncData = buildAsyncData(loaderRequest);
+  const meta = pickMetaSource(loaderRequest);
 
   return {
     asyncData,

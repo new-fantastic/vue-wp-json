@@ -13,7 +13,7 @@ const buildAsyncData = function(
     | Array<LoaderRequestElement | string>,
   fht: FetchHookTypes = FetchHookTypes.AsyncData
 ) {
-  return async ({ store }) => {
+  return async function({ store }) {
     if (typeof loaderRequest === "string") {
       await store.dispatch(`${ModulePrefix}_page/load`, {
         slug: loaderRequest,
