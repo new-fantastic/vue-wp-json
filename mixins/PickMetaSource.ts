@@ -1,7 +1,5 @@
 import {
-  ContentTypes,
   isLoaderRequestElement,
-  FetchHookTypes,
   LoaderRequestElement
 } from "../types";
 

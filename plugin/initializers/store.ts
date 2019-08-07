@@ -1,7 +1,6 @@
 import { ModulePrefix } from "../../index";
 
 import { media } from "../../store/media";
-import { lang } from "../../store/lang";
 import { post } from "../../store/post";
 import { menu } from "../../store/menu";
 import { meta } from "../../store/meta";
