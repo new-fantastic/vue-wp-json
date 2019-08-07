@@ -37,7 +37,6 @@ function pickMetaSource(
       let tmp = pickMetaSource(request);
       if (current === null) {
         current = tmp;
-        type = current.type;
       }
 
       if (
@@ -45,11 +44,7 @@ function pickMetaSource(
         "meta" in request &&
         request.meta === true
       ) {
-        type = current.type;
-        return {
-          slug: tmp,
-          type
-        };
+        return tmp
       }
     }
 

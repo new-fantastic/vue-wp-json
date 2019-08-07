@@ -8,7 +8,7 @@ describe('PickMetaSource', () => {
     const slug = 'abc'
     const value = pickMetaSource(slug)
 
-    expect(value).toBe(slug)
+    expect(value).toEqual({slug, type: 'pages'})
 
   })
 
@@ -21,7 +21,7 @@ describe('PickMetaSource', () => {
     }
     const value = pickMetaSource(request)
 
-    expect(value).toBe(request.dataName)
+    expect(value).toEqual({slug: request.dataName, type: 'pages'})
 
   })
 
@@ -37,7 +37,7 @@ describe('PickMetaSource', () => {
     ]
     const value = pickMetaSource(requests)
 
-    expect(value).toBe((<LoaderRequestElement>requests[0]).dataName)
+    expect(value).toEqual({slug: (<LoaderRequestElement>requests[0]).dataName, type: 'pages'})
 
   })
 
