@@ -62,7 +62,6 @@ export default {
           store.dispatch,
           options.hasOwnProperty("menus") ? options.menus : true
         );
-        vuex.setLang(store.commit, options.lang);
         vuex.setConfig(store.commit, options);
       }
 
