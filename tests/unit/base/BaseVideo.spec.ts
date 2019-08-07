@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import BaseVideo from '../../components/Base/BaseVideo.vue'
+import BaseVideo from '../../../components/Base/BaseVideo.vue'
 
 describe('BaseVideo', () => {
   

@@ -17,3 +17,11 @@ export interface LoaderRequestElement {
   dataName?: string,
   post?: Boolean
 }
+
+export function isLoaderRequestElement(object: any): object is LoaderRequestElement {
+  return typeof object === 'object' && 'slug' in object
+}
+
+export interface LoaderRequestElementWithValue extends LoaderRequestElement{
+  value: any
+}

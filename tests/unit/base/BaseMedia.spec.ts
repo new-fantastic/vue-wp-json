@@ -1,8 +1,8 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import { ModulePrefix } from '../../index'
-import BaseMedia from '../../components/Base/BaseMedia'
-import BaseImage from '../../components/Base/BaseImage.vue'
-import BaseVideo from '../../components/Base/BaseVideo.vue'
+import { ModulePrefix } from '../../../index'
+import BaseMedia from '../../../components/Base/BaseMedia'
+import BaseImage from '../../../components/Base/BaseImage.vue'
+import BaseVideo from '../../../components/Base/BaseVideo.vue'
 
 describe('BaseMedia', () => {
   

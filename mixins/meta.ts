@@ -1,6 +1,8 @@
-import { ModulePrefix } from '@vue-wordpress/core'
+import { ModulePrefix } from '../'
+import { ContentTypes } from '../types'
 
-export default (type: string, plainObject: string) => ({
+
+export default (type: ContentTypes, plainObject: string) => ({
 
     metaInfo() {
 

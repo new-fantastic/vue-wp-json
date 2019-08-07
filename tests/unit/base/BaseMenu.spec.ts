@@ -1,6 +1,6 @@
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
-import { ModulePrefix } from '../../index'
-import BaseMenu from '../../components/Base/BaseMenu'
+import { ModulePrefix } from '../../../index'
+import BaseMenu from '../../../components/Base/BaseMenu'
 
 const Factory = (slug: string, items: Array<any>, showDescription: Boolean = false) => {
   return shallowMount(BaseMenu, {
