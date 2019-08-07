@@ -15,26 +15,26 @@ const buildAsyncData = function(
 ) {
   return async function({ store }) {
     if (typeof loaderRequest === "string") {
-      await store.dispatch(`${ModulePrefix}_page/load`, {
+      await store.dispatch(`${ModulePrefix}_post/load`, {
         slug: loaderRequest,
-        type: ContentTypes.Page
+        type: "pages"
       });
 
       if (fht === FetchHookTypes.AsyncData) {
         return {
-          [loaderRequest]: store.state[`${ModulePrefix}_page`].page[
+          [loaderRequest]: store.state[`${ModulePrefix}_post`].types.pages[
             loaderRequest
           ]
-            ? store.state[`${ModulePrefix}_page`].page[loaderRequest]
+            ? store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
             : null
         };
       }
     } else if (isLoaderRequestElement(loaderRequest)) {
-      const isPost = "post" in loaderRequest && loaderRequest.post;
-      const contentType = isPost ? "post" : "page";
-      await store.dispatch(`${ModulePrefix}_${contentType}/load`, {
+      const isPost = "type" in loaderRequest && loaderRequest.type;
+      const contentType = isPost ? loaderRequest.type : "pages";
+      await store.dispatch(`${ModulePrefix}_post/load`, {
         slug: loaderRequest.slug,
-        type: isPost ? ContentTypes.Post : ContentTypes.Page
+        type: contentType
       });
 
       if (fht === FetchHookTypes.AsyncData) {
@@ -44,10 +44,10 @@ const buildAsyncData = function(
             : loaderRequest.slug;
 
         return {
-          [dataName]: store.state[`${ModulePrefix}_${contentType}`][
-            contentType
-          ][loaderRequest.slug]
-            ? store.state[`${ModulePrefix}_${contentType}`][contentType][
+          [dataName]: store.state[`${ModulePrefix}_post`].types[contentType][
+            loaderRequest.slug
+          ]
+            ? store.state[`${ModulePrefix}_post`].types[contentType][
                 loaderRequest.slug
               ]
             : null

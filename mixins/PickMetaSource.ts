@@ -1,41 +1,64 @@
-import { ContentTypes, isLoaderRequestElement, FetchHookTypes, LoaderRequestElement } from '../types'
+import {
+  ContentTypes,
+  isLoaderRequestElement,
+  FetchHookTypes,
+  LoaderRequestElement
+} from "../types";
 
-function pickMetaSource(loaderRequest: string | LoaderRequestElement | Array<LoaderRequestElement | string>) {
+function pickMetaSource(
+  loaderRequest:
+    | string
+    | LoaderRequestElement
+    | Array<LoaderRequestElement | string>
+) {
+  let type = "pages";
 
-  if (typeof loaderRequest === 'string') {
-
-    return loaderRequest
-
+  if (typeof loaderRequest === "string") {
+    return {
+      slug: loaderRequest,
+      type
+    };
   } else if (isLoaderRequestElement(loaderRequest)) {
-
-    return 'dataName' in loaderRequest
-      ? loaderRequest.dataName
-      : loaderRequest.slug
-
+    if (loaderRequest.hasOwnProperty("post")) {
+      type = loaderRequest.post;
+    }
+    return {
+      slug:
+        "dataName" in loaderRequest
+          ? loaderRequest.dataName
+          : loaderRequest.slug,
+      type
+    };
   } else if (Array.isArray(loaderRequest)) {
+    let current = null;
 
-    let current = null
-
-    const reversedLoader = [...loaderRequest].reverse()
+    const reversedLoader = [...loaderRequest].reverse();
     for (let request of reversedLoader) {
-
-      let tmp = pickMetaSource(request)
+      let tmp = pickMetaSource(request);
       if (current === null) {
-        current = tmp
-      }
-      
-      if (isLoaderRequestElement(request) && 'meta' in request && request.meta === true) {
-        return tmp
+        current = tmp;
+        type = current.type;
       }
 
+      if (
+        isLoaderRequestElement(request) &&
+        "meta" in request &&
+        request.meta === true
+      ) {
+        type = current.type;
+        return {
+          slug: tmp,
+          type
+        };
+      }
     }
 
-    return current
-
+    return current;
   } else {
-    throw new Error('FetchHookTypeCreated: loaderRequest cannot be ' + typeof loaderRequest)
+    throw new Error(
+      "FetchHookTypeCreated: loaderRequest cannot be " + typeof loaderRequest
+    );
   }
-
 }
 
-export default pickMetaSource
+export default pickMetaSource;

@@ -17,16 +17,17 @@ const buildCreated = (
 ) => {
   return async function() {
     if (typeof loaderRequest === "string") {
-      await this.$store.dispatch(`${ModulePrefix}_page/load`, {
+      await this.$store.dispatch(`${ModulePrefix}_post/load`, {
         slug: loaderRequest,
-        type: ContentTypes.Page
+        type: "pages"
       });
     } else if (isLoaderRequestElement(loaderRequest)) {
-      const isPost = "post" in loaderRequest && loaderRequest.post;
-      const contentType = isPost ? "post" : "page";
-      await this.$store.dispatch(`${ModulePrefix}_${contentType}/load`, {
+      const isPost = "type" in loaderRequest;
+      const contentType = isPost ? loaderRequest.type : "pages";
+
+      await this.$store.dispatch(`${ModulePrefix}_post/load`, {
         slug: loaderRequest.slug,
-        type: isPost ? ContentTypes.Post : ContentTypes.Page
+        type: contentType
       });
     } else if (Array.isArray(loaderRequest)) {
       const requests = [];
@@ -53,11 +54,11 @@ export default (
 ) => {
   const created = buildCreated(loaderRequest);
   const computed = buildComputed(loaderRequest);
-  const meta = pickMetaSource(loaderRequest);
+  const { type, slug } = pickMetaSource(loaderRequest);
 
   return {
     created,
     computed,
-    mixins: [Meta(ContentTypes.Page, meta)]
+    mixins: [Meta(type, slug)]
   };
 };

@@ -25,7 +25,6 @@ export default {
         throw new Error("No lang provided!");
       }
       // Register it in app
-      console.log("FIRST");
       Vue.use(MetaInfo);
       Vue.prototype.$wp = {};
       Vue.prototype.$wp.config = options;
@@ -59,7 +58,10 @@ export default {
       }
 
       if (!manualVuexMode) {
-        await vuex.loadBase(store.dispatch, options.menus);
+        await vuex.loadBase(
+          store.dispatch,
+          options.hasOwnProperty("menus") ? options.menus : true
+        );
         vuex.setLang(store.commit, options.lang);
         vuex.setConfig(store.commit, options);
       }
