@@ -16,24 +16,27 @@ const buildComputed = function(
 
   if (typeof loaderRequest === "string") {
     computed[loaderRequest] = function() {
-      return this.$store.state[`${ModulePrefix}_page`].page[loaderRequest]
-        ? this.$store.state[`${ModulePrefix}_page`].page[loaderRequest]
+      return this.$store.state[`${ModulePrefix}_post`].types.hasOwnProperty(
+        "pages"
+      ) && this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
+        ? this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
         : null;
     };
 
     return computed;
   } else if (isLoaderRequestElement(loaderRequest)) {
     const contentType: string =
-      "post" in loaderRequest && loaderRequest.post ? "post" : "page";
+      "type" in loaderRequest ? loaderRequest.type : "pages";
 
     const dataName: string =
       "dataName" in loaderRequest ? loaderRequest.dataName : loaderRequest.slug;
 
     computed[dataName] = function() {
-      return this.$store.state[`${ModulePrefix}_${contentType}`][contentType][
-        loaderRequest.slug
-      ]
-        ? this.$store.state[`${ModulePrefix}_${contentType}`][contentType][
+      return this.$store.state[`${ModulePrefix}_post`].types[contentType] &&
+        this.$store.state[`${ModulePrefix}_post`].types[contentType][
+          loaderRequest.slug
+        ]
+        ? this.$store.state[`${ModulePrefix}_post`].types[contentType][
             loaderRequest.slug
           ]
         : null;

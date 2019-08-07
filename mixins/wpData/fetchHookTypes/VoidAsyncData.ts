@@ -1,9 +1,4 @@
-import {
-  ContentTypes,
-  isLoaderRequestElement,
-  FetchHookTypes,
-  LoaderRequestElement
-} from "../../../types";
+import { FetchHookTypes, LoaderRequestElement } from "../../../types";
 import Meta from "../../meta";
 import pickMetaSource from "../../PickMetaSource";
 import buildComputed from "../builders/Computed";
@@ -17,11 +12,11 @@ export default function(
 ) {
   const asyncData = buildAsyncData(loaderRequest, FetchHookTypes.VoidAsyncData);
   const computed = buildComputed(loaderRequest);
-  const meta = pickMetaSource(loaderRequest);
+  const { type, slug } = pickMetaSource(loaderRequest);
 
   return {
     asyncData,
     computed,
-    mixins: [Meta(ContentTypes.Page, meta)]
+    mixins: [Meta(type, slug)]
   };
 }
