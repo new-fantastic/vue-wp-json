@@ -19,8 +19,8 @@ function pickMetaSource(
       type
     };
   } else if (isLoaderRequestElement(loaderRequest)) {
-    if (loaderRequest.hasOwnProperty("post")) {
-      type = loaderRequest.post;
+    if (loaderRequest.hasOwnProperty("type")) {
+      type = loaderRequest.type;
     }
     return {
       slug:
