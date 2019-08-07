@@ -107,4 +107,36 @@ describe("FetchHookType: Created", () => {
 
     expect(error).toBeInstanceOf(Error);
   });
+
+  it("returns Meta if needed", async () => {
+    const slug = "slug";
+
+    const value: any = FetchHookTypeCreated.call(that, slug, true);
+    let was = false;
+    if (value.hasOwnProperty("mixins")) {
+      for (let mixin of value.mixins) {
+        if (mixin.hasOwnProperty("metaInfo")) {
+          was = true;
+          break;
+        }
+      }
+    }
+    expect(was).toBeTruthy();
+  });
+
+  it("does not return Meta if not needed", async () => {
+    const slug = "slug";
+
+    const value: any = FetchHookTypeCreated.call(that, slug, false);
+    let was = false;
+    if (value.hasOwnProperty("mixins")) {
+      for (let mixin of value.mixins) {
+        if (mixin.hasOwnProperty("metaInfo")) {
+          was = true;
+          break;
+        }
+      }
+    }
+    expect(was).toBeFalsy();
+  });
 });

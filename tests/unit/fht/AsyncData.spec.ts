@@ -37,6 +37,38 @@ describe("FetchHookType: AsyncData", () => {
     expect(typeof value.asyncData).toBe("function");
   });
 
+  it("returns Meta if needed", async () => {
+    const slug = "slug";
+
+    const value: any = FetchHookTypeAsyncData.call(that, slug, true);
+    let was = false;
+    if (value.hasOwnProperty("mixins")) {
+      for (let mixin of value.mixins) {
+        if (mixin.hasOwnProperty("metaInfo")) {
+          was = true;
+          break;
+        }
+      }
+    }
+    expect(was).toBeTruthy();
+  });
+
+  it("does not return Meta if not needed", async () => {
+    const slug = "slug";
+
+    const value: any = FetchHookTypeAsyncData.call(that, slug, false);
+    let was = false;
+    if (value.hasOwnProperty("mixins")) {
+      for (let mixin of value.mixins) {
+        if (mixin.hasOwnProperty("metaInfo")) {
+          was = true;
+          break;
+        }
+      }
+    }
+    expect(was).toBeFalsy();
+  });
+
   // it("builds proper AsyncData for loaderRequest: string", async () => {
   //   const slug = "slug";
   //   const neededValue = "abc";

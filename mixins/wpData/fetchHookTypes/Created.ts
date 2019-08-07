@@ -50,15 +50,17 @@ export default (
   loaderRequest:
     | string
     | LoaderRequestElement
-    | Array<LoaderRequestElement | string>
+    | Array<LoaderRequestElement | string>,
+  setMeta: boolean
 ) => {
-  const created = buildCreated(loaderRequest);
-  const computed = buildComputed(loaderRequest);
-  const { type, slug } = pickMetaSource(loaderRequest);
-
-  return {
-    created,
-    computed,
-    mixins: [Meta(type, slug)]
+  const returnable: any = {
+    created: buildCreated(loaderRequest),
+    computed: buildComputed(loaderRequest)
   };
+  if (setMeta) {
+    const { type, slug } = pickMetaSource(loaderRequest);
+    returnable.mixins = [Meta(type, slug)];
+  }
+
+  return returnable;
 };

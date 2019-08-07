@@ -7,13 +7,16 @@ export default function(
   loaderRequest:
     | string
     | LoaderRequestElement
-    | Array<LoaderRequestElement | string>
+    | Array<LoaderRequestElement | string>,
+  setMeta: boolean
 ) {
-  const asyncData = buildAsyncData(loaderRequest);
-  const { type, slug } = pickMetaSource(loaderRequest);
-
-  return {
-    asyncData,
-    mixins: [Meta(type, slug)]
+  const returnable: any = {
+    asyncData: buildAsyncData(loaderRequest)
   };
+  if (setMeta) {
+    const { type, slug } = pickMetaSource(loaderRequest);
+    returnable.mixins = [Meta(type, slug)];
+  }
+
+  return returnable;
 }

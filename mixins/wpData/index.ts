@@ -9,15 +9,16 @@ export default (
     | string
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>,
-  fht: FetchHookTypes = FetchHookTypes.Created
+  fht: FetchHookTypes = FetchHookTypes.Created,
+  setMeta: boolean = true
 ) => {
   switch (fht) {
     case FetchHookTypes.Created:
-      return fhtCreated(loaderRequest);
+      return fhtCreated(loaderRequest, setMeta);
     case FetchHookTypes.AsyncData:
-      return fhtAsyncData(loaderRequest);
+      return fhtAsyncData(loaderRequest, setMeta);
     case FetchHookTypes.VoidAsyncData:
-      return fhtVoidAsyncData(loaderRequest);
+      return fhtVoidAsyncData(loaderRequest, setMeta);
     default:
       throw new Error("FetchHookType" + fht + " does not exist");
   }

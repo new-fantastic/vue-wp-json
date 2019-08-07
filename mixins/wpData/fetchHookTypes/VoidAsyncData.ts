@@ -8,15 +8,17 @@ export default function(
   loaderRequest:
     | string
     | LoaderRequestElement
-    | Array<LoaderRequestElement | string>
+    | Array<LoaderRequestElement | string>,
+  setMeta: boolean
 ) {
-  const asyncData = buildAsyncData(loaderRequest, FetchHookTypes.VoidAsyncData);
-  const computed = buildComputed(loaderRequest);
-  const { type, slug } = pickMetaSource(loaderRequest);
-
-  return {
-    asyncData,
-    computed,
-    mixins: [Meta(type, slug)]
+  const returnable: any = {
+    asyncData: buildAsyncData(loaderRequest, FetchHookTypes.VoidAsyncData),
+    computed: buildComputed(loaderRequest)
   };
+  if (setMeta) {
+    const { type, slug } = pickMetaSource(loaderRequest);
+    returnable.mixins = [Meta(type, slug)];
+  }
+
+  return returnable;
 }
