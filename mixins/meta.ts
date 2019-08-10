@@ -1,8 +1,10 @@
 import { ModulePrefix } from "../";
 import { ContentTypes } from "../types";
+import ResolveRoute from '../util/ResolveRoute';
 
-export default (type: string, plainObject: string) => ({
+export default (type: string, key: string) => ({
   metaInfo() {
+    const plainObject = ResolveRoute(key, this.$route)
     if (this[plainObject] !== false && this[plainObject]) {
       const iId = Number(this[plainObject].featured_media);
 

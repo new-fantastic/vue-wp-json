@@ -5,6 +5,7 @@ import {
   LoaderRequestElement
 } from "../../../types";
 import { ModulePrefix } from "../../../";
+import ResolveRoute from '../../../util/ResolveRoute'
 
 const buildAsyncData = function(
   loaderRequest:
@@ -13,27 +14,30 @@ const buildAsyncData = function(
     | Array<LoaderRequestElement | string>,
   fht: FetchHookTypes = FetchHookTypes.AsyncData
 ) {
-  return async function({ store }) {
+  return async function({ store, route }) {
     if (typeof loaderRequest === "string") {
+      const resolvedLoaderRequest = ResolveRoute(loaderRequest, route)
       await store.dispatch(`${ModulePrefix}_post/load`, {
-        slug: loaderRequest,
+        slug: resolvedLoaderRequest,
         type: "pages"
       });
 
       if (fht === FetchHookTypes.AsyncData) {
         return {
-          [loaderRequest]: store.state[`${ModulePrefix}_post`].types.pages[
-            loaderRequest
+          [resolvedLoaderRequest]: store.state[`${ModulePrefix}_post`].types.pages[
+            resolvedLoaderRequest
           ]
-            ? store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
+            ? store.state[`${ModulePrefix}_post`].types.pages[resolvedLoaderRequest]
             : null
         };
       }
     } else if (isLoaderRequestElement(loaderRequest)) {
       const isPost = "type" in loaderRequest && loaderRequest.type;
       const contentType = isPost ? loaderRequest.type : "pages";
+      const resolvedLoaderRequest = ResolveRoute(loaderRequest.slug, route)
+
       await store.dispatch(`${ModulePrefix}_post/load`, {
-        slug: loaderRequest.slug,
+        slug: resolvedLoaderRequest,
         type: contentType
       });
 
@@ -41,14 +45,14 @@ const buildAsyncData = function(
         const dataName =
           "dataName" in loaderRequest && loaderRequest.dataName
             ? loaderRequest.dataName
-            : loaderRequest.slug;
+            : resolvedLoaderRequest;
 
         return {
           [dataName]: store.state[`${ModulePrefix}_post`].types[contentType][
-            loaderRequest.slug
+            resolvedLoaderRequest
           ]
             ? store.state[`${ModulePrefix}_post`].types[contentType][
-                loaderRequest.slug
+                resolvedLoaderRequest
               ]
             : null
         };

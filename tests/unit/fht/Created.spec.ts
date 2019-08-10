@@ -13,7 +13,8 @@ describe("FetchHookType: Created", () => {
           }, 100);
         });
       }
-    }
+    },
+    $route: {}
   };
 
   it("builds proper Created for loaderRequest: string", () => {

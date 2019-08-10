@@ -45,7 +45,8 @@ interface LoaderRequestElement {
 }
 ```
 
-**Slug (necessary)** - Page's slug in API  
+**Slug (necessary)** - Page's slug in API. Here you can also use **$route object**. Just type, e.g. '$route.params.slug' as value. If you use route params on client side(FetchHookTypes.Created), you have to use **dataName**. Otherwise it is not necessary.
+
 **Meta** - when we fetch data from few endpoints (described below) there you can set which meta would you like to apply. Set to true if you want to attach. If there will be few objects with meta: true, last one will be set. If you won't set any meta: true, first one will be set.
 **dataName** - pointer's name to fetched data in Vue's instance, by default it is same as **slug**, however, you can change it if you want  
 **type** - if it is set to **some_value**, data will be fetched from /wp-json/wp/v2/**some_value** not pages! Of course by default it would be fetched from /wp-json/wp/v2/pages

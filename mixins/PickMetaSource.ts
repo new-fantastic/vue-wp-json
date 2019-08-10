@@ -2,13 +2,14 @@ import {
   isLoaderRequestElement,
   LoaderRequestElement
 } from "../types";
+import ResolveRoute from '../util/ResolveRoute'
 
-function pickMetaSource(
+const pickMetaSource = (
   loaderRequest:
     | string
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>
-) {
+) => {
   let type = "pages";
 
   if (typeof loaderRequest === "string") {

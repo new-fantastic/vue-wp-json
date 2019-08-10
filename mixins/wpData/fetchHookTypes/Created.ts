@@ -1,13 +1,12 @@
 import {
-  ContentTypes,
   isLoaderRequestElement,
-  FetchHookTypes,
   LoaderRequestElement
 } from "../../../types";
 import { ModulePrefix } from "../../../";
 import Meta from "../../meta";
 import pickMetaSource from "../../PickMetaSource";
 import buildComputed from "../builders/Computed";
+import ResolveRoute from '../../../util/ResolveRoute'
 
 const buildCreated = (
   loaderRequest:
@@ -18,7 +17,7 @@ const buildCreated = (
   return async function() {
     if (typeof loaderRequest === "string") {
       await this.$store.dispatch(`${ModulePrefix}_post/load`, {
-        slug: loaderRequest,
+        slug: ResolveRoute(loaderRequest, this.$route),
         type: "pages"
       });
     } else if (isLoaderRequestElement(loaderRequest)) {
@@ -26,7 +25,7 @@ const buildCreated = (
       const contentType = isPost ? loaderRequest.type : "pages";
 
       await this.$store.dispatch(`${ModulePrefix}_post/load`, {
-        slug: loaderRequest.slug,
+        slug: ResolveRoute(loaderRequest.slug, this.$route),
         type: contentType
       });
     } else if (Array.isArray(loaderRequest)) {

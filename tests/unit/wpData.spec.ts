@@ -7,7 +7,9 @@ describe('Mixin: wpData', () => {
 
   it('picks FetchHookType.Created', () =>{
 
-    const value: any = wpData("mock", FetchHookTypes.Created)
+    const value: any = wpData.call({
+      $route: {}
+    }, "mock", FetchHookTypes.Created)
 
     expect(value).toBeDefined()
     expect(typeof value.created).toEqual('function') 

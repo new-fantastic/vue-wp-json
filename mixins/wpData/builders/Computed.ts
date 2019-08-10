@@ -5,6 +5,7 @@ import {
   LoaderRequestElement
 } from "../../../types";
 import { ModulePrefix } from "../../../";
+import ResolveRoute from '../../../util/ResolveRoute'
 
 const buildComputed = function(
   loaderRequest:
@@ -13,7 +14,7 @@ const buildComputed = function(
     | Array<LoaderRequestElement | string>
 ) {
   let computed = {};
-
+  
   if (typeof loaderRequest === "string") {
     computed[loaderRequest] = function() {
       return this.$store.state[`${ModulePrefix}_post`].types.hasOwnProperty(
@@ -34,10 +35,10 @@ const buildComputed = function(
     computed[dataName] = function() {
       return this.$store.state[`${ModulePrefix}_post`].types[contentType] &&
         this.$store.state[`${ModulePrefix}_post`].types[contentType][
-          loaderRequest.slug
+          ResolveRoute(loaderRequest.slug, this.$route)
         ]
         ? this.$store.state[`${ModulePrefix}_post`].types[contentType][
-            loaderRequest.slug
+            ResolveRoute(loaderRequest.slug, this.$route)
           ]
         : null;
     };

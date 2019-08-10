@@ -12,6 +12,7 @@ export default (
   fht: FetchHookTypes = FetchHookTypes.Created,
   setMeta: boolean = true
 ) => {
+
   switch (fht) {
     case FetchHookTypes.Created:
       return fhtCreated(loaderRequest, setMeta);
