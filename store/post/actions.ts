@@ -9,9 +9,11 @@ import { UrlCreator } from "../../util/UrlCreator";
 export const actions: ActionTree<Object, any> = {
   async load({ state, commit }, { slug, type = "pages" }) {
     const config = Vue.prototype.$wp.config;
-    const typeBaseUrl = `/wp-json/wp/v2/${type}?slug=`;
+    const typeBaseUrl = `/wp-json/wp/v2/${type}`;
 
-    const base = new UrlCreator(config.url, [typeBaseUrl, slug]);
+    const base = slug === ""
+      ? new UrlCreator(config.url, [typeBaseUrl])
+      : new UrlCreator(config.url, [typeBaseUrl + '?slug=', slug]);
 
     if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.post) {
       for (let filter of Vue.prototype.$wp.api.post) {

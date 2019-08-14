@@ -111,3 +111,26 @@ Data will be fetched inside **asyncData** lifecycle hook. However, fetched data 
 
 Should mixin get meta data from fetched pages and set it in **head**?  
 true or false
+
+
+## Fetching each post of type
+
+You can easily fetch post of any type by setting slug as empty string - "".
+E.g.
+```js
+wpData({
+  slug: '',
+  type: 'alerts'
+}, FetchHookTypes.Created)
+```
+
+If you would like to have get a **computed variable** pointing to received posts array, use:
+```js
+wpData({
+  slug: '',
+  type: 'alerts',
+  dataName: 'myPointer'
+}, FetchHookTypes.Created)
+```
+
+Then **this.myPointer** will be pointer to array of fetched posts.
