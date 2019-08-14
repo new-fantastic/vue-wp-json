@@ -1,7 +1,5 @@
 import {
-  ContentTypes,
   isLoaderRequestElement,
-  FetchHookTypes,
   LoaderRequestElement
 } from "../../../types";
 import { ModulePrefix } from "../../../";
@@ -16,34 +14,55 @@ const buildComputed = function(
   let computed = {};
   
   if (typeof loaderRequest === "string") {
-    computed[loaderRequest] = function() {
-      return this.$store.state[`${ModulePrefix}_post`].types.hasOwnProperty(
-        "pages"
-      ) && this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
-        ? this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
-        : null;
-    };
+
+    if (loaderRequest.trim() !== '') {
+      computed[loaderRequest] = function() {
+        return this.$store.state[`${ModulePrefix}_post`].types.hasOwnProperty(
+          "pages"
+        ) && this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
+          ? this.$store.state[`${ModulePrefix}_post`].types.pages[loaderRequest]
+          : null;
+      };
+    }
 
     return computed;
+
   } else if (isLoaderRequestElement(loaderRequest)) {
+
     const contentType: string =
       "type" in loaderRequest ? loaderRequest.type : "pages";
 
     const dataName: string =
       "dataName" in loaderRequest ? loaderRequest.dataName : loaderRequest.slug;
 
-    computed[dataName] = function() {
-      return this.$store.state[`${ModulePrefix}_post`].types[contentType] &&
-        this.$store.state[`${ModulePrefix}_post`].types[contentType][
-          ResolveRoute(loaderRequest.slug, this.$route)
-        ]
-        ? this.$store.state[`${ModulePrefix}_post`].types[contentType][
-            ResolveRoute(loaderRequest.slug, this.$route)
-          ]
-        : null;
-    };
+    if(dataName.trim() !== '') {
+      if (loaderRequest.slug === '') {
+
+        computed[dataName] = function() {
+          return this.$store.state[`${ModulePrefix}_post`].types[contentType] &&
+            this.$store.state[`${ModulePrefix}_post`].types[contentType]
+            ? this.$store.state[`${ModulePrefix}_post`].types[contentType]
+            : null;
+        };
+
+      } else {
+
+        computed[dataName] = function() {
+          return this.$store.state[`${ModulePrefix}_post`].types[contentType] &&
+            this.$store.state[`${ModulePrefix}_post`].types[contentType][
+              ResolveRoute(loaderRequest.slug, this.$route)
+            ]
+            ? this.$store.state[`${ModulePrefix}_post`].types[contentType][
+                ResolveRoute(loaderRequest.slug, this.$route)
+              ]
+            : null;
+        };
+
+      }
+    }
 
     return computed;
+
   } else if (Array.isArray(loaderRequest)) {
     for (let request of loaderRequest) {
       computed = {

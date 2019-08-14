@@ -7,6 +7,17 @@ export const mutations: MutationTree<any> = {
     if (!state.types.hasOwnProperty(type)) {
       Vue.set(state.types, type, {});
     }
-    Vue.set(state.types[type], slotName, Array.isArray(data) ? data[0] : data);
+
+    if (Array.isArray(data)) {
+      if (data.length > 1) {
+        for (let post of data) {
+          Vue.set(state.types[type], post.slug, post)
+        }
+      } else {
+        Vue.set(state.types[type], slotName, data[0]);
+      }
+    } else {
+      Vue.set(state.types[type], slotName, data);
+    }
   }
 };
