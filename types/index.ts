@@ -16,6 +16,7 @@ export interface LoaderRequestElement {
   meta?: Boolean;
   dataName?: string;
   type?: string;
+  embed?: boolean
 }
 
 export function isLoaderRequestElement(

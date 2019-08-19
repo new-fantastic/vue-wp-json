@@ -6,46 +6,57 @@ export default (type: string, key: string) => ({
   metaInfo() {
     const plainObject = ResolveRoute(key, this.$route)
     if (this[plainObject] !== false && this[plainObject]) {
-      const iId = Number(this[plainObject].featured_media);
+
+      const source = this[plainObject]._embedded 
+        && this[plainObject]._embedded['wp:featuredmedia']
+        && this[plainObject]._embedded['wp:featuredmedia'][0].media_details
+        ? this[plainObject]._embedded['wp:featuredmedia'][0].media_details : null;
 
       let dt = [];
-      if (iId > 0) {
-        const medium = this.$store.state[`${ModulePrefix}_media`].media[iId];
+      if (source && source.sizes) {
+        const altText = this[plainObject]._embedded['wp:featuredmedia'][0].alt_text
+        const medium = source.sizes.hasOwnProperty('large') ? source.sizes.large : Object.values(source.sizes).reverse()[0]
         const mimeType = medium.mime_type.split("/")[0];
+
         switch (mimeType) {
           case "image":
             dt.push(
-              { property: "og:image", content: medium.link },
-              { property: "og:image:url", content: medium.link },
+              { property: "og:image", content: medium.source_url },
+              { name: "twitter:image", content: medium.source_url },
+              { name: 'twitter:card', content: 'summary_large_image' },
+              { property: "og:image:url", content: medium.source_url },
               {
                 property: "og:image:width",
-                content: medium.media_details.width
+                content: medium.width
               },
               {
                 property: "og:image:height",
-                content: medium.media_details.height
+                content: medium.height
               },
-              { property: "og:image:type", content: medium.mime_type },
-              { property: "og:image:alt", content: medium.alt_text }
+              { property: "og:image:type", content: medium.mime_type }
             );
+            if (altText && altText.length > 0) {
+              dt.push({ property: "og:image:alt", content: altText })
+            }
             break;
           case "video":
-            dt.push(
-              { property: "og:video", content: medium.guid.rendered },
-              {
-                property: "og:video:type",
-                content: medium.media_details.mime_type
-              },
-              {
-                property: "og:video:width",
-                content: medium.media_details.width
-              },
-              {
-                property: "og:video:height",
-                content: medium.media_details.height
-              },
-              { property: "og:video:alt", content: medium.alt_text }
-            );
+            // TODO
+            // dt.push(
+            //   { property: "og:video", content: medium.guid.rendered },
+            //   {
+            //     property: "og:video:type",
+            //     content: medium.media_details.mime_type
+            //   },
+            //   {
+            //     property: "og:video:width",
+            //     content: medium.media_details.width
+            //   },
+            //   {
+            //     property: "og:video:height",
+            //     content: medium.media_details.height
+            //   },
+            //   { property: "og:video:alt", content: medium.alt_text }
+            // );
             break;
         }
       }
@@ -68,7 +79,10 @@ export default (type: string, key: string) => ({
       let ogDesc = {};
 
       if ("content" in description) {
-        ogDesc = { property: "og:description", content: description.content };
+        ogDesc = [
+          { property: "og:description", content: description.content },
+          { name: "twitter:description", content: description.content },
+        ];
       }
 
       return {
@@ -76,6 +90,7 @@ export default (type: string, key: string) => ({
         meta: [
           description,
           { property: "og:title", content: this[plainObject].title.rendered },
+          { name: "twitter:title", content: this[plainObject].title.rendered },
           ogDesc,
           ...dt,
           { property: "og:type", content: type }

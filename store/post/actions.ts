@@ -4,16 +4,16 @@ import Vue from "vue";
 import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
 
-import { UrlCreator } from "../../util/UrlCreator";
-
 export const actions: ActionTree<Object, any> = {
-  async load({ state, commit }, { slug, type = "pages" }) {
+  async load({ commit }, { slug, type = "pages", embed = false }) {
     const config = Vue.prototype.$wp.config;
     const typeBaseUrl = `/wp-json/wp/v2/${type}`;
 
+    const embedString = embed ? '_embed' : ''
+
     const base = slug === ""
-      ? new UrlCreator(config.url, [typeBaseUrl])
-      : new UrlCreator(config.url, [typeBaseUrl + '?slug=', slug]);
+      ? `${config.url}${typeBaseUrl}${embedString ? ('?'+embedString) : embedString}`
+      : `${config.url}${typeBaseUrl}?slug=${slug}${embedString ? ('&'+embedString) : embedString}`;
 
     if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.post) {
       for (let filter of Vue.prototype.$wp.api.post) {
@@ -23,7 +23,7 @@ export const actions: ActionTree<Object, any> = {
 
     try {
       // if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
-      const response = await axios.get(base.url);
+      const response = await axios.get(base);
 
       if (response.data.status == 404 || response.data.length < 1) {
         throw new Error("Endpoint ain't ready");

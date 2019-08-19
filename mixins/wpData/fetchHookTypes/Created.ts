@@ -18,7 +18,8 @@ const buildCreated = (
     if (typeof loaderRequest === "string") {
       await this.$store.dispatch(`${ModulePrefix}_post/load`, {
         slug: ResolveRoute(loaderRequest, this.$route),
-        type: "pages"
+        type: "pages",
+        embed: false
       });
     } else if (isLoaderRequestElement(loaderRequest)) {
       const isPost = "type" in loaderRequest;
@@ -26,7 +27,8 @@ const buildCreated = (
 
       await this.$store.dispatch(`${ModulePrefix}_post/load`, {
         slug: ResolveRoute(loaderRequest.slug, this.$route),
-        type: contentType
+        type: contentType,
+        embed: loaderRequest.hasOwnProperty('embed')
       });
     } else if (Array.isArray(loaderRequest)) {
       const requests = [];
