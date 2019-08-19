@@ -1,5 +1,4 @@
 import {
-  ContentTypes,
   isLoaderRequestElement,
   FetchHookTypes,
   LoaderRequestElement
@@ -19,7 +18,8 @@ const buildAsyncData = function(
       const resolvedLoaderRequest = ResolveRoute(loaderRequest, route)
       await store.dispatch(`${ModulePrefix}_post/load`, {
         slug: resolvedLoaderRequest,
-        type: "pages"
+        type: "pages",
+        embed: false
       });
 
       if (fht === FetchHookTypes.AsyncData) {
@@ -38,7 +38,8 @@ const buildAsyncData = function(
 
       await store.dispatch(`${ModulePrefix}_post/load`, {
         slug: resolvedLoaderRequest,
-        type: contentType
+        type: contentType,
+        embed: loaderRequest.hasOwnProperty('embed')
       });
 
       if (fht === FetchHookTypes.AsyncData) {

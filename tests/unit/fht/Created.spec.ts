@@ -26,7 +26,8 @@ describe("FetchHookType: Created", () => {
 
     expect(spy).toHaveBeenCalledWith(`${ModulePrefix}_post/load`, {
       slug: slug,
-      type: "pages"
+      type: "pages",
+      embed: false
     });
   });
 
@@ -42,6 +43,15 @@ describe("FetchHookType: Created", () => {
       },
       {
         slug: "slug3"
+      },
+      {
+        slug: "slug2",
+        embed: true
+      },
+      {
+        slug: "slug2",
+        type: "acx",
+        embed: true
       }
     ];
 
@@ -52,7 +62,8 @@ describe("FetchHookType: Created", () => {
 
       expect(spy).toHaveBeenCalledWith(`${ModulePrefix}_post/load`, {
         slug: test.slug,
-        type: "type" in test && test.type ? test.type : "pages"
+        type: "type" in test && test.type ? test.type : "pages",
+        embed: "embed" in test && test.embed ? test.embed : false
       });
     }
   });
@@ -92,7 +103,8 @@ describe("FetchHookType: Created", () => {
         type:
           typeof test[i] !== "string" && "type" in test[i]
             ? test[i].type
-            : "pages"
+            : "pages",
+        embed: typeof test[i] === 'string' ? false : ("embed" in test[i] && test.embed ? test.embed : false)
       });
     }
   });
