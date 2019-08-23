@@ -93,7 +93,7 @@ Example:
 {
   mixins: [wpData({
     slug: 'sample-post-page',
-    type: 'posts,
+    type: 'posts',
     dataName: 'example'
   })],
   mounted () {
