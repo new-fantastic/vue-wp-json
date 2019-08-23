@@ -1,31 +1,23 @@
-<template>
-  <video 
-    v-bind="$attrs"
-    v-on="$listeners"
-    :width="mediaDetails.width" 
-    :height="mediaDetails.height" 
+<template functional>
+  <video
+    v-bind="data.attrs"
+    v-on="listeners"
+    :width="props.item.media_details.width"
+    :height="props.item.media_details.height"
     controls
   >
-    <source 
-      :src="item.link" 
-      :type="mediaDetails.mime_type"
-    />
-    Your browser does not support Video markup
+    <source :src="item.link" :type="item.media_details.mime_type" />Your browser does not support Video markup
   </video>
 </template>
 
 <script>
-  export default {
-    name: 'BaseVideo',
-    props: {
-      item: {
-        type: Object,
-        required: true
-      },
-      mediaDetails: {
-        type: Object,
-        required: true
-      }
+export default {
+  name: "BaseVideo",
+  props: {
+    item: {
+      type: Object,
+      required: true
     }
   }
+};
 </script>
