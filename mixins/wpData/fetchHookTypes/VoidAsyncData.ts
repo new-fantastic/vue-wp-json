@@ -1,4 +1,8 @@
-import { FetchHookTypes, LoaderRequestElement } from "../../../types";
+import {
+  FetchHookTypes,
+  LoaderRequestElement,
+  MetaConfig
+} from "../../../types";
 import Meta from "../../meta";
 import pickMetaSource from "../../PickMetaSource";
 import buildComputed from "../builders/Computed";
@@ -9,7 +13,7 @@ export default function(
     | string
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>,
-  setMeta: boolean
+  setMeta: boolean | MetaConfig
 ) {
   const returnable: any = {
     asyncData: buildAsyncData(loaderRequest, FetchHookTypes.VoidAsyncData),
@@ -17,7 +21,9 @@ export default function(
   };
   if (setMeta) {
     const { type, slug } = pickMetaSource(loaderRequest);
-    returnable.mixins = [Meta(type, slug)];
+    returnable.mixins = [
+      Meta(type, slug, typeof setMeta === "boolean" ? undefined : setMeta)
+    ];
   }
 
   return returnable;

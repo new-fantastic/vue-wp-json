@@ -1,4 +1,4 @@
-import { FetchHookTypes, LoaderRequestElement } from "../../types";
+import { FetchHookTypes, LoaderRequestElement, MetaConfig } from "../../types";
 
 import fhtCreated from "./fetchHookTypes/Created";
 import fhtAsyncData from "./fetchHookTypes/AsyncData";
@@ -10,7 +10,7 @@ export default (
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>,
   fht: FetchHookTypes = FetchHookTypes.Created,
-  setMeta: boolean = true
+  setMeta: boolean | MetaConfig = true
 ) => {
 
   switch (fht) {

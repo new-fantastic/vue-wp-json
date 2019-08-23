@@ -7,10 +7,13 @@
 <br>
 
 Go to your app's main directory and run:
+
 ```
 npm install @vue-wordpress/core
 ```
+
 or
+
 ```
 yarn add @vue-wordpress/core
 ```
@@ -18,56 +21,68 @@ yarn add @vue-wordpress/core
 Go to your app's main.js/main.ts file, import the module catalog and register it:
 
 ```javascript
-import Vue from 'vue'
-import store from './store'
-import router from './router'
-import Wordpress from '@vue-wordpress/core'
- 
+import Vue from "vue";
+import store from "./store";
+import router from "./router";
+import Wordpress from "@vue-wordpress/core";
+
 Vue.use(Wordpress, {
-  url: 'https://your-wordpress-url.com/',
-  lang: 'en',
-  menus: [
-    "main-menu",
-    "footer-menu"
-  ],
+  url: "https://your-wordpress-url.com/",
+  lang: "en",
+  menus: ["main-menu", "footer-menu"],
   store,
   router
-})
+});
 ```
 
-### config.url 
+### url
+
 Rest API URL
 
-### config.lang
+### lang
+
 language of the website (two letter label)
 
-### config.menus
+### menus
+
 There are a few possibilities with menu.
 However, you must remember to install [WP-REST-API V2 Menus](https://wordpress.org/plugins/wp-rest-api-v2-menus/) because by default, menus are not accessible on API.
 
-- If you want to fetch each wordpress' menu.   
-You do not even need to put **menus** key inside config object. It is default setting.
+- If you want to fetch each wordpress' menu.  
+  You do not even need to put **menus** key inside config object. It is default setting.
 
 - If you want fetch only certain menus. You should provide slugs as value. It can be string for one menu, and array of strings for few arrays.
+
 ```js
-menus: 'my-slug'
+menus: "my-slug";
 // OR
-menus: [
-  'my-slug',
-  'other-menu',
-  'diffrent'
-]
+menus: ["my-slug", "other-menu", "diffrent"];
 ```
 
 - If you want to disable fetching menus (one request less). You should set **menus** to false
+
 ```js
-menus: false
+menus: false;
 ```
 
 ### Store and router
-Store is an instance of Vuex Store and router is an instance 
+
+Store is an instance of Vuex Store and router is an instance
 
 That is all. Now you can use VueWpJson module!
+
+You can set router to false if you do not want to automaticly add routes for pages and posts.
+
+### Optional parameters
+
+#### titleTemplate
+
+You can set global title template for your meta titles.
+Example:
+title = "My title"
+titleTemplate = "%s - YuCom"
+
+In result, as title we will see: "My title - YuCom".
 
 <br>
 
@@ -76,44 +91,46 @@ That is all. Now you can use VueWpJson module!
 <br>
 
 Go to your app's main directory and run:
+
 ```
 npm install @vue-wordpress/nuxt
 ```
+
 or
+
 ```
 yarn add @vue-wordpress/nuxt
 ```
 
 Create Vuex Store in your application if it does not exist. You can do it by creating **index.js** file in **store directory** and put there content like:
+
 ```js
-export const state = () => ({
+export const state = () => ({});
 
-})
+export const mutations = {};
 
-export const mutations = {
-
-}
-
-export const actions = {}
+export const actions = {};
 ```
 
-Open **nuxt.config.js** and add **@vue-wordpress/nuxt** in modules. You also have to provide config. There are 2 possible approach.   
+Open **nuxt.config.js** and add **@vue-wordpress/nuxt** in modules. You also have to provide config. There are 2 possible approach.  
 First one:
+
 ```js
 modules: [
   [
-    '@vue-wordpress/nuxt',
+    "@vue-wordpress/nuxt",
     {
-      url: 'https://wp.mysite.com/',
-      lang: 'en',
+      url: "https://wp.mysite.com/",
+      lang: "en",
       store: true,
       router: true
     }
   ]
-]
+];
 ```
 
 Second one:
+
 ```js
 modules: [
   '@vue-wordpress/nuxt'
@@ -129,16 +146,18 @@ wpJson: {
 As we cannot access Router and Store from nuxt.config.js we have to set it as **true**. Our module will do the job an inject them other way.
 
 Inside **build** in **transpile** we have to tell Nuxt to transpile **Vue Wp Json core module**.
+
 ```js
 build: {
-  transpile: ['@vue-wordpress/core']
+  transpile: ["@vue-wordpress/core"];
 }
 ```
 
 If you use any extension you probably need to add it to transpile array, e.g:
+
 ```js
 build: {
-  transpile: ['@vue-wordpress/core', '@vue-wordpress/acf']
+  transpile: ["@vue-wordpress/core", "@vue-wordpress/acf"];
 }
 ```
 
@@ -146,7 +165,6 @@ That is all. Now you can use NuxtWpJson module!
 <br>
 
 ## Vue Storefront
-
 
 <br>
 
@@ -157,7 +175,9 @@ Go to your theme's main directory and run:
 ```
 npm install @vue-wordpress/core
 ```
+
 or
+
 ```
 yarn add @vue-wordpress/core
 ```
@@ -184,15 +204,15 @@ After that, add module to modules/index.js:
 <br>
 
 ```ts
-import { WpJson } from './vsf-wp-json'
+import { WpJson } from "./vsf-wp-json";
 
 //...
 
 export const registerModules: VueStorefrontModule[] = [
   // ...
-    WpJson,
+  WpJson
   // ...
-]
+];
 ```
 
 <br>

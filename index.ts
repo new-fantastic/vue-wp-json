@@ -98,6 +98,11 @@ export default {
 
         document.head.appendChild(el);
       }
+
+      // Global title template
+      if ("titleTemplate" in options) {
+        Vue.prototype.$wp.titleTemplate = options.titleTemplate;
+      }
     } catch (e) {
       console.error(e, e.message);
     }

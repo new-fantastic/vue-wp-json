@@ -1,21 +1,24 @@
-import { ModulePrefix } from "../";
-import { ContentTypes } from "../types";
-import ResolveRoute from '../util/ResolveRoute';
+import ResolveRoute from "../util/ResolveRoute";
+import { MetaConfig } from "../types";
 
-export default (type: string, key: string) => ({
+export default (type: string, key: string, metaConfig?: MetaConfig) => ({
   metaInfo() {
-    const plainObject = ResolveRoute(key, this.$route)
+    const plainObject = ResolveRoute(key, this.$route);
     if (this[plainObject] !== false && this[plainObject]) {
-
-      const source = this[plainObject]._embedded 
-        && this[plainObject]._embedded['wp:featuredmedia']
-        && this[plainObject]._embedded['wp:featuredmedia'][0].media_details
-        ? this[plainObject]._embedded['wp:featuredmedia'][0].media_details : null;
+      const source =
+        this[plainObject]._embedded &&
+        this[plainObject]._embedded["wp:featuredmedia"] &&
+        this[plainObject]._embedded["wp:featuredmedia"][0].media_details
+          ? this[plainObject]._embedded["wp:featuredmedia"][0].media_details
+          : null;
 
       let dt = [];
       if (source && source.sizes) {
-        const altText = this[plainObject]._embedded['wp:featuredmedia'][0].alt_text
-        const medium = source.sizes.hasOwnProperty('large') ? source.sizes.large : Object.values(source.sizes).reverse()[0]
+        const altText = this[plainObject]._embedded["wp:featuredmedia"][0]
+          .alt_text;
+        const medium = source.sizes.hasOwnProperty("large")
+          ? source.sizes.large
+          : Object.values(source.sizes).reverse()[0];
         const mimeType = medium.mime_type.split("/")[0];
 
         switch (mimeType) {
@@ -23,7 +26,7 @@ export default (type: string, key: string) => ({
             dt.push(
               { property: "og:image", content: medium.source_url },
               { name: "twitter:image", content: medium.source_url },
-              { name: 'twitter:card', content: 'summary_large_image' },
+              { name: "twitter:card", content: "summary_large_image" },
               { property: "og:image:url", content: medium.source_url },
               {
                 property: "og:image:width",
@@ -36,7 +39,7 @@ export default (type: string, key: string) => ({
               { property: "og:image:type", content: medium.mime_type }
             );
             if (altText && altText.length > 0) {
-              dt.push({ property: "og:image:alt", content: altText })
+              dt.push({ property: "og:image:alt", content: altText });
             }
             break;
           case "video":
@@ -76,24 +79,39 @@ export default (type: string, key: string) => ({
             }
           : {};
 
-      let ogDesc = {};
+      let ogDesc = [];
 
       if ("content" in description) {
-        ogDesc = [
+        ogDesc.push(
           { property: "og:description", content: description.content },
-          { name: "twitter:description", content: description.content },
-        ];
+          { name: "twitter:description", content: description.content }
+        );
+      }
+
+      let title = this[plainObject].title.rendered;
+      let customTitle = false;
+
+      if (metaConfig) {
+        if (metaConfig.hasOwnProperty("titleTemplate")) {
+          title = metaConfig.titleTemplate.replace("%s", title);
+          customTitle = true;
+        }
+      }
+
+      if (!customTitle && this.$wp.titleTemplate) {
+        title = this.$wp.titleTemplate.replace("%s", title);
       }
 
       return {
-        title: this[plainObject].title.rendered,
+        title,
         meta: [
           description,
           { property: "og:title", content: this[plainObject].title.rendered },
           { name: "twitter:title", content: this[plainObject].title.rendered },
-          ogDesc,
+          ...ogDesc,
           ...dt,
-          { property: "og:type", content: type }
+          { property: "og:type", content: type },
+          { charset: "UTF-8" }
         ]
       };
     } else {
