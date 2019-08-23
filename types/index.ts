@@ -12,8 +12,23 @@ export enum FetchHookTypes {
 }
 
 export interface LoaderRequestElement {
-  slug: string
-  meta?: Boolean,
-  dataName?: string,
-  post?: Boolean
+  slug: string;
+  meta?: Boolean;
+  dataName?: string;
+  type?: string;
+  embed?: boolean
+}
+
+export function isLoaderRequestElement(
+  object: any
+): object is LoaderRequestElement {
+  return typeof object === "object" && "slug" in object;
+}
+
+export interface LoaderRequestElementWithValue extends LoaderRequestElement {
+  value: any;
+}
+
+export interface MetaConfig {
+  titleTemplate?: string
 }

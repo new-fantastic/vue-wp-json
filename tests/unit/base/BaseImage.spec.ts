@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import BaseImage from '../../components/Base/BaseImage.vue'
+import BaseImage from '../../../components/Base/BaseImage.vue'
 
 describe('BaseImage', () => {
   

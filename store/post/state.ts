@@ -1,3 +1,3 @@
 export const state = {
-  post: {}
-}
+  types: {}
+};
