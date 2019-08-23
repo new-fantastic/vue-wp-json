@@ -28,3 +28,7 @@ export function isLoaderRequestElement(
 export interface LoaderRequestElementWithValue extends LoaderRequestElement {
   value: any;
 }
+
+export interface MetaConfig {
+  titleTemplate?: string
+}

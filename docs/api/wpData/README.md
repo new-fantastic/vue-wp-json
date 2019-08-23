@@ -10,7 +10,7 @@ Mixin accepts two arguments - target and fetching mode.
 wpData(
   target: string | LoaderRequestElement | Array<LoaderRequestElement | string>,
   fetchingMode: FetchHookTypes,
-  setMeta: boolean
+  setMeta: boolean | MetaConfig
 )
 ```
 
@@ -46,12 +46,12 @@ interface LoaderRequestElement {
 }
 ```
 
-**Slug (necessary)** - Page's slug in API. Here you can also use **$route object**. Just type, e.g. '$route.params.slug' as value. If you use route params on client side(FetchHookTypes.Created), you have to use **dataName**. Otherwise it is not necessary.
+**Slug (necessary)** - Page's slug in API. Here you can also use **\$route object**. Just type, e.g. '\$route.params.slug' as value. If you use route params on client side(FetchHookTypes.Created), you have to use **dataName**. Otherwise it is not necessary.
 
 **Meta** - when we fetch data from few endpoints (described below) there you can set which meta would you like to apply. Set to true if you want to attach. If there will be few objects with meta: true, last one will be set. If you won't set any meta: true, first one will be set.
 **dataName** - pointer's name to fetched data in Vue's instance, by default it is same as **slug**, however, you can change it if you want  
 **type** - if it is set to **some_value**, data will be fetched from /wp-json/wp/v2/**some_value** not pages! Of course by default it would be fetched from /wp-json/wp/v2/pages
-**embed** - if it should add _embedd suffix to URL. It will attach more data - e.g. necessary data for meta!
+**embed** - if it should add \_embedd suffix to URL. It will attach more data - e.g. necessary data for meta!
 
 Example view's fragment:
 
@@ -112,29 +112,39 @@ Data will be fetched inside **asyncData** lifecycle hook. However, fetched data 
 
 ## setMeta
 
-Should mixin get meta data from fetched pages and set it in **head**? 
+Should mixin get meta data from fetched pages and set it in **head**?
 Mostly should be used with **embed: true**
-true or false
+It can be a Boolean or **MetaConfig**
+MetaConfig has these options:
 
+- titleTemplate, e.g: '%s - MyWebsite.com' - %s will be replaced with current page's title
 
 ## Fetching each post of type
 
 You can easily fetch post of any type by setting slug as empty string - "".
 E.g.
+
 ```js
-wpData({
-  slug: '',
-  type: 'alerts'
-}, FetchHookTypes.Created)
+wpData(
+  {
+    slug: "",
+    type: "alerts"
+  },
+  FetchHookTypes.Created
+);
 ```
 
 If you would like to have get a **computed variable** pointing to received posts array, use:
+
 ```js
-wpData({
-  slug: '',
-  type: 'alerts',
-  dataName: 'myPointer'
-}, FetchHookTypes.Created)
+wpData(
+  {
+    slug: "",
+    type: "alerts",
+    dataName: "myPointer"
+  },
+  FetchHookTypes.Created
+);
 ```
 
 Then **this.myPointer** will be pointer to array of fetched posts.

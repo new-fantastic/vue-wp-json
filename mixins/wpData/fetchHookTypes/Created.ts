@@ -1,12 +1,13 @@
 import {
   isLoaderRequestElement,
-  LoaderRequestElement
+  LoaderRequestElement,
+  MetaConfig
 } from "../../../types";
 import { ModulePrefix } from "../../../";
 import Meta from "../../meta";
 import pickMetaSource from "../../PickMetaSource";
 import buildComputed from "../builders/Computed";
-import ResolveRoute from '../../../util/ResolveRoute'
+import ResolveRoute from "../../../util/ResolveRoute";
 
 const buildCreated = (
   loaderRequest:
@@ -28,7 +29,7 @@ const buildCreated = (
       await this.$store.dispatch(`${ModulePrefix}_post/load`, {
         slug: ResolveRoute(loaderRequest.slug, this.$route),
         type: contentType,
-        embed: loaderRequest.hasOwnProperty('embed')
+        embed: loaderRequest.hasOwnProperty("embed")
       });
     } else if (Array.isArray(loaderRequest)) {
       const requests = [];
@@ -52,7 +53,7 @@ export default (
     | string
     | LoaderRequestElement
     | Array<LoaderRequestElement | string>,
-  setMeta: boolean
+  setMeta: boolean | MetaConfig
 ) => {
   const returnable: any = {
     created: buildCreated(loaderRequest),
@@ -60,7 +61,9 @@ export default (
   };
   if (setMeta) {
     const { type, slug } = pickMetaSource(loaderRequest);
-    returnable.mixins = [Meta(type, slug)];
+    returnable.mixins = [
+      Meta(type, slug, typeof setMeta === "boolean" ? undefined : setMeta)
+    ];
   }
 
   return returnable;
