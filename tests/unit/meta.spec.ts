@@ -13,7 +13,8 @@ describe("Meta", () => {
         title: {
           rendered: title
         }
-      }
+      },
+      $wp: {}
     };
 
     const exec: any = meta("article", "").metaInfo.call(that);
@@ -36,7 +37,8 @@ describe("Meta", () => {
         title: {
           rendered: desc
         }
-      }
+      },
+      $wp: {}
     };
 
     const exec: any = meta("article", "").metaInfo.call(that);
@@ -51,7 +53,7 @@ describe("Meta", () => {
     ).toBe(desc);
   });
 
-  it("attaches title template", () => {
+  it("attaches title template from config", () => {
     const desc = "My title";
     const template = "%s - MyPage";
     const target = "My title - MyPage";
@@ -61,6 +63,54 @@ describe("Meta", () => {
         title: {
           rendered: desc
         }
+      },
+      $wp: {
+        titleTemplate: template
+      }
+    };
+
+    const exec: any = meta("article", "").metaInfo.call(that);
+
+    expect(exec.hasOwnProperty("title")).toBeTruthy();
+    expect(exec.title).toBe(target);
+  });
+
+  it("attaches title template from wpData", () => {
+    const desc = "My title";
+    const template = "%s - MyPage";
+    const target = "My title - MyPage";
+
+    const that = {
+      [plainObject]: {
+        title: {
+          rendered: desc
+        }
+      },
+      $wp: {}
+    };
+
+    const exec: any = meta("article", "", {
+      titleTemplate: template
+    }).metaInfo.call(that);
+
+    expect(exec.hasOwnProperty("title")).toBeTruthy();
+    expect(exec.title).toBe(target);
+  });
+
+  it("attaches title template from wpData over one from config", () => {
+    const desc = "My title";
+    const template = "%s - MyPage";
+    const templateBad = "%s - BadTemplateMyPage";
+    const target = "My title - MyPage";
+
+    const that = {
+      [plainObject]: {
+        title: {
+          rendered: desc
+        }
+      },
+      $wp: {
+        titleTemplate: templateBad
       }
     };
 
@@ -102,7 +152,8 @@ describe("Meta", () => {
             }
           ]
         }
-      }
+      },
+      $wp: {}
     };
     const exec: any = meta("article", "").metaInfo.call(that);
 

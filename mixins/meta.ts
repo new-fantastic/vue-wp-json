@@ -89,11 +89,17 @@ export default (type: string, key: string, metaConfig?: MetaConfig) => ({
       }
 
       let title = this[plainObject].title.rendered;
+      let customTitle = false;
 
       if (metaConfig) {
         if (metaConfig.hasOwnProperty("titleTemplate")) {
           title = metaConfig.titleTemplate.replace("%s", title);
+          customTitle = true;
         }
+      }
+
+      if (!customTitle && this.$wp.titleTemplate) {
+        title = this.$wp.titleTemplate.replace("%s", title);
       }
 
       return {
