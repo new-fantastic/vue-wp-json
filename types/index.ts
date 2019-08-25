@@ -7,6 +7,7 @@ export enum ContentTypes {
 
 export enum FetchHookTypes {
   Created,
+  ServerPrefetch,
   AsyncData,
   VoidAsyncData
 }
@@ -16,7 +17,7 @@ export interface LoaderRequestElement {
   meta?: Boolean;
   dataName?: string;
   type?: string;
-  embed?: boolean
+  embed?: boolean;
 }
 
 export function isLoaderRequestElement(
@@ -30,5 +31,5 @@ export interface LoaderRequestElementWithValue extends LoaderRequestElement {
 }
 
 export interface MetaConfig {
-  titleTemplate?: string
+  titleTemplate?: string;
 }

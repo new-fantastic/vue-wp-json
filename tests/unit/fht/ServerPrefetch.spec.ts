@@ -1,9 +1,9 @@
-import FetchHookTypeCreated from "../../../mixins/wpData/fetchHookTypes/Created";
+import FetchHookTypeServerPrefetch from "../../../mixins/wpData/fetchHookTypes/ServerPrefetch";
 import pickMetaSource from "../../../mixins/PickMetaSource";
 import { ModulePrefix } from "../../../";
 import { ContentTypes, LoaderRequestElement } from "../../../types";
 
-describe("FetchHookType: Created", () => {
+describe("FetchHookType: ServerPrefetch", () => {
   const that = {
     $store: {
       dispatch(state, payload) {
@@ -16,8 +16,7 @@ describe("FetchHookType: Created", () => {
       state: {
         [`${ModulePrefix}_post`]: {
           types: {
-            pages: {},
-            posts: {}
+            pages: {}
           }
         }
       }
@@ -25,110 +24,18 @@ describe("FetchHookType: Created", () => {
     $route: {}
   };
 
-  it("builds proper Created for loaderRequest: string", async () => {
+  it("builds proper Created for loaderRequest: string", () => {
     const slug = "slug";
 
-    const value: any = FetchHookTypeCreated.call(that, slug);
+    const value: any = FetchHookTypeServerPrefetch.call(that, slug);
     const spy = jest.spyOn(that.$store, "dispatch");
-    const invoke = value.created.call(that);
+    value.serverPrefetch.call(that);
 
     expect(spy).toHaveBeenCalledWith(`${ModulePrefix}_post/load`, {
       slug: slug,
       type: "pages",
       embed: false
     });
-  });
-
-  it("builds proper Created for loaderRequest: string with serverPrefetch", () => {
-    const slug = "slug";
-
-    const that2 = {
-      $store: {
-        dispatch(state, payload) {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 100);
-          });
-        },
-        state: {
-          [`${ModulePrefix}_post`]: {
-            types: {
-              pages: {
-                [slug]: "smth"
-              }
-            }
-          }
-        }
-      },
-      $route: {}
-    };
-    const spy2 = jest.spyOn(that2.$store, "dispatch");
-    const value: any = FetchHookTypeCreated.call(that2, slug, true);
-    value.created();
-
-    expect(spy2).not.toHaveBeenCalled();
-  });
-
-  it("builds proper Created for loaderRequest: LoaderRequest with serverPrefetch", () => {
-    const tests: LoaderRequestElement[] = [
-      {
-        slug: "slug",
-        type: "posts"
-      },
-      {
-        slug: "slug2",
-        type: "pages"
-      },
-      {
-        slug: "slug3"
-      },
-      {
-        slug: "slug2",
-        embed: true
-      },
-      {
-        slug: "slug2",
-        type: "acx",
-        embed: true
-      }
-    ];
-
-    for (let test of tests) {
-      const that2 = {
-        $store: {
-          dispatch(state, payload) {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve();
-              }, 100);
-            });
-          },
-          state: {
-            [`${ModulePrefix}_post`]: {
-              types: {
-                pages: {
-                  slug2: "smth",
-                  slug3: "asdas"
-                },
-                posts: {
-                  slug: "asdasd"
-                },
-                acx: {
-                  slug2: "asdasdas"
-                }
-              }
-            }
-          }
-        },
-        $route: {}
-      };
-      const value: any = FetchHookTypeCreated.call(that2, test, true);
-      const spy = jest.spyOn(that.$store, "dispatch");
-      value.created();
-
-      expect(spy).not.toHaveBeenCalled();
-    }
   });
 
   it("builds proper Created for loaderRequest: LoaderRequest", () => {
@@ -156,9 +63,9 @@ describe("FetchHookType: Created", () => {
     ];
 
     for (let test of tests) {
-      const value: any = FetchHookTypeCreated.call(that, test, true);
+      const value: any = FetchHookTypeServerPrefetch.call(that, test);
       const spy = jest.spyOn(that.$store, "dispatch");
-      value.created.call(that);
+      value.serverPrefetch.call(that);
 
       expect(spy).toHaveBeenCalledWith(`${ModulePrefix}_post/load`, {
         slug: test.slug,
@@ -189,13 +96,21 @@ describe("FetchHookType: Created", () => {
               resolve();
             }, 100);
           });
+        },
+        state: {
+          [`${ModulePrefix}_post`]: {
+            types: {
+              pages: {},
+              posts: {}
+            }
+          }
         }
       }
     };
 
-    const value: any = FetchHookTypeCreated.call(that2, test);
+    const value: any = FetchHookTypeServerPrefetch.call(that2, test);
     const spy = jest.spyOn(that2.$store, "dispatch");
-    await value.created.call(that2);
+    await value.serverPrefetch.call(that2);
 
     for (let i = 0, len = test.length; i < len; i++) {
       expect(spy).toHaveBeenNthCalledWith(i + 1, `${ModulePrefix}_post/load`, {
@@ -217,8 +132,8 @@ describe("FetchHookType: Created", () => {
   it("throws error when buildCreated gets a bad argument", async () => {
     let error;
     try {
-      const value: any = FetchHookTypeCreated.call(that, [155, 12]); // Bad arg
-      await value.created.call(that);
+      const value: any = FetchHookTypeServerPrefetch.call(that, [155, 12]); // Bad arg
+      await value.serverPrefetch.call(that);
     } catch (e) {
       error = e;
     }
@@ -229,7 +144,7 @@ describe("FetchHookType: Created", () => {
   it("returns Meta if needed", async () => {
     const slug = "slug";
 
-    const value: any = FetchHookTypeCreated.call(that, slug, true);
+    const value: any = FetchHookTypeServerPrefetch.call(that, slug, true);
     let was = false;
     if (value.hasOwnProperty("mixins")) {
       for (let mixin of value.mixins) {
@@ -245,7 +160,7 @@ describe("FetchHookType: Created", () => {
   it("does not return Meta if not needed", async () => {
     const slug = "slug";
 
-    const value: any = FetchHookTypeCreated.call(that, slug, false);
+    const value: any = FetchHookTypeServerPrefetch.call(that, slug, false);
     let was = false;
     if (value.hasOwnProperty("mixins")) {
       for (let mixin of value.mixins) {

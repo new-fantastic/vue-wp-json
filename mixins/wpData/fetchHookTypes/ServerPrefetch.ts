@@ -1,13 +1,7 @@
-import {
-  isLoaderRequestElement,
-  LoaderRequestElement,
-  MetaConfig
-} from "../../../types";
-import { ModulePrefix } from "../../../";
+import { LoaderRequestElement, MetaConfig } from "../../../types";
 import Meta from "../../meta";
 import pickMetaSource from "../../PickMetaSource";
 import buildComputed from "../builders/Computed";
-import ResolveRoute from "../../../util/ResolveRoute";
 import buildCreated from "../builders/Created";
 
 export default (
@@ -18,7 +12,8 @@ export default (
   setMeta: boolean | MetaConfig
 ) => {
   const returnable: any = {
-    created: buildCreated(loaderRequest),
+    created: buildCreated(loaderRequest, true),
+    serverPrefetch: buildCreated(loaderRequest, false),
     computed: buildComputed(loaderRequest)
   };
   if (setMeta) {
