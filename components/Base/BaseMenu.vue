@@ -4,6 +4,7 @@ import { ModulePrefix } from "../../index";
 
 export default {
   name: "Menu",
+  functional: true,
   props: {
     slug: {
       type: String,
@@ -12,11 +13,6 @@ export default {
     showDescription: {
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    menu() {
-      return this.$store.state[`${ModulePrefix}_menu`].menu[this.slug];
     }
   },
   render(h) {
