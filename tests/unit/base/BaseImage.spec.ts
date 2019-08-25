@@ -1,55 +1,57 @@
-import { shallowMount } from '@vue/test-utils'
-import BaseImage from '../../../components/Base/BaseImage.vue'
+import { mount } from "@vue/test-utils";
+import BaseImage from "../../../components/Base/BaseImage.vue";
 
-describe('BaseImage', () => {
-  
-  it('it render image with proper attributes and listeners', () => {
-    
+describe("BaseImage", () => {
+  const WrappedImage = {
+    components: {
+      BaseImage
+    },
+    template: `
+      <div>
+        <BaseImage v-bind="$attrs" v-on="$listeners"/>
+      </div>
+    `
+  };
+
+  it("it render image with proper attributes and listeners", () => {
     const testsArray = [
-      { 
+      {
         item: {
-          link: 'http://google.com/'
+          link: "http://google.com/"
         },
-        mediaDetails: {},
         $listeners: {},
         $attrs: {}
       },
-      { 
+      {
         item: {
-          link: 'https://onet.eu/'
+          link: "https://onet.eu/"
         },
-        mediaDetails: {},
         $listeners: {
-          click () {
-            console.log('clicked!')
+          click() {
+            console.log("clicked!");
           }
         },
         $attrs: {
           id: 12
         }
       }
-    ]
+    ];
 
     for (let test of testsArray) {
-      const wrapper = shallowMount(BaseImage, {
+      const wrapper = mount(WrappedImage, {
         propsData: {
-          mediaDetails: test.mediaDetails,
           item: test.item
         },
         listeners: test.$listeners,
         attrs: {
           ...test.$attrs
         }
-      })
+      });
 
-      const img = wrapper.find('img')
+      const img = wrapper.find("img");
 
-      expect(img.exists()).toBe(true)
-      expect(img.element.src).toBe(test.item.link)
-      expect(img.vm.$attrs).toEqual(test.$attrs)
-      // expect(img.vm.$listeners).toEqual(test.$listeners)
+      expect(img.exists()).toBe(true);
+      expect(img.element.src).toBe(test.item.link);
     }
-
-  })
-
-})
+  });
+});

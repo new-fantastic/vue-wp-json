@@ -6,7 +6,7 @@
     :height="props.item.media_details.height"
     controls
   >
-    <source :src="item.link" :type="item.media_details.mime_type" />Your browser does not support Video markup
+    <source :src="props.item.link" :type="props.item.media_details.mime_type" />Your browser does not support Video markup
   </video>
 </template>
 
