@@ -1,56 +1,31 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import { ModulePrefix } from '../../../index'
-import BaseMedia from '../../../components/Base/BaseMedia'
-import BaseImage from '../../../components/Base/BaseImage.vue'
-import BaseVideo from '../../../components/Base/BaseVideo.vue'
+import { shallowMount } from "@vue/test-utils";
+import BaseMedia from "../../../components/Base/BaseMedia.vue";
 
-describe('BaseMedia', () => {
-  
-  it('it chooses proper component', () => {
-    const mediaId = 1
-
-    const localVue = createLocalVue()
-
-    const WrappedBaseMedia = {
-      components: { BaseMedia },
-      template: `
-        <div><BaseMedia :id="`+ mediaId +`"/></div>
-      `
-    }
-
-    const testsArray = [
-      { mime_type: 'image/jpeg', cmp: BaseImage },
-      { mime_type: 'video/mp4', cmp: BaseVideo },
-      { mime_type: 'not-existing-type/mp4', error: true },
-    ]
-
-    for(let test of testsArray) {
-
-      const wrapper = mount(WrappedBaseMedia, {
-        mocks: {
-          $store: {
-            state: {
-              [`${ModulePrefix}_media`]: {
-                media: {
-                  [mediaId]: {
-                    media_details: {},
-                    mime_type: test.mime_type
-                  }
-                }
-              }
-            }
-          }
+describe("BaseMedia", () => {
+  it("it chooses proper component", () => {
+    const instance = shallowMount(BaseMedia, {
+      propsData: {
+        item: {
+          mime_type: "image/jpeg"
         }
-      })
-  
-      if (!('error' in test)) {
-        expect(wrapper.contains(test.cmp)).toBe(true)
-      } else {
-        expect(wrapper.find('span').exists()).toBe(true)
       }
+    });
 
-    }
+    expect(instance.vm.component).toBe("BaseImage");
 
-  })
+    const instance2 = shallowMount(BaseMedia, {
+      propsData: {
+        item: {
+          mime_type: "video/mp4",
+          media_details: {
+            width: 200,
+            height: 200
+          },
+          link: "abc"
+        }
+      }
+    });
 
-})
+    expect(instance2.vm.component).toBe("BaseVideo");
+  });
+});

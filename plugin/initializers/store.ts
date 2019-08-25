@@ -1,6 +1,5 @@
 import { ModulePrefix } from "../../index";
 
-import { media } from "../../store/media";
 import { post } from "../../store/post";
 import { menu } from "../../store/menu";
 import { meta } from "../../store/meta";
@@ -10,7 +9,6 @@ import { layouts } from "../../store/layouts";
 import { SET_CONFIG } from "../../store/config/mutation-types";
 
 export const registerModules = (store: any) => {
-  store.registerModule(`${ModulePrefix}_media`, media);
   store.registerModule(`${ModulePrefix}_menu`, menu);
   store.registerModule(`${ModulePrefix}_meta`, meta);
   store.registerModule(`${ModulePrefix}_post`, post);
@@ -24,8 +22,7 @@ export const loadBase = async (dispatch: Function, menuSlugs: any) => {
     dispatch(`${ModulePrefix}_menu/load`, {
       menuSlugs: menuSlugs
     }),
-    dispatch(`${ModulePrefix}_meta/load`),
-    dispatch(`${ModulePrefix}_media/load`)
+    dispatch(`${ModulePrefix}_meta/load`)
   ]);
 };
 
