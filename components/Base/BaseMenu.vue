@@ -15,7 +15,7 @@ export default {
       default: false
     }
   },
-  render(h) {
+  render(h, ctx) {
     const createProperLink = item => {
       const toReturn = [];
 
@@ -47,7 +47,7 @@ export default {
       }
 
       if (
-        this.showDescription &&
+        ctx.props.showDescription &&
         item.description &&
         item.description.length > 0
       ) {
