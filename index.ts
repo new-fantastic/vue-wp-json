@@ -29,6 +29,10 @@ export default {
       Vue.prototype.$wp = {};
       Vue.prototype.$wp.config = options;
 
+      if ("requestPrefix" in options) {
+        Vue.prototype.$wp.requestPrefix = options.requestPrefix;
+      }
+
       // Do we have store?
       if (!("store" in options)) {
         throw new Error("No VueX store provided in config!");
