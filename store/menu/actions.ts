@@ -6,7 +6,7 @@ import { ActionTree } from "vuex";
 
 import { UrlCreator } from "../../util/UrlCreator";
 
-const typeBaseUrl = "/wp-json/menus/v1/menus";
+let typeBaseUrl = "/wp-json/menus/v1/menus";
 
 export const actions: ActionTree<Object, any> = {
   async load({ commit }, { menuSlugs }) {
@@ -16,7 +16,17 @@ export const actions: ActionTree<Object, any> = {
 
     const config = Vue.prototype.$wp.config;
 
-    // const part = lang == 'pl' ? '' : '/' + lang
+    if (Vue.prototype.$wp.requestPrefix) {
+      let prefix = Vue.prototype.$wp.requestPrefix;
+      if (prefix.endsWith("/")) {
+        prefix = prefix.substring(0, -1);
+      }
+      if (prefix.startsWith("/")) {
+        prefix = prefix.substr(1);
+      }
+      typeBaseUrl = `/${prefix}${typeBaseUrl}`;
+    }
+
     const base = new UrlCreator(config.url, [typeBaseUrl]);
 
     if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.menu) {

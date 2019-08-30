@@ -65,6 +65,16 @@ menus: ["my-slug", "other-menu", "diffrent"];
 menus: false;
 ```
 
+### requestPrefix
+
+If you want to add prefix to each request - e.g. language prefix, you can set this attribute. It is optional. Example:
+
+```
+requestPrefix: 'en'
+```
+
+The result would be `/en/wp-json/wp/v2/pages`.
+
 ### Store and router
 
 Store is an instance of Vuex Store and router is an instance
