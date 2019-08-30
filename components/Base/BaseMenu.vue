@@ -13,6 +13,10 @@ export default {
     showDescription: {
       type: Boolean,
       default: false
+    },
+    attachClass: {
+      type: String,
+      required: false
     }
   },
   render(h, ctx) {
@@ -99,6 +103,9 @@ export default {
 
       return h(
         "ul",
+        {
+          class: ctx.props.attachClass ? ctx.props.attachClass : ""
+        },
         menuItems.map(v => {
           return withSubitems(v);
         })
