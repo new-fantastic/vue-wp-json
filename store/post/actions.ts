@@ -7,10 +7,13 @@ import { ActionTree } from "vuex";
 import { UrlCreator } from "../../util/UrlCreator";
 
 export const actions: ActionTree<Object, any> = {
-  async load({ commit }, { slug, type = "pages", embed = false }) {
+  async load({ commit, rootState }, { slug, type = "pages", embed = false }) {
     const config = Vue.prototype.$wp.config;
     let typeBaseUrl = `/wp-json/wp/v2/${type}`;
-    if (Vue.prototype.$wp.requestPrefix) {
+    if (
+      Vue.prototype.$wp.requestPrefix &&
+      Vue.prototype.$wp.requestPrefix.length > 0
+    ) {
       let prefix = Vue.prototype.$wp.requestPrefix;
       if (prefix.endsWith("/")) {
         prefix = prefix.substring(0, -1);
@@ -23,12 +26,14 @@ export const actions: ActionTree<Object, any> = {
 
     const embedString = embed ? "_embed" : "";
 
+    const halfBase = config.url.endsWith("/")
+      ? config.url.substr(0, config.url.length - 1) + typeBaseUrl
+      : config.url + typeBaseUrl;
+
     const base =
       slug === ""
-        ? `${config.url}${typeBaseUrl}${
-            embedString ? "?" + embedString : embedString
-          }`
-        : `${config.url}${typeBaseUrl}?slug=${slug}${
+        ? `${halfBase}${embedString ? "?" + embedString : embedString}`
+        : `${halfBase}?slug=${slug}${
             embedString ? "&" + embedString : embedString
           }`;
 
@@ -40,7 +45,11 @@ export const actions: ActionTree<Object, any> = {
 
     try {
       // if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
-      const response = await axios.get(base);
+      const finalUrl = config.url.endsWith("/")
+        ? config.url.substr(0, config.url.length - 1) + base
+        : config.url + base;
+
+      const response = await axios.get(config.url + base);
 
       if (response.data.status == 404 || response.data.length < 1) {
         throw new Error("Endpoint ain't ready");
