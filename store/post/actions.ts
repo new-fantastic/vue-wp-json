@@ -1,4 +1,4 @@
-import { VuexModulePost } from './../../types/index';
+import { VuexModulePost, WordpressOption } from './../../types/index';
 import { ModulePrefix } from './../../index';
 import axios from "axios";
 
@@ -6,7 +6,13 @@ import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
 
 export const actions: ActionTree<VuexModulePost, any> = {
-  async load({ commit, rootState, state }, { slug, type = "pages", embed = false }) {
+  async load({ commit, rootState, state }, {
+    slug,
+    type = "pages",
+    embed = false,
+    beforeSave = null,
+    beforeRequest = null
+  }: WordpressOption) {
     const config = rootState[`${ModulePrefix}_config`];
 
     let typeBaseUrl = `/wp-json/wp/v2/${type}`;
@@ -47,7 +53,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
     try {
 
       if (!state.types[type] || !state.types[type][slug]) {
-        const response = await axios.get(base);
+        const response = await axios.get(beforeRequest ? beforeRequest(base) : base);
 
         if (response.data.status == 404) {
           throw new Error(`[VueWordpress] Error 404 in ${base} endpoint`);
@@ -58,7 +64,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
         }
 
         commit(types.SET_POST_CONTENT, {
-          data: response.data,
+          data: beforeSave ? beforeSave(response.data) : response.data,
           slotName: slug,
           type
         });

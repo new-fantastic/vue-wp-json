@@ -1,8 +1,5 @@
+import { WordpressOption } from './../../types/index';
 import { ModulePrefix } from './../../index';
-interface WordpressOption {
-  slug: String,
-  type?: Boolean
-}
 
 /**
  * 
@@ -31,7 +28,7 @@ const prepareAction = function (option: WordpressOption): Promise<any> {
 
 export default {
   async beforeMount () {
-    if (!this.$options?.wordpress) {
+    if (!this.$options || !this.$options.wordpress) {
       return
     }
     const options = resolveOption(this.$options.wordpress)
