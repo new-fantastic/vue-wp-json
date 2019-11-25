@@ -1,6 +1,3 @@
-import { SET_LAYOUT } from '../store/layouts/mutation-types'
-import { ModulePrefix } from '../index'
-
 export default async (Vue, p, store?, forceEnvironment?) => {
 
   // Change name to registerExtension
@@ -44,65 +41,66 @@ export default async (Vue, p, store?, forceEnvironment?) => {
     Vue.prototype.$wp = {}
   }
 
-  if('layouts' in plugin) {
+  // Deprecated
+  // if('layouts' in plugin) {
 
-    Vue.prototype.$wp.layouts = {}
+  //   Vue.prototype.$wp.layouts = {}
 
-    if('Section' in plugin.layouts) {
-      Vue.prototype.$wp.layouts.section = true
-      Vue.component('AlternativeSection', plugin.layouts.Section)
-    }
+  //   if('Section' in plugin.layouts) {
+  //     Vue.prototype.$wp.layouts.section = true
+  //     Vue.component('AlternativeSection', plugin.layouts.Section)
+  //   }
 
-    if('Column' in plugin.layouts) {
-      Vue.prototype.$wp.layouts.column = true
-      Vue.component('AlternativeColumn', plugin.layouts.Column)
-    }
+  //   if('Column' in plugin.layouts) {
+  //     Vue.prototype.$wp.layouts.column = true
+  //     Vue.component('AlternativeColumn', plugin.layouts.Column)
+  //   }
 
-    if('Page' in plugin.layouts) {
-      if(environment === 'nuxt')
-        Vue.prototype.$wp.layouts.page = 'AlternativePage'
-      else
-        Vue.prototype.$wp.layouts.page = plugin.layouts.Page
+  //   if('Page' in plugin.layouts) {
+  //     if(environment === 'nuxt')
+  //       Vue.prototype.$wp.layouts.page = 'AlternativePage'
+  //     else
+  //       Vue.prototype.$wp.layouts.page = plugin.layouts.Page
 
-      Vue.component('AlternativePage', plugin.layouts.Page)
-      let value
-      if(environment === 'nuxt')
-        value = 'AlternativePage'
-      else
-        value = plugin.layouts.Page
+  //     Vue.component('AlternativePage', plugin.layouts.Page)
+  //     let value
+  //     if(environment === 'nuxt')
+  //       value = 'AlternativePage'
+  //     else
+  //       value = plugin.layouts.Page
 
-      if(store && store.commit) {
-        store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
-          key: 'page',
-          value
-        })
-      } 
+  //     if(store && store.commit) {
+  //       store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+  //         key: 'page',
+  //         value
+  //       })
+  //     } 
       
-    }
+  //   }
 
-    if('Post' in plugin.layouts) {
+  //   if('Post' in plugin.layouts) {
 
-      if(environment === 'nuxt')
-        Vue.prototype.$wp.layouts.post = 'AlternativePost'
-      else
-        Vue.prototype.$wp.layouts.post = plugin.layouts.Post
+  //     if(environment === 'nuxt')
+  //       Vue.prototype.$wp.layouts.post = 'AlternativePost'
+  //     else
+  //       Vue.prototype.$wp.layouts.post = plugin.layouts.Post
 
-      Vue.component('AlternativePost', plugin.layouts.Post)
-      let value
-      if(environment === 'nuxt')
-        value = 'AlternativePost'
-      else
-        value = plugin.layouts.Post
+  //     Vue.component('AlternativePost', plugin.layouts.Post)
+  //     let value
+  //     if(environment === 'nuxt')
+  //       value = 'AlternativePost'
+  //     else
+  //       value = plugin.layouts.Post
 
-      if(store && store.commit) {
-        store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
-          key: 'post',
-          value
-        })
-      }
+  //     if(store && store.commit) {
+  //       store.commit(`${ModulePrefix}_layouts/${SET_LAYOUT}`, {
+  //         key: 'post',
+  //         value
+  //       })
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   if('middleware' in plugin) {
 

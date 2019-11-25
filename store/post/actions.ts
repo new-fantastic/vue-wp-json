@@ -21,7 +21,7 @@ export const actions: ActionTree<Object, any> = {
       if (prefix.startsWith("/")) {
         prefix = prefix.substr(1);
       }
-      typeBaseUrl = `${prefix}${typeBaseUrl}`;
+      typeBaseUrl = `/${prefix}${typeBaseUrl}`;
     }
 
     const embedString = embed ? "_embed" : "";
@@ -37,6 +37,8 @@ export const actions: ActionTree<Object, any> = {
             embedString ? "&" + embedString : embedString
           }`;
 
+    // console.log(base);
+
     if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.post) {
       for (let filter of Vue.prototype.$wp.api.post) {
         filter(base);
@@ -45,11 +47,8 @@ export const actions: ActionTree<Object, any> = {
 
     try {
       // if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
-      const finalUrl = config.url.endsWith("/")
-        ? config.url.substr(0, config.url.length - 1) + base
-        : config.url + base;
 
-      const response = await axios.get(config.url + base);
+      const response = await axios.get(base);
 
       if (response.data.status == 404 || response.data.length < 1) {
         throw new Error("Endpoint ain't ready");

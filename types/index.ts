@@ -1,3 +1,5 @@
+import { Store } from 'vuex';
+
 export enum ContentTypes {
   Page,
   Post,
@@ -30,5 +32,14 @@ export interface LoaderRequestElementWithValue extends LoaderRequestElement {
 }
 
 export interface MetaConfig {
+  titleTemplate?: string
+}
+
+export interface PluginConfig {
+  url: string,
+  lang: string,
+  store: Store<any> | Boolean,
+  requestPrefix?: string,
+  menus?: Boolean | string | Array<string>,
   titleTemplate?: string
 }

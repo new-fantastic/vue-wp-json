@@ -1,17 +1,14 @@
-import TheRoot from "./components/TheRoot.js";
-
-import { routes } from "./router/routes";
-import registerPlugin from "./plugin/registerPlugin";
-
 // Initializers
 import * as vuex from "./plugin/initializers/store";
 
 import MetaInfo from "vue-meta-info";
+import { PluginConfig } from 'types'
+import { VueConstructor } from 'vue';
 
 export const ModulePrefix = "wp";
 
 export default {
-  async install(Vue, options) {
+  async install(Vue: VueConstructor, options: PluginConfig) {
     try {
       // Config
       // Is it proper
@@ -45,21 +42,21 @@ export default {
       }
 
       // Global access to TheRoot component
-      Vue.component("Sections", TheRoot);
+      // Vue.component("Sections", TheRoot);
 
       // Register VueX modules
       if (!manualVuexMode) vuex.registerModules(store);
 
-      if ("plugins" in options) {
-        // Register plugins
-        if (Array.isArray(options.plugins)) {
-          for (let plugin of options.plugins) {
-            registerPlugin(Vue, plugin, store);
-          }
-        } else {
-          registerPlugin(Vue, options.plugins, store);
-        }
-      }
+      // if ("plugins" in options) {
+      //   // Register plugins
+      //   if (Array.isArray(options.plugins)) {
+      //     for (let plugin of options.plugins) {
+      //       registerPlugin(Vue, plugin, store);
+      //     }
+      //   } else {
+      //     registerPlugin(Vue, options.plugins, store);
+      //   }
+      // }
 
       if (!manualVuexMode) {
         await vuex.loadBase(
@@ -70,18 +67,18 @@ export default {
       }
 
       // Do we have router?
-      if (!("router" in options)) {
-        throw new Error("No router instance provided in config!");
-      }
+      // if (!("router" in options)) {
+      //   throw new Error("No router instance provided in config!");
+      // }
 
-      const router = options.router;
+      // const router = options.router;
 
-      if (typeof router === "object") {
-        router.addRoutes(routes());
-      }
+      // if (typeof router === "object") {
+      //   router.addRoutes(routes());
+      // }
 
       // Set lang in html
-      const nuxtServer = process && process.server;
+      const nuxtServer = process && (<any>process).server;
 
       if (!nuxtServer && document !== undefined) {
         const html = document.querySelector("html");
