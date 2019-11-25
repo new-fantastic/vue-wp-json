@@ -46,7 +46,8 @@ export default {
           lang: options.lang,
           ...(options.requestPrefix ? { requestPrefix: options.requestPrefix } : {}),
           ...(options.menus ? { menus: options.menus } : {}),
-          ...(options.titleTemplate ? { titleTemplate: options.titleTemplate } : {})
+          ...(options.titleTemplate ? { titleTemplate: options.titleTemplate } : {}),
+          ...(options.debugger ? { debugger: options.debugger } : {})
         });
 
         await vuex.loadBase(

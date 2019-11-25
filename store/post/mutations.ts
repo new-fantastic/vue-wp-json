@@ -11,10 +11,10 @@ export const mutations: MutationTree<any> = {
 
     if (Array.isArray(data)) {
       for (let post of data) {
-        Vue.set(state.types[type], post.slug, post)
+        Vue.set(state.types[type], post.slug, Object.freeze(post))
       }
     } else {
-      Vue.set(state.types[type], slotName, data);
+      Vue.set(state.types[type], slotName, Object.freeze(data));
     }
   }
 };
