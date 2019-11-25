@@ -45,12 +45,6 @@ export const actions: ActionTree<VuexModulePost, any> = {
             embedString ? "&" + embedString : embedString
           }`;
 
-    // if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.post) {
-    //   for (let filter of Vue.prototype.$wp.api.post) {
-    //     filter(base);
-    //   }
-    // }
-
     try {
 
       if (!state.types[type] || !state.types[type][slug]) {

@@ -1,6 +1,5 @@
 import { ModulePrefix } from './../../index';
 import axios from "axios";
-import Vue from "vue";
 
 import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
@@ -25,12 +24,6 @@ export const actions: ActionTree<Object, any> = {
     }
 
     const base = new UrlCreator(config.url, [typeBaseUrl]);
-
-    if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.meta) {
-      for (let filter of Vue.prototype.$wp.api.meta) {
-        filter(base);
-      }
-    }
 
     try {
       const { data } = await axios.get(base.url);
