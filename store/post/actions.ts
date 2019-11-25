@@ -11,7 +11,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
     type = "pages",
     embed = false,
     beforeSave = null,
-    beforeRequest = null
+    beforeRequest = null,
+    beforeSaveFailed = null
   }: WordpressOption) {
     const config = rootState[`${ModulePrefix}_config`];
 
@@ -53,7 +54,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
     try {
 
       if (!state.types[type] || !state.types[type][slug]) {
-        const response = await axios.get(beforeRequest ? beforeRequest(base) : base);
+        const requestUrl = beforeRequest ? await beforeRequest(base) : base
+        const response = await axios.get(requestUrl);
 
         if (response.data.status == 404) {
           throw new Error(`[VueWordpress] Error 404 in ${base} endpoint`);
@@ -63,8 +65,10 @@ export const actions: ActionTree<VuexModulePost, any> = {
           throw new Error(`[VueWordpress] Empty data in ${base} endpoint`);
         }
 
+        const data = beforeSave ? await beforeSave(response.data) : response.data
+
         commit(types.SET_POST_CONTENT, {
-          data: beforeSave ? beforeSave(response.data) : response.data,
+          data,
           slotName: slug,
           type
         });
@@ -74,8 +78,11 @@ export const actions: ActionTree<VuexModulePost, any> = {
       }
 
     } catch (err) {
+
+      const data = beforeSaveFailed ? await beforeSaveFailed() : false
+
       commit(types.SET_POST_CONTENT, {
-        data: false,
+        data,
         slotName: slug,
         type
       });

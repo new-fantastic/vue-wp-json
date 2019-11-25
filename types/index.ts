@@ -60,9 +60,10 @@ export interface VuexModulePost {
 }
 
 export interface WordpressOption {
-  slug: String,
-  type?: String,
+  slug: string,
+  type?: string,
   embed?: Boolean,
   beforeSave?: (fetchedData: any) => any,
-  beforeRequest?: (url: String) => String
+  beforeRequest?: (url: string) => string,
+  beforeSaveFailed?: () => any
 }
