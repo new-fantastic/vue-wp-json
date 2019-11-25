@@ -1,3 +1,4 @@
+import { ModulePrefix } from './../../index';
 import axios from "axios";
 import Vue from "vue";
 
@@ -9,11 +10,11 @@ import { UrlCreator } from "../../util/UrlCreator";
 let typeBaseUrl = "/wp-json";
 
 export const actions: ActionTree<Object, any> = {
-  async load({ commit }) {
-    const config = Vue.prototype.$wp.config;
+  async load({ rootState, commit }) {
+    const config = rootState.state[`${ModulePrefix}_config`];
 
-    if (Vue.prototype.$wp.requestPrefix) {
-      let prefix = Vue.prototype.$wp.requestPrefix;
+    if (config.requestPrefix) {
+      let prefix = config.requestPrefix;
       if (prefix.endsWith("/")) {
         prefix = prefix.substring(0, -1);
       }

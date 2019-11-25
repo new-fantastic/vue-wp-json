@@ -1,20 +1,20 @@
+import { ModulePrefix } from './../../index';
 import axios from "axios";
 import Vue from "vue";
 
 import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
 
-import { UrlCreator } from "../../util/UrlCreator";
-
 export const actions: ActionTree<Object, any> = {
   async load({ commit, rootState }, { slug, type = "pages", embed = false }) {
-    const config = Vue.prototype.$wp.config;
+    const config = rootState.state[`${ModulePrefix}_config`];
+
     let typeBaseUrl = `/wp-json/wp/v2/${type}`;
     if (
-      Vue.prototype.$wp.requestPrefix &&
-      Vue.prototype.$wp.requestPrefix.length > 0
+      config.requestPrefix &&
+      config.requestPrefix.length > 0
     ) {
-      let prefix = Vue.prototype.$wp.requestPrefix;
+      let prefix = config.requestPrefix;
       if (prefix.endsWith("/")) {
         prefix = prefix.substring(0, -1);
       }
