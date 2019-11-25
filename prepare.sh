@@ -1,7 +1,7 @@
 #!/bin/bash
 rm -rf dist;
 mkdir dist;
-tsc --declaration;
+npx tsc --declaration;
 cp package.json dist
 cp README.md dist
 cp LICENSE dist
