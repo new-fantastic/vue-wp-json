@@ -41,10 +41,6 @@ export default {
         store = options.store;
         vuex.registerModules(store);
 
-        await vuex.loadBase(
-          store.dispatch,
-          options.hasOwnProperty("menus") ? options.menus : true
-        );
         vuex.setConfig(store.commit, {
           url: options.url,
           lang: options.lang,
@@ -52,6 +48,11 @@ export default {
           ...(options.menus ? { menus: options.menus } : {}),
           ...(options.titleTemplate ? { titleTemplate: options.titleTemplate } : {})
         });
+
+        await vuex.loadBase(
+          store.dispatch,
+          options.hasOwnProperty("menus") ? options.menus : true
+        );
       }
 
       // Set lang in html

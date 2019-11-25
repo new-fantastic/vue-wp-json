@@ -11,7 +11,7 @@ let typeBaseUrl = "/wp-json";
 
 export const actions: ActionTree<Object, any> = {
   async load({ rootState, commit }) {
-    const config = rootState.state[`${ModulePrefix}_config`];
+    const config = rootState[`${ModulePrefix}_config`];
 
     if (config.requestPrefix) {
       let prefix = config.requestPrefix;
@@ -19,7 +19,7 @@ export const actions: ActionTree<Object, any> = {
         prefix = prefix.substring(0, -1);
       }
       if (prefix.startsWith("/")) {
-        prefix = prefix.substr(1);
+        prefix = prefix.substr(1); 
       }
       typeBaseUrl = `/${prefix}${typeBaseUrl}`;
     }

@@ -15,7 +15,7 @@ export const actions: ActionTree<Object, any> = {
       return;
     }
 
-    const config = rootState.state[`${ModulePrefix}_config`];
+    const config = rootState[`${ModulePrefix}_config`];
 
     if (config.requestPrefix) {
       let prefix = config.requestPrefix;

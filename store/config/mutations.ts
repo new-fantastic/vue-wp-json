@@ -4,15 +4,17 @@ import * as types from "./mutation-types";
 export const mutations: MutationTree<any> = {
 
   [types.SET_CONFIG](state, payload) {
-    state.config = payload;
+    for (const [key, value] of Object.entries(payload)) {
+      state[key] = payload[key]
+    }
   },
 
-  [types.SET_CONFIG](state, payload) {
+  [types.SET_URL](state, payload) {
     state.url = payload;
   },
 
   [types.SET_REQUEST_PREFIX](state, newPrefix) {
-    state.config.requestPrefix = newPrefix;
+    state.requestPrefix = newPrefix;
   }
 
 };

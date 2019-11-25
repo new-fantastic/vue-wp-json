@@ -1,3 +1,4 @@
+import { EditablePluginConfig } from './../../types/index';
 import { ModulePrefix } from "../../index";
 
 import { post } from "../../store/post";
@@ -30,6 +31,6 @@ export const loadBase = async (dispatch: Function, menuSlugs: any) => {
   }
 };
 
-export const setConfig = (commit: Function, config: any) => {
+export const setConfig = (commit: Function, config: EditablePluginConfig) => {
   commit(`${ModulePrefix}_config/${SET_CONFIG}`, config);
 };

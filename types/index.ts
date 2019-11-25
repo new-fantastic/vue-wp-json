@@ -41,5 +41,20 @@ export interface PluginConfig {
   store: Store<any> | Boolean,
   requestPrefix?: string,
   menus?: Boolean | string | Array<string>,
-  titleTemplate?: string
+  titleTemplate?: string,
+  debugger?: Boolean
+}
+
+export interface EditablePluginConfig {
+  url: string,
+  lang: string,
+  requestPrefix?: string,
+  titleTemplate?: string,
+  debugger?: Boolean
+}
+
+export interface VuexModulePost {
+  types: {
+    [key: string]: any
+  }
 }
