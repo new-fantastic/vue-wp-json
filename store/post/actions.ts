@@ -8,7 +8,7 @@ import { ActionTree } from "vuex";
 export const actions: ActionTree<VuexModulePost, any> = {
   async load({ commit, rootState, state }, {
     slug,
-    type = "pages",
+    type = 'pages',
     embed = false,
     beforeSave = null,
     beforeRequest = null,

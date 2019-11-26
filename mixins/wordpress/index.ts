@@ -38,7 +38,13 @@ export default {
     }
     try {
       const options = await resolveOption(this.$options.wordpress)
-      await Promise.all(options.map(option => prepareAction.call(this, option)))
+      await Promise.all(options.map(async option => {
+        const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
+        return prepareAction.call(this, {
+          ...option,
+          slug
+        })
+      }))
     } catch (err) {
       console.log('[VueWordpress] Something went wrong inside beforeMount with', this.$options.wordpress)
     }
@@ -49,7 +55,13 @@ export default {
     }
     try {
       const options = await resolveOption(this.$options.wordpress)
-      await Promise.all(options.map(option => prepareAction.call(this, option)))
+      await Promise.all(options.map(async option => {
+        const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
+        return prepareAction.call(this, {
+          ...option,
+          slug
+        })
+      }))
     } catch (err) {
       console.log('[VueWordpress] Something went wrong inside serverPrefetch with', this.$options.wordpress)
     }
