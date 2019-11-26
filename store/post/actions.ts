@@ -51,6 +51,10 @@ export const actions: ActionTree<VuexModulePost, any> = {
         const requestUrl = beforeRequest ? await beforeRequest(base) : base
         const response = await axios.get(requestUrl);
 
+        if (config.debugger) {
+          console.log(`[VueWordpress][Debugger] I've just fetched ${base}`)
+        }
+
         if (response.data.status == 404) {
           throw new Error(`[VueWordpress] Error 404 in ${base} endpoint`);
         }
@@ -72,6 +76,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
       }
 
     } catch (err) {
+
+      console.log(`[VueWordpress][Debugger] Could not fetch because of error`, err)
 
       const data = beforeSaveFailed ? await beforeSaveFailed() : false
 

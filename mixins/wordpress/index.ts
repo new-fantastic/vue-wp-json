@@ -36,16 +36,22 @@ export default {
     if (!this.$options || !this.$options.wordpress) {
       return
     }
-    const options = await resolveOption(this.$options.wordpress)
-    await Promise.all(options.map(option => prepareAction.call(this, option)))
-    console.log('Fetched stuff - bMounted')
+    try {
+      const options = await resolveOption(this.$options.wordpress)
+      await Promise.all(options.map(option => prepareAction.call(this, option)))
+    } catch (err) {
+      console.log('[VueWordpress] Something went wrong inside beforeMount with', this.$options.wordpress)
+    }
   },
   async serverPrefetch () {
     if (!this.$options || !this.$options.wordpress) {
       return
     }
-    const options = await resolveOption(this.$options.wordpress)
-    await Promise.all(options.map(option => prepareAction.call(this, option)))
-    console.log('Fetched stuff - Prefetch')
+    try {
+      const options = await resolveOption(this.$options.wordpress)
+      await Promise.all(options.map(option => prepareAction.call(this, option)))
+    } catch (err) {
+      console.log('[VueWordpress] Something went wrong inside serverPrefetch with', this.$options.wordpress)
+    }
   }
 }
