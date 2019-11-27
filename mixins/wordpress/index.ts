@@ -9,7 +9,8 @@ import { ModulePrefix } from './../../index';
 const resolveOption = async function (option: Function | Array<WordpressOption> | WordpressOption) {
   switch (typeof option) {
     case 'function':
-      return await option.call(this)
+      const response = await option.call(this)
+      return await resolveOption(response)
     case 'object':
       if (Array.isArray(option)) {
         return option
@@ -37,7 +38,7 @@ export default {
       return
     }
     try {
-      const options = await resolveOption(this.$options.wordpress)
+      const options = await resolveOption.call(this, this.$options.wordpress)
       await Promise.all(options.map(async option => {
         const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
         return prepareAction.call(this, {
@@ -47,6 +48,7 @@ export default {
       }))
     } catch (err) {
       console.log('[VueWordpress] Something went wrong inside beforeMount with', this.$options.wordpress)
+      console.log('[VueWordpress]', err)
     }
   },
   async serverPrefetch () {
@@ -54,7 +56,7 @@ export default {
       return
     }
     try {
-      const options = await resolveOption(this.$options.wordpress)
+      const options = await resolveOption.call(this, this.$options.wordpress)
       await Promise.all(options.map(async option => {
         const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
         return prepareAction.call(this, {
@@ -64,6 +66,7 @@ export default {
       }))
     } catch (err) {
       console.log('[VueWordpress] Something went wrong inside serverPrefetch with', this.$options.wordpress)
+      console.log('[VueWordpress]', err)
     }
   }
 }
