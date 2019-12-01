@@ -58,9 +58,8 @@ module.exports = {
           collapsable: false,
           children: [
             ['/api/store/', 'Vuex Store'],
-            ['/api/wp/', '$wp'],
             ['/api/wpData/', 'wpData'],
-            ['/api/base-components/', 'Base Components'],
+            ['/api/wordpress/', 'wordpress']
           ]
         }
       ],

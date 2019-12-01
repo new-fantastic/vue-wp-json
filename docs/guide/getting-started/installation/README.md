@@ -23,15 +23,13 @@ Go to your app's main.js/main.ts file, import the module catalog and register it
 ```javascript
 import Vue from "vue";
 import store from "./store";
-import router from "./router";
 import Wordpress from "@vue-wordpress/core";
 
 Vue.use(Wordpress, {
   url: "https://your-wordpress-url.com/",
   lang: "en",
   menus: ["main-menu", "footer-menu"],
-  store,
-  router
+  store
 });
 ```
 
@@ -75,13 +73,11 @@ requestPrefix: 'en'
 
 The result would be `/en/wp-json/wp/v2/pages`.
 
-### Store and router
+### Store
 
-Store is an instance of Vuex Store and router is an instance
+Store is an instance of Vuex Store 
 
 That is all. Now you can use VueWpJson module!
-
-You can set router to false if you do not want to automaticly add routes for pages and posts.
 
 ### Optional parameters
 
@@ -132,8 +128,7 @@ modules: [
     {
       url: "https://wp.mysite.com/",
       lang: "en",
-      store: true,
-      router: true
+      store: true
     }
   ]
 ];
@@ -148,26 +143,17 @@ modules: [
 wpJson: {
   url: 'https://wp.mysite.com/',
   lang: 'en',
-  store: true,
-  router: true
+  store: true
 }
 ```
 
-As we cannot access Router and Store from nuxt.config.js we have to set it as **true**. Our module will do the job an inject them other way.
+As we cannot access Store from nuxt.config.js we have to set it as **true**. Our module will do the job an inject them other way.
 
 Inside **build** in **transpile** we have to tell Nuxt to transpile **Vue Wp Json core module**.
 
 ```js
 build: {
   transpile: ["@vue-wordpress/core"];
-}
-```
-
-If you use any extension you probably need to add it to transpile array, e.g:
-
-```js
-build: {
-  transpile: ["@vue-wordpress/core", "@vue-wordpress/acf"];
 }
 ```
 
@@ -238,24 +224,5 @@ Open config file, then at the end of main object add:
   "menus": ["for-buyers", "footer"]
 }
 ```
-
-<br>
-
-If you want to register plugin, you can do it by adding in **`wordpressCms`** - plugins, e.g.:
-
-<br>
-
-```json
-"wordpressCms": {
-  "url": "https://your-wordpress-url.com/",
-  "lang": "en",
-  "menus": ["for-buyers", "footer"],
-  "plugins": "acf"
-}
-```
-
-<br>
-
-Plugin should be inside `node_modules/@vue-wordpress`. It also must have "vue-wp-json-" prefix.
 
 <br>

@@ -27,13 +27,6 @@ export default {
 
       Vue.mixin(wordpress)
 
-      Vue.prototype.$wp = {};
-      Vue.prototype.$wp.config = options;
-
-      if ("requestPrefix" in options) {
-        Vue.prototype.$wp.requestPrefix = options.requestPrefix;
-      }
-
       // Do we have store?
       if (!("store" in options)) {
         throw new Error("No VueX store provided in config!");
@@ -83,10 +76,6 @@ export default {
         document.head.appendChild(el);
       }
 
-      // Global title template
-      if ("titleTemplate" in options) {
-        Vue.prototype.$wp.titleTemplate = options.titleTemplate;
-      }
     } catch (e) {
       console.error(e, e.message);
     }
