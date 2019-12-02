@@ -10,7 +10,7 @@ import { UrlCreator } from "../../util/UrlCreator";
 let typeBaseUrl = "/wp-json/menus/v1/menus";
 
 export const actions: ActionTree<Object, any> = {
-  async load({ rootState, commit }, { menuSlugs }) {
+  async load({ rootState, commit, state }, { menuSlugs }) {
     if (menuSlugs === false) {
       return;
     }
@@ -57,6 +57,13 @@ export const actions: ActionTree<Object, any> = {
         // Few menus in paralel
         const requests = [];
         for (let slug of menuSlugs) {
+          const hasMenu = (<any>state).menu[slug]
+          if (hasMenu) {
+            if (config.debugger) {
+              console.log(`[VueWordpress][Debugger] Omits ${slug} menu because it has been fetched yet`)
+            }
+            continue;
+          }
           base.addAtTheEnd(slug);
           requests.push(axios.get(base.url));
           base.removeFromTheEnd();
@@ -72,6 +79,13 @@ export const actions: ActionTree<Object, any> = {
           });
         });
       } else if (typeof menuSlugs === "string") {
+        const hasMenu = (<any>state).menu[menuSlugs]
+        if (hasMenu) {
+          if (config.debugger) {
+            console.log(`[VueWordpress][Debugger] Omits ${menuSlugs} menu because it has been fetched yet`)
+          }
+          return;
+        }
         base.addAtTheEnd(menuSlugs);
         let response = await axios.get(base.url);
         commit(types.SET_MENU_CONTENT, {
@@ -88,6 +102,13 @@ export const actions: ActionTree<Object, any> = {
 
           const requests = [];
           for (let slug of slugs) {
+            const hasMenu = (<any>state).menu[slug]
+            if (hasMenu) {
+              if (config.debugger) {
+                console.log(`[VueWordpress][Debugger] Omits ${slug} menu because it has been fetched yet`)
+              }
+              continue;
+            }
             base.addAtTheEnd(slug);
             requests.push(axios.get(base.url));
             base.removeFromTheEnd();

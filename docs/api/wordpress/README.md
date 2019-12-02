@@ -55,6 +55,21 @@ wordpress: {
   type: 'custom_type'
 }
 ```
+## Attribute: embed
+
+### Type: Boolean
+#### Default value: false
+
+Whether add *&_embed* at the end or not
+`https:///yourwordpress.com/wp-json/wp/v2/custom_type?slug=<your_slug>&_embed`
+
+Example use case:
+```js
+wordpress: {
+  slug: 'apple',
+  embed: true
+}
+```
 ## Attribute: beforeSave
 
 ### Type: Function

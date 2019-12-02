@@ -5,6 +5,8 @@ import axios from "axios";
 import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
 
+const currentlyFetching = {}
+
 export const actions: ActionTree<VuexModulePost, any> = {
   async load({ commit, rootState, state }, {
     slug,
@@ -48,8 +50,25 @@ export const actions: ActionTree<VuexModulePost, any> = {
     try {
 
       if (!state.types[type] || !state.types[type][slug]) {
+        
+        if (currentlyFetching && !currentlyFetching[type]) {
+          currentlyFetching[type] = []
+        }
+
+        if (currentlyFetching && currentlyFetching[type] && currentlyFetching[type][slug]) {
+          if (config.debugger) {
+            const requestUrl = beforeRequest ? await beforeRequest(base) : base
+            console.log(`[VueWordpress][Debugger] Omits ${requestUrl} because it is being fetched currently`)
+          }
+          return;
+        }
+        
         const requestUrl = beforeRequest ? await beforeRequest(base) : base
         const response = await axios.get(requestUrl);
+
+        if (!currentlyFetching[type].includes(slug)) {
+          currentlyFetching[type].push(slug)
+        }
 
         if (config.debugger) {
           console.log(`[VueWordpress][Debugger] I've just fetched ${base}`)
@@ -62,6 +81,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
         if (response.data.length < 1) {
           throw new Error(`[VueWordpress] Empty data in ${base} endpoint`);
         }
+
+        currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
 
         const data = beforeSave ? await beforeSave(response.data) : response.data
 
@@ -77,7 +98,11 @@ export const actions: ActionTree<VuexModulePost, any> = {
 
     } catch (err) {
 
-      console.log(`[VueWordpress][Debugger] Could not fetch because of error`, err)
+      currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
+
+      if (config.debugger) {
+        console.log(`[VueWordpress][Debugger] Could not fetch because of error`, err)
+      }
 
       const data = beforeSaveFailed ? await beforeSaveFailed() : false
 

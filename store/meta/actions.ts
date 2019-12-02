@@ -9,7 +9,7 @@ import { UrlCreator } from "../../util/UrlCreator";
 let typeBaseUrl = "/wp-json";
 
 export const actions: ActionTree<Object, any> = {
-  async load({ rootState, commit }) {
+  async load({ rootState, commit, state }) {
     const config = rootState[`${ModulePrefix}_config`];
 
     if (config.requestPrefix) {
@@ -26,6 +26,13 @@ export const actions: ActionTree<Object, any> = {
     const base = new UrlCreator(config.url, [typeBaseUrl]);
 
     try {
+      const hasMeta = !!Object.keys((<any>state).meta).length
+      if (hasMeta) {
+        if (config.debugger) {
+          console.log('[VueWordpress][Debugger] Omits fetching meta because it has been fetched yet')
+        }
+        return
+      }
       const { data } = await axios.get(base.url);
       commit(types.SET_META_CONTENT, {
         data: {
