@@ -128,6 +128,21 @@ wordpress: {
 }
 ```
 
+## How to access fetched data?
+
+Inside computed/data add a proper pointer do the data:
+
+```js
+{
+  // ...
+  computed: {
+    apple () {
+      return this.$store.state.wp_post.types.posts.apple
+    }
+  }
+}
+```
+
 ## Tips
 1. Each function can be **async**
 2. You can access component's this inside other than slug hooks with that trick:
@@ -151,6 +166,34 @@ wordpress: {
           : `${apiUrl}/${self.currentLanguage}/`
       }
     }
+  }
+}
+```
+3. Wordpress option could be array, so pages would be fetched in paralell:
+```js
+{
+  wordpress: [
+    {
+      slug: 'apple'
+    },
+    {
+      slug: 'orange'
+    }
+  ]
+}
+```
+Or as function:
+```js
+{
+  wordpress () {
+    return [
+      {
+        slug: 'apple'
+      },
+      {
+        slug: 'orange'
+      }
+    ]
   }
 }
 ```

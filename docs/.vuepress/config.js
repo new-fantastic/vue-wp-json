@@ -31,26 +31,7 @@ module.exports = {
             ['/guide/getting-started/usage/', 'Usage'],
             ['/guide/getting-started/pwa/', 'PWA'],
           ]
-        },
-        {
-          title: 'Extending the Module',
-          collapsable: false,
-          children: [
-            ['/guide/extending-the-module/essentials/', 'Essentials'],
-            ['/guide/extending-the-module/validators/', 'Validators'],
-            ['/guide/extending-the-module/interpreters/', 'Interpreters'],
-            ['/guide/extending-the-module/modifying-endpoints/', 'Modifying endpoints'],
-            ['/guide/extending-the-module/custom-layouts/', 'Custom layouts'],
-            ['/guide/extending-the-module/custom-blocks/', 'Custom blocks'],
-          ]
-        },
-        // {
-        //   title: 'Frequent issues',
-        //   children: [
-        //     ['#', 'Problems with Installation'],
-        //     ['#', 'Problems with Extensions'],
-        //   ]
-        // },
+        }
       ],
       '/api/' : [
         {
