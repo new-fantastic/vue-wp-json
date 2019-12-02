@@ -1,17 +1,15 @@
-import TheRoot from "./components/TheRoot.js";
-
-import { routes } from "./router/routes";
-import registerPlugin from "./plugin/registerPlugin";
-
 // Initializers
 import * as vuex from "./plugin/initializers/store";
 
 import MetaInfo from "vue-meta-info";
+import { PluginConfig } from 'types'
+import { VueConstructor } from 'vue';
+import wordpress from './mixins/wordpress';
 
 export const ModulePrefix = "wp";
 
 export default {
-  async install(Vue, options) {
+  async install(Vue: VueConstructor, options: PluginConfig) {
     try {
       // Config
       // Is it proper
@@ -26,12 +24,8 @@ export default {
       }
       // Register it in app
       Vue.use(MetaInfo);
-      Vue.prototype.$wp = {};
-      Vue.prototype.$wp.config = options;
 
-      if ("requestPrefix" in options) {
-        Vue.prototype.$wp.requestPrefix = options.requestPrefix;
-      }
+      Vue.mixin(wordpress)
 
       // Do we have store?
       if (!("store" in options)) {
@@ -42,46 +36,25 @@ export default {
       const manualVuexMode = options.store === true;
       if (!manualVuexMode) {
         store = options.store;
-      }
+        vuex.registerModules(store);
 
-      // Global access to TheRoot component
-      Vue.component("Sections", TheRoot);
+        vuex.setConfig(store.commit, {
+          url: options.url,
+          lang: options.lang,
+          ...(options.requestPrefix ? { requestPrefix: options.requestPrefix } : {}),
+          ...(options.menus ? { menus: options.menus } : {}),
+          ...(options.titleTemplate ? { titleTemplate: options.titleTemplate } : {}),
+          ...(options.debugger ? { debugger: options.debugger } : {})
+        });
 
-      // Register VueX modules
-      if (!manualVuexMode) vuex.registerModules(store);
-
-      if ("plugins" in options) {
-        // Register plugins
-        if (Array.isArray(options.plugins)) {
-          for (let plugin of options.plugins) {
-            registerPlugin(Vue, plugin, store);
-          }
-        } else {
-          registerPlugin(Vue, options.plugins, store);
-        }
-      }
-
-      if (!manualVuexMode) {
         await vuex.loadBase(
           store.dispatch,
           options.hasOwnProperty("menus") ? options.menus : true
         );
-        vuex.setConfig(store.commit, options);
-      }
-
-      // Do we have router?
-      if (!("router" in options)) {
-        throw new Error("No router instance provided in config!");
-      }
-
-      const router = options.router;
-
-      if (typeof router === "object") {
-        router.addRoutes(routes());
       }
 
       // Set lang in html
-      const nuxtServer = process && process.server;
+      const nuxtServer = process && (<any>process).server;
 
       if (!nuxtServer && document !== undefined) {
         const html = document.querySelector("html");
@@ -103,10 +76,6 @@ export default {
         document.head.appendChild(el);
       }
 
-      // Global title template
-      if ("titleTemplate" in options) {
-        Vue.prototype.$wp.titleTemplate = options.titleTemplate;
-      }
     } catch (e) {
       console.error(e, e.message);
     }

@@ -1,14 +1,20 @@
 import { MutationTree } from "vuex";
 import * as types from "./mutation-types";
-import Vue from "vue";
 
 export const mutations: MutationTree<any> = {
+
   [types.SET_CONFIG](state, payload) {
-    state.config = payload;
+    for (const [key, value] of Object.entries(payload)) {
+      state[key] = payload[key]
+    }
+  },
+
+  [types.SET_URL](state, payload) {
+    state.url = payload;
   },
 
   [types.SET_REQUEST_PREFIX](state, newPrefix) {
-    state.config.requestPrefix = newPrefix;
-    // Vue.prototype.$wp.requestPrefix = newPrefix;
+    state.requestPrefix = newPrefix;
   }
+
 };

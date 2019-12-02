@@ -1,27 +1,35 @@
+import { VuexModulePost, WordpressOption } from './../../types/index';
+import { ModulePrefix } from './../../index';
 import axios from "axios";
-import Vue from "vue";
 
 import * as types from "./mutation-types";
 import { ActionTree } from "vuex";
 
-import { UrlCreator } from "../../util/UrlCreator";
+export const actions: ActionTree<VuexModulePost, any> = {
+  async load({ commit, rootState, state }, {
+    slug,
+    type = 'pages',
+    embed = false,
+    beforeSave = null,
+    beforeRequest = null,
+    beforeSaveFailed = null
+  }: WordpressOption) {
+    const config = rootState[`${ModulePrefix}_config`];
 
-export const actions: ActionTree<Object, any> = {
-  async load({ commit, rootState }, { slug, type = "pages", embed = false }) {
-    const config = Vue.prototype.$wp.config;
     let typeBaseUrl = `/wp-json/wp/v2/${type}`;
+
     if (
-      Vue.prototype.$wp.requestPrefix &&
-      Vue.prototype.$wp.requestPrefix.length > 0
+      config.requestPrefix &&
+      config.requestPrefix.length > 0
     ) {
-      let prefix = Vue.prototype.$wp.requestPrefix;
+      let prefix = config.requestPrefix;
       if (prefix.endsWith("/")) {
         prefix = prefix.substring(0, -1);
       }
       if (prefix.startsWith("/")) {
         prefix = prefix.substr(1);
       }
-      typeBaseUrl = `${prefix}${typeBaseUrl}`;
+      typeBaseUrl = `/${prefix}${typeBaseUrl}`;
     }
 
     const embedString = embed ? "_embed" : "";
@@ -37,33 +45,44 @@ export const actions: ActionTree<Object, any> = {
             embedString ? "&" + embedString : embedString
           }`;
 
-    if (Vue.prototype.$wp.api && Vue.prototype.$wp.api.post) {
-      for (let filter of Vue.prototype.$wp.api.post) {
-        filter(base);
-      }
-    }
-
     try {
-      // if(!(slug in state.post && state.post[slug] && state.post[slug] !== false)) {
-      const finalUrl = config.url.endsWith("/")
-        ? config.url.substr(0, config.url.length - 1) + base
-        : config.url + base;
 
-      const response = await axios.get(config.url + base);
+      if (!state.types[type] || !state.types[type][slug]) {
+        const requestUrl = beforeRequest ? await beforeRequest(base) : base
+        const response = await axios.get(requestUrl);
 
-      if (response.data.status == 404 || response.data.length < 1) {
-        throw new Error("Endpoint ain't ready");
+        if (config.debugger) {
+          console.log(`[VueWordpress][Debugger] I've just fetched ${base}`)
+        }
+
+        if (response.data.status == 404) {
+          throw new Error(`[VueWordpress] Error 404 in ${base} endpoint`);
+        }
+
+        if (response.data.length < 1) {
+          throw new Error(`[VueWordpress] Empty data in ${base} endpoint`);
+        }
+
+        const data = beforeSave ? await beforeSave(response.data) : response.data
+
+        commit(types.SET_POST_CONTENT, {
+          data,
+          slotName: slug,
+          type
+        });
+
+      } else if (config.debugger) {
+        console.log(`[VueWordpress][Debugger] Did not fetch ${base} because it is yet in the store`)
       }
 
-      commit(types.SET_POST_CONTENT, {
-        data: response.data,
-        slotName: slug,
-        type
-      });
-      // }
     } catch (err) {
+
+      console.log(`[VueWordpress][Debugger] Could not fetch because of error`, err)
+
+      const data = beforeSaveFailed ? await beforeSaveFailed() : false
+
       commit(types.SET_POST_CONTENT, {
-        data: false,
+        data,
         slotName: slug,
         type
       });

@@ -3,9 +3,9 @@
     "target": "es5",
     "module": "esnext",
     "outDir": "dist",
-    "allowJs": true,
     "strict": false,
     "jsx": "preserve",
+    "allowJs": true,
     "importHelpers": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -39,6 +39,7 @@
     "**/*.js"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tests"
   ]
 }
