@@ -9,6 +9,7 @@ Wordpress option should be **WordpressOption**, **Array\<WordpressOption\>** or 
 export interface WordpressOption {
   slug: string | (() => string),
   type?: string,
+  fields?: string | Array<string>,
   embed?: Boolean,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
@@ -53,6 +54,30 @@ Example use case as **String**:
 wordpress: {
   slug: 'apple',
   type: 'custom_type'
+}
+```
+## Attribute: fields
+
+### Type: Array&lt;String&gt; | String
+#### Default value: []
+
+It is array of fields which will be fetched from endpoint. For real it will be attached to the URI as query params, e.g. for value: `['id', 'acf']` it will attach:   
+`https:///yourwordpress.com/wp-json/wp/v2/custom_type?slug=<your_slug>&_fields[]=id&_fields[]=acf&_fields[]=slug`
+
+As you could see, there is also `slug` but you did not provide it. It is necessary because VueWp will save it in the vuex under key=slug
+
+Example use case as **String**:
+```js
+wordpress: {
+  slug: 'apple',
+  fields: 'acf'
+}
+``` 
+Example use case as **Array&lt;String&gt;**:
+```js
+wordpress: {
+  slug: 'apple',
+  fields: ['acf', 'id']
 }
 ```
 ## Attribute: embed

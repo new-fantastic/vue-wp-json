@@ -12,6 +12,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
     slug,
     type = 'pages',
     embed = false,
+    fields = [],
     beforeSave = null,
     beforeRequest = null,
     beforeSaveFailed = null
@@ -40,12 +41,21 @@ export const actions: ActionTree<VuexModulePost, any> = {
       ? config.url.substr(0, config.url.length - 1) + typeBaseUrl
       : config.url + typeBaseUrl;
 
-    const base =
+    let base =
       slug === ""
         ? `${halfBase}${embedString ? "?" + embedString : embedString}`
         : `${halfBase}?slug=${slug}${
             embedString ? "&" + embedString : embedString
           }`;
+
+    if (!!fields && !!fields.length) {
+      for (let field of (Array.isArray(fields) ? fields : [fields])) {
+        base += `&_fields[]=${field}`
+      }
+    }
+    if (!fields.includes('slug')) {
+      base += '&_fields[]=slug'
+    }
 
     try {
 
@@ -85,6 +95,9 @@ export const actions: ActionTree<VuexModulePost, any> = {
         currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
 
         const data = beforeSave ? await beforeSave(response.data) : response.data
+        if (config.debugger && data.some(page => !page.slug)) {
+          console.log(`[VueWordpress][Debugger] Some fetched page does not have slug inside. It will cause problem with saving`)
+        }
 
         commit(types.SET_POST_CONTENT, {
           data,

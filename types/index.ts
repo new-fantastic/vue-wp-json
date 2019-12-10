@@ -63,6 +63,7 @@ export interface WordpressOption {
   slug: string | (() => string),
   type?: string,
   embed?: Boolean,
+  fields?: Array<string> | string,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
   beforeSaveFailed?: () => any
