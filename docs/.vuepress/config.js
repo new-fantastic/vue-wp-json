@@ -40,7 +40,8 @@ module.exports = {
           children: [
             ['/api/store/', 'Vuex Store'],
             ['/api/wpData/', 'wpData'],
-            ['/api/wordpress/', 'wordpress']
+            ['/api/wordpress/', 'wordpress'],
+            ['/api/util/', 'Utility']
           ]
         }
       ],
