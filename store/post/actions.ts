@@ -66,6 +66,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
     if (!!per_page) {
       if (per_page > 100) {
         requestsAmount = Math.max(1, Math.ceil(per_page / 100))
+        per_page = 100
       }
       if (config.debugger) {
         if (per_page > 100) {
@@ -95,7 +96,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
         
         const requestUrl = beforeRequest ? await beforeRequest(base) : base
         const requests = []
-
+ 
         for (let i = 1; i <= requestsAmount; i++) {
           requests.push(axios.get(requestUrl + beforeMark(requestUrl, `page=${i}`)))
         }
