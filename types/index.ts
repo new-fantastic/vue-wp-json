@@ -64,6 +64,7 @@ export interface WordpressOption {
   type?: string,
   embed?: Boolean,
   fields?: Array<string> | string,
+  per_page?: number,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
   beforeSaveFailed?: () => any
