@@ -53,7 +53,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
         base += `&_fields[]=${field}`
       }
     }
-    if (!fields.includes('slug')) {
+    if (!!fields.length && !fields.includes('slug')) {
       base += '&_fields[]=slug'
     }
 
