@@ -126,9 +126,9 @@ export const actions: ActionTree<VuexModulePost, any> = {
           if (config.debugger && fullResponse.some(page => !page.slug)) {
             console.log(`[VueWordpress][Debugger] Some fetched page does not have slug inside. It will cause problem with saving`)
           }
-
           
         }
+        
         fullResponse = [].concat.apply([], fullResponse)
         const data = beforeSave ? await beforeSave(fullResponse) : fullResponse
 
