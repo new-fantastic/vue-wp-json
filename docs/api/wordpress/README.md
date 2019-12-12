@@ -11,6 +11,7 @@ export interface WordpressOption {
   type?: string,
   fields?: string | Array<string>,
   embed?: Boolean,
+  per_page?: Number,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
   beforeSaveFailed?: () => any
@@ -95,6 +96,22 @@ wordpress: {
   embed: true
 }
 ```
+## Attribute: per_page
+
+### Type: Number
+
+Amount of records to fetch. By default Wordpress does allow this to by value between 1 and 100. But if you provide e.g. 105, VueWp will send 2 requests for 2 pages. Keep in mind that if there is less than 100 and you will use value larger than 100 - Wordpress will respond with error for the second error. So you should anticipate approximate amount of records to safely use it.
+
+If you provide number like 105, 110, 190, etc. <101;200> it will just fetch second request with also **per_page=100** but also **page=2**.
+
+Example use case:
+```js
+wordpress: {
+  slug: '',
+  per_page: 110
+}
+```
+
 ## Attribute: beforeSave
 
 ### Type: Function
@@ -184,8 +201,8 @@ Inside computed/data add a proper pointer do the data:
 ```
 
 ## Tips
-1. Each function can be **async**
-2. You can access component's this inside other than slug hooks with that trick:
+### Each function can be **async**
+### You can access component's this inside other than slug hooks with that trick:
 ```js
 {
   data () {
@@ -209,7 +226,7 @@ Inside computed/data add a proper pointer do the data:
   }
 }
 ```
-3. Wordpress option could be array, so pages would be fetched in paralell:
+### Wordpress option could be array, so pages would be fetched in paralell:
 ```js
 {
   wordpress: [
@@ -237,3 +254,19 @@ Or as function:
   }
 }
 ```
+
+### You could fetch wp data only under some condition
+```js
+{
+  wordpress () {
+    if (!!this.someCondition) {
+      return {
+        slug: 'apple'
+      }
+    }
+    return false
+  }
+}
+```
+
+And it will fetch `apple` page only if `this.someCondition` is true

@@ -80,7 +80,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
 
     try {
 
-      if (!state.types[type] || !state.types[type][slug]) {
+      if (!state.types[type] || !state.types[type][(<string>slug)]) {
         
         if (currentlyFetching && !currentlyFetching[type]) {
           currentlyFetching[type] = []
@@ -108,9 +108,11 @@ export const actions: ActionTree<VuexModulePost, any> = {
 
         currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
 
+        let fullResponse = []
+
         for (let [index, response] of Object.entries(responses)) {
           if (config.debugger) {
-            console.log(`[VueWordpress][Debugger] I've just fetched ${requestUrl + beforeMark(requestUrl, `page=${index+1}`)}`)
+            console.log(`[VueWordpress][Debugger] I've just fetched ${requestUrl + beforeMark(requestUrl, `page=${+index+1}`)}`)
           }
           if ((<any>response).data.status == 404) {
             throw new Error(`[VueWordpress] Error 404 in ${base} endpoint`);
@@ -120,17 +122,21 @@ export const actions: ActionTree<VuexModulePost, any> = {
             throw new Error(`[VueWordpress] Empty data in ${base} endpoint`);
           }
 
-          const data = beforeSave ? await beforeSave((<any>response).data) : (<any>response).data
-          if (config.debugger && data.some(page => !page.slug)) {
+          fullResponse.push((<any>response).data)
+          if (config.debugger && fullResponse.some(page => !page.slug)) {
             console.log(`[VueWordpress][Debugger] Some fetched page does not have slug inside. It will cause problem with saving`)
           }
 
-          commit(types.SET_POST_CONTENT, {
-            data,
-            slotName: slug,
-            type
-          });
+          
         }
+        fullResponse = [].concat.apply([], fullResponse)
+        const data = beforeSave ? await beforeSave(fullResponse) : fullResponse
+
+        commit(types.SET_POST_CONTENT, {
+          data,
+          slotName: slug,
+          type
+        });
 
       } else if (config.debugger) {
         console.log(`[VueWordpress][Debugger] Did not fetch ${base} because it is yet in the store`)
