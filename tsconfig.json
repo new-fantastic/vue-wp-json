@@ -15,6 +15,7 @@
     "baseUrl": ".",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "types": [
       "webpack-env",
       "jest"
