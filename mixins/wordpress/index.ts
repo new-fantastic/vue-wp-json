@@ -18,8 +18,8 @@ const resolveOption = async function (option: Function | Array<WordpressOption> 
         return [option]
       }
     default:
-      console.log(`[VueWordpress] 'wordpress' option cannot be type of ${option}`)
-      break;
+      // console.log(`[VueWordpress] 'wordpress' option cannot be type of ${option}`)
+      return false
   }
 }
 
@@ -39,7 +39,13 @@ export default {
     }
     try {
       const options = await resolveOption.call(this, this.$options.wordpress)
+      if (!options) {
+        return
+      }
       await Promise.all(options.map(async option => {
+        if (!option) {
+          return Promise.resolve()
+        }
         const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
         return prepareAction.call(this, {
           ...option,
@@ -57,7 +63,13 @@ export default {
     }
     try {
       const options = await resolveOption.call(this, this.$options.wordpress)
+      if (!options) {
+        return
+      }
       await Promise.all(options.map(async option => {
+        if (!option) {
+          return Promise.resolve()
+        }
         const slug = typeof option.slug === 'function' ? await option.slug.call(this) : option.slug
         return prepareAction.call(this, {
           ...option,
