@@ -67,5 +67,6 @@ export interface WordpressOption {
   per_page?: number,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
-  beforeSaveFailed?: () => any
+  beforeSaveFailed?: () => any,
+  forceRefetch: Boolean
 }

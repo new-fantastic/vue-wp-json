@@ -20,7 +20,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
     fields = [],
     beforeSave = null,
     beforeRequest = null,
-    beforeSaveFailed = null
+    beforeSaveFailed = null,
+    forceRefetch = false
   }: WordpressOption) {
     const config = rootState[`${ModulePrefix}_config`];
 
@@ -63,6 +64,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
       base += beforeMark(base, '_fields[]=slug')
     }
 
+    // Pagination
     if (!!per_page) {
       if (per_page > 100) {
         requestsAmount = Math.max(1, Math.ceil(per_page / 100))
@@ -80,10 +82,10 @@ export const actions: ActionTree<VuexModulePost, any> = {
 
     try {
 
-      if (!state.types[type] || !state.types[type][(<string>slug)]) {
+      if ((!state.types[type] || !state.types[type][(<string>slug)]) || forceRefetch) {
         
         if (currentlyFetching && !currentlyFetching[type]) {
-          currentlyFetching[type] = []
+          currentlyFetching[type] = {}
         }
 
         if (currentlyFetching && currentlyFetching[type] && currentlyFetching[type][slug]) {
@@ -100,13 +102,13 @@ export const actions: ActionTree<VuexModulePost, any> = {
         for (let i = 1; i <= requestsAmount; i++) {
           requests.push(axios.get(requestUrl + beforeMark(requestUrl, `page=${i}`)))
         }
-        const responses = await Promise.all(requests)
-
-        if (!currentlyFetching[type].includes(slug)) {
-          currentlyFetching[type].push(slug)
+        if (!currentlyFetching[type][slug]) {
+          currentlyFetching[type][slug] = true
         }
 
-        currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
+        const responses = await Promise.all(requests)
+
+        delete currentlyFetching[type][slug]
 
         let fullResponse = []
 
@@ -123,7 +125,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
           }
 
           fullResponse.push((<any>response).data)
-          if (config.debugger && fullResponse.some(page => !page.slug)) {
+          if (config.debugger && response.data.some(page => !page.slug)) {
             console.log(`[VueWordpress][Debugger] Some fetched page does not have slug inside. It will cause problem with saving`)
           }
           
@@ -137,6 +139,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
           slotName: slug,
           type
         });
+
+        return data
 
       } else if (config.debugger) {
         console.log(`[VueWordpress][Debugger] Did not fetch ${base} because it is yet in the store`)
@@ -157,6 +161,8 @@ export const actions: ActionTree<VuexModulePost, any> = {
         slotName: slug,
         type
       });
+
+      return data
     }
   }
 };
