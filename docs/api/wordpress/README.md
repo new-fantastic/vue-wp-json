@@ -14,7 +14,8 @@ export interface WordpressOption {
   per_page?: Number,
   beforeSave?: (fetchedData: any) => any,
   beforeRequest?: (url: string) => string,
-  beforeSaveFailed?: () => any
+  beforeSaveFailed?: () => any,
+  forceRefetch?: Boolean
 }
 ```
 
@@ -182,6 +183,31 @@ wordpress: {
 
     return predefinedHtmlTemplate
   } 
+}
+```
+## Attribute: forceRefetch
+
+### Type: Boolean
+### Default value: false
+
+By default, VueWordpress would prevent fetching the same page twice. However, by some reason at first we could fetch only a few attributes but then we need more. To create
+
+Example use case:
+```js
+wordpress: {
+  slug: '',
+  type: 'tips',
+  fields: ['slug', 'short_description']
+},
+methods: {
+  async onClickLoadDetails(tipSlug) {
+    await this.$store.dispatch('wp_post/load', {
+      forceRefetch: true,
+      fields: ['slug', 'description', 'details']
+      slug: 'optional-chaining',
+      types: 'tips'
+    })
+  }
 }
 ```
 
