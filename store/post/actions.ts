@@ -148,7 +148,7 @@ export const actions: ActionTree<VuexModulePost, any> = {
 
     } catch (err) {
 
-      currentlyFetching[type] = currentlyFetching[type].filter(currentSlug => currentSlug !== slug)
+      delete currentlyFetching[type][slug]
 
       if (config.debugger) {
         console.log(`[VueWordpress][Debugger] Could not fetch because of error`, err)
