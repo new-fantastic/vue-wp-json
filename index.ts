@@ -1,7 +1,7 @@
 // Initializers
 import * as vuex from "./plugin/initializers/store";
 
-import MetaInfo from "vue-meta-info";
+// import MetaInfo from "vue-meta-info";
 import { PluginConfig } from 'types'
 import { VueConstructor } from 'vue';
 import wordpress from './mixins/wordpress';
@@ -23,7 +23,7 @@ export default {
         throw new Error("No lang provided!");
       }
       // Register it in app
-      Vue.use(MetaInfo);
+      // Vue.use(MetaInfo);
 
       Vue.mixin(wordpress)
 
